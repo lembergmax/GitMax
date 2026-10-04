@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_done"
+        android:icon="@drawable/ic_check"
+        android:title="@string/viewer_done_editing"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save"
+        android:title="@string/viewer_save"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_undo"
+        android:title="@string/viewer_undo"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_redo"
+        android:icon="@drawable/ic_redo"
+        android:title="@string/viewer_redo"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/viewer_edit"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_find"
+        android:icon="@drawable/ic_search"
+        android:title="@string/viewer_find"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_wrap"
+        android:checkable="true"
+        android:title="@string/viewer_wrap"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_goto_line"
+        android:title="@string/viewer_goto_line"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_blame"
+        android:title="@string/viewer_blame"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save_and_commit"
+        android:title="@string/viewer_save_and_commit"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_open_external"
+        android:title="@string/files_open_external"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_share"
+        android:title="@string/files_share"
+        app:showAsAction="never" />
+</menu>

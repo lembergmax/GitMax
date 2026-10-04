@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_clone_selected"
+        android:icon="@drawable/ic_download"
+        android:title="@string/discover_clone_selected"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_select_all"
+        android:icon="@drawable/ic_select_all"
+        android:title="@string/discover_select_all"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/discover_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_swap_vert"
+        android:title="@string/discover_sort"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/sort_recent"
+                    android:checked="true"
+                    android:title="@string/discover_sort_recent" />
+                <item
+                    android:id="@+id/sort_name"
+                    android:title="@string/discover_sort_name" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_clone_url"
+        android:title="@string/discover_clone_by_url"
+        app:showAsAction="never" />
+</menu>

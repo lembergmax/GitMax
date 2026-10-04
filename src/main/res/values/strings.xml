@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GitMax</string>
+
+    <!-- Navigation -->
+    <string name="nav_local">Local</string>
+    <string name="nav_discover">Discover</string>
+    <string name="nav_activity">Activity</string>
+    <string name="nav_settings">Settings</string>
+    <string name="navigate_back">Back</string>
+
+    <!-- Placeholder until the areas are built (replaced in milestones M3 to M5) -->
+    <string name="placeholder_body">This area is still being built.</string>
+
+    <!-- Local -->
+    <string name="local_title">Local</string>
+    <string name="local_permission_title">File access needed</string>
+    <string name="local_permission_body">GitMax keeps repos in a folder on your phone that other apps can see too. That needs the “All files access” permission.</string>
+    <string name="local_permission_action">Grant access</string>
+    <string name="local_workspace_title">Choose a workspace folder</string>
+    <string name="local_workspace_body">GitMax looks for your repos in this folder and puts new clones here.</string>
+    <string name="local_workspace_create_default">Create folder “GitMax”</string>
+    <string name="local_workspace_choose_other">Choose another folder</string>
+    <string name="local_empty_title">No repos yet</string>
+    <string name="local_empty_body">There is no Git repo in %1$s yet.</string>
+    <string name="local_empty_action">Discover repos</string>
+    <string name="local_empty_rescan">Search again</string>
+    <string name="local_clone">Clone</string>
+    <string name="local_workspace_create_failed">The folder could not be created.</string>
+    <string name="local_row_unreadable">Unreadable</string>
+    <string name="local_row_detached">Detached (%1$s)</string>
+    <string name="local_row_conflict">Conflicts</string>
+    <string name="local_row_clean">Up to date</string>
+
+    <!-- Folder picker -->
+    <string name="picker_title">Choose a folder</string>
+    <string name="picker_select">Choose this folder</string>
+    <string name="picker_new_folder">New folder</string>
+    <string name="picker_new_folder_title">New folder</string>
+    <string name="picker_new_folder_hint">Folder name</string>
+    <string name="picker_new_folder_create">Create</string>
+    <string name="picker_up">Up one level</string>
+    <string name="picker_volumes">Storage</string>
+    <string name="picker_repo_marker">Repo</string>
+    <string name="picker_empty">No subfolders</string>
+    <string name="picker_error_name">This folder name is not allowed. Phone storage forbids : * ? \" &lt; &gt; | and \\.</string>
+    <string name="picker_error_exists">This folder already exists.</string>
+    <string name="picker_error_create">The folder could not be created.</string>
+    <string name="picker_error_not_writable">GitMax cannot write to this folder.</string>
+    <string name="picker_error_unreadable">This folder cannot be read.</string>
+
+    <!-- Workspace folders (settings) -->
+    <string name="workspace_title">Workspace folders</string>
+    <string name="workspace_summary_none">None chosen yet</string>
+    <plurals name="workspace_summary_count">
+        <item quantity="one">%d folder</item>
+        <item quantity="other">%d folders</item>
+    </plurals>
+    <string name="workspace_add">Add folder</string>
+    <string name="workspace_default_marker">Default</string>
+    <string name="workspace_make_default">Make default</string>
+    <string name="workspace_remove">Remove from list</string>
+    <string name="workspace_row_more">More about %1$s</string>
+    <string name="workspace_permission_missing">Without the “All files access” permission GitMax cannot read these folders.</string>
+    <string name="workspace_permission_action">Grant access</string>
+    <string name="workspace_empty">No workspace folder yet. Add one so GitMax can find and store repos.</string>
+    <string name="workspace_error_exists">This folder is already a workspace folder.</string>
+    <string name="workspace_removed">Removed from the list. The folder stays on the phone.</string>
+    <string name="workspace_undo">Undo</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_accounts">Accounts</string>
+    <string name="settings_accounts_none">None linked yet</string>
+    <plurals name="settings_accounts_count">
+        <item quantity="one">%d account linked</item>
+        <item quantity="other">%d accounts linked</item>
+    </plurals>
+
+    <!-- Accounts -->
+    <string name="accounts_title">Accounts</string>
+    <string name="accounts_empty_title">No account linked yet</string>
+    <string name="accounts_empty_body">Link GitHub or GitLab so GitMax can find your repos.</string>
+    <string name="accounts_connect">Connect account</string>
+    <string name="accounts_status_rejected">Token rejected</string>
+    <string name="accounts_status_secret_lost">Token lost</string>
+    <string name="accounts_row_description">%1$s, %2$s</string>
+
+    <!-- Connect account -->
+    <string name="connect_title">Connect account</string>
+    <string name="connect_provider">Provider</string>
+    <string name="connect_github">GitHub</string>
+    <string name="connect_gitlab">GitLab</string>
+    <string name="connect_custom_server_github">GitHub Enterprise</string>
+    <string name="connect_custom_server_gitlab">Own server</string>
+    <string name="connect_server_hint_github">Server address (GitHub Enterprise)</string>
+    <string name="connect_server_hint_gitlab">Server address</string>
+    <string name="connect_create_token">Create token</string>
+    <string name="connect_token_help_github">Create a token on GitHub with the “repo” scope (plus “workflow” for workflows) and paste it below.</string>
+    <string name="connect_token_help_gitlab">Create a token on GitLab with the scopes “api”, “read_repository” and “write_repository” and paste it below.</string>
+    <string name="connect_token_hint">Token</string>
+    <string name="connect_paste">Paste</string>
+    <string name="connect_submit">Connect</string>
+    <string name="connect_busy">Checking token …</string>
+    <string name="connect_error_host">That is not a valid server address.</string>
+    <string name="connect_error_token_empty">Paste a token first.</string>
+    <string name="connect_success">Connected as %1$s</string>
+    <string name="connect_browser_missing">No browser was found.</string>
+    <string name="connect_clipboard_empty">The clipboard is empty.</string>
+
+    <!-- Account detail -->
+    <string name="account_detail_title">Account</string>
+    <string name="account_detail_identity">Commit identity</string>
+    <string name="account_detail_identity_help">This is how you appear in commits you make with this account.</string>
+    <string name="account_detail_name">Name</string>
+    <string name="account_detail_email">Email</string>
+    <string name="account_detail_save">Save</string>
+    <string name="account_detail_saved">Identity saved</string>
+    <string name="account_detail_scopes">Token scopes</string>
+    <string name="account_detail_scopes_unknown">The provider does not report the scopes of this token.</string>
+    <string name="account_detail_renew">Renew token</string>
+    <string name="account_detail_remove">Remove account</string>
+    <string name="account_detail_remove_title">Remove account?</string>
+    <string name="account_detail_remove_body">The token is deleted from this device. Cloned repos are kept.</string>
+    <string name="account_detail_remove_confirm">Remove</string>
+    <string name="account_detail_cancel">Cancel</string>
+    <string name="account_detail_renew_title">Renew token</string>
+    <string name="account_detail_renew_body">Paste a new token for %1$s.</string>
+    <string name="account_detail_renew_confirm">Check and save</string>
+    <string name="account_detail_renewed">Token renewed</string>
+    <string name="account_detail_mismatch">This token belongs to a different account (%1$s).</string>
+    <string name="account_detail_error_name">The name must not be empty.</string>
+    <string name="account_detail_error_email">That is not a valid email address.</string>
+    <string name="account_detail_banner_rejected">The provider rejected the token. Renew it so GitMax can reach your repos again.</string>
+    <string name="account_detail_banner_secret_lost">The stored token can no longer be read on this device. Renew it to keep using the account.</string>
+
+    <!-- Provider API errors -->
+    <string name="error_unauthorized">The provider rejected the token. Check that it was copied completely, has not expired and has the required scopes.</string>
+    <string name="error_forbidden">The token does not have the scope this action needs.</string>
+    <string name="error_rate_limited_unknown">The provider\'s rate limit has been reached. Try again later.</string>
+    <string name="error_not_found">There is no API at this address. Check the server address.</string>
+    <string name="error_network">No connection to the server. Check your network and the server address.</string>
+    <string name="error_server">The provider\'s server reports an error. Try again later.</string>
+    <string name="error_malformed">The provider\'s response was unexpected. Check the server address.</string>
+    <string name="error_vault">The token could not be stored securely.</string>
+
+    <!-- Git operations: kinds, phases, outcomes, failures -->
+    <string name="op_kind_clone">Clone</string>
+    <string name="op_kind_update">Update</string>
+    <string name="op_kind_fetch">Fetch</string>
+    <string name="op_kind_push">Push</string>
+    <string name="op_kind_create">Create</string>
+
+    <string name="op_phase_connecting">Connecting …</string>
+    <string name="op_phase_fetching">Fetching …</string>
+    <string name="op_phase_receiving">Receiving objects</string>
+    <string name="op_phase_resolving">Resolving deltas</string>
+    <string name="op_phase_checkout">Writing files</string>
+    <string name="op_phase_submodules">Loading submodules</string>
+    <string name="op_phase_merging">Merging</string>
+    <string name="op_phase_pushing">Sending objects</string>
+    <string name="op_phase_working">Working …</string>
+    <string name="op_phase_with_percent">%1$s · %2$d %%</string>
+    <string name="op_queued">Waiting</string>
+
+    <string name="op_outcome_cloned">Cloned</string>
+    <string name="op_outcome_up_to_date">Already up to date</string>
+    <string name="op_outcome_fast_forwarded">Updated</string>
+    <string name="op_outcome_merged">Merged</string>
+    <string name="op_outcome_rebased">Rebased</string>
+    <string name="op_outcome_skipped_no_upstream">Skipped: branch has no upstream</string>
+    <string name="op_outcome_skipped_detached">Skipped: HEAD does not point to a branch</string>
+    <string name="op_outcome_fetched">Fetched</string>
+    <string name="op_outcome_pushed">Pushed</string>
+    <string name="op_outcome_created">Created and pushed</string>
+
+    <string name="op_failure_auth">Sign-in rejected. Check or renew the token.</string>
+    <string name="op_failure_not_found">Repo not found or no access.</string>
+    <string name="op_failure_network">No connection to the server.</string>
+    <string name="op_failure_not_fast_forward">The remote has newer commits. Update first.</string>
+    <string name="op_failure_rejected">The remote rejected the change.</string>
+    <string name="op_failure_conflict">Conflicts you have to resolve by hand.</string>
+    <string name="op_failure_dirty_tree">Local changes are in the way. Commit them or stash them.</string>
+    <string name="op_failure_no_upstream">The branch has no upstream.</string>
+    <string name="op_failure_not_a_repo">This is not a Git repo.</string>
+    <string name="op_failure_nothing_to_commit">There is nothing to commit.</string>
+    <string name="op_failure_already_exists">The target folder already exists and is not empty.</string>
+    <string name="op_failure_disk_full">The storage is full.</string>
+    <string name="op_failure_invalid_path">A file name is not allowed on phone storage.</string>
+    <string name="op_failure_invalid_name">This name is not allowed by Git\'s rules.</string>
+    <string name="op_failure_not_merged">The branch has not been merged yet. If you delete it, its commits are lost.</string>
+    <string name="op_failure_current_branch">That does not work with the branch you are currently on.</string>
+    <string name="op_failure_metered">Allowed on Wi-Fi only, and the device is on mobile data. Connect to Wi-Fi or try anyway.</string>
+    <string name="op_failure_cancelled">Cancelled.</string>
+    <string name="op_failure_interrupted">Cancelled because the app was closed.</string>
+    <string name="op_failure_unknown">The operation failed.</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_running">Running Git operations</string>
+    <string name="notification_channel_running_description">Shows progress while GitMax clones, updates or pushes.</string>
+    <string name="notification_channel_results">Results</string>
+    <string name="notification_channel_results_description">Reports how Git operations ended.</string>
+    <string name="notification_running_title">%1$s · %2$s</string>
+    <string name="notification_running_count">%1$d of %2$d</string>
+    <string name="notification_cancel">Cancel</string>
+    <string name="notification_done_title">Git operations finished</string>
+    <string name="notification_done_all_ok">%1$d succeeded</string>
+    <string name="notification_done_mixed">%1$d succeeded, %2$d failed</string>
+    <string name="notification_done_cancelled">%1$d cancelled</string>
+    <string name="notification_timeout_title">Operations stopped</string>
+    <string name="notification_timeout_body">Android stopped the background service. Start the operations again from Activity.</string>
+
+    <!-- Activity -->
+    <string name="activity_title">Activity</string>
+    <string name="activity_section_active">Running and waiting</string>
+    <string name="activity_section_recent">Recent</string>
+    <string name="activity_empty_title">No operations yet</string>
+    <string name="activity_empty_body">Cloning, updating and pushing show up here with progress and result.</string>
+    <string name="activity_empty_action">Discover repos</string>
+    <string name="activity_cancel_all">Cancel all</string>
+    <string name="activity_clear">Clear finished</string>
+    <string name="activity_cancel">Cancel</string>
+    <string name="activity_retry">Try again</string>
+    <string name="activity_close">Close</string>
+    <string name="activity_copy_details">Copy details</string>
+    <string name="activity_copied">Details copied</string>
+    <string name="activity_details_title">%1$s · %2$s</string>
+    <string name="activity_details_technical">Technical message</string>
+    <string name="activity_row_description">%1$s, %2$s, %3$s</string>
+    <string name="activity_status_with_time">%1$s · %2$s</string>
+
+    <!-- Discover -->
+    <string name="discover_title">Discover</string>
+    <string name="discover_search_hint">Search repos</string>
+    <string name="discover_search">Search</string>
+    <string name="discover_sort">Sort</string>
+    <string name="discover_sort_recent">Recently active</string>
+    <string name="discover_sort_name">Name</string>
+    <string name="discover_clone_by_url">Clone by URL</string>
+    <string name="discover_select_all">Select all</string>
+    <string name="discover_selected_count">%1$d selected</string>
+    <string name="discover_clone_selected">Clone</string>
+    <string name="discover_clear_selection">Clear selection</string>
+    <string name="discover_filter_all">All</string>
+    <string name="discover_filter_not_cloned">Not cloned</string>
+    <string name="discover_filter_private">Private</string>
+    <string name="discover_filter_public">Public</string>
+    <string name="discover_filter_forks">Forks</string>
+    <string name="discover_filter_archived">Archived</string>
+    <string name="discover_no_accounts_title">No account connected</string>
+    <string name="discover_no_accounts_body">Connect GitHub or GitLab and your repos appear here.</string>
+    <string name="discover_no_accounts_action">Connect account</string>
+    <string name="discover_empty_title">No matches</string>
+    <string name="discover_empty_filtered_body">There are no repos with these filters.</string>
+    <string name="discover_empty_none_body">This account has no repos yet.</string>
+    <string name="discover_empty_reset">Reset filters</string>
+    <string name="discover_error_title">Repos could not be loaded</string>
+    <string name="discover_error_retry">Try again</string>
+    <string name="discover_banner_stale">%1$s\nAs of %2$s.</string>
+    <string name="discover_fact_private">Private</string>
+    <string name="discover_fact_public">Public</string>
+    <string name="discover_fact_fork">Fork</string>
+    <string name="discover_fact_archived">Archived</string>
+    <string name="discover_fact_cloned">Cloned</string>
+    <string name="discover_fact_activity">Active %1$s</string>
+    <string name="discover_row_selected">Selected</string>
+    <string name="discover_row_not_selected">Not selected</string>
+    <string name="discover_all_accounts">All accounts</string>
+
+    <!-- Clone -->
+    <string name="clone_title_one">Clone repo</string>
+    <string name="clone_title_many">Clone %1$d repos</string>
+    <string name="clone_target_label">Target folder</string>
+    <string name="clone_target_change">Change</string>
+    <string name="clone_target_missing">No target folder chosen.</string>
+    <string name="clone_row_new">Folder: %1$s</string>
+    <string name="clone_row_exists">Already there: %1$s</string>
+    <string name="clone_option_shallow">Shallow clone</string>
+    <string name="clone_option_shallow_hint">Latest state only, without history. Saves space and time.</string>
+    <string name="clone_option_submodules">Include submodules</string>
+    <string name="clone_option_update_existing">Update existing</string>
+    <string name="clone_confirm">Clone</string>
+    <string name="clone_confirm_update">Update</string>
+    <string name="clone_started">Operations started: %1$d</string>
+    <string name="clone_open_activity">Activity</string>
+    <string name="clone_nothing_to_do">All chosen repos are already in the target folder.</string>
+    <string name="clone_url_title">Clone by URL</string>
+    <string name="clone_url_hint">https://github.com/owner/repo.git</string>
+    <string name="clone_url_invalid">That is not a valid Git URL.</string>
+    <string name="clone_url_insecure">For security reasons only https:// is allowed.</string>
+    <string name="clone_url_continue">Continue</string>
+
+    <!-- Time -->
+    <string name="time_just_now">just now</string>
+    <string name="time_minutes">%1$d min ago</string>
+    <string name="time_hours">%1$d h ago</string>
+    <string name="time_yesterday">yesterday</string>
+    <string name="time_days">%1$d days ago</string>
+
+    <!-- Repo detail -->
+    <string name="repo_action_update">Update</string>
+    <string name="repo_action_commit">Commit</string>
+    <string name="repo_action_push">Push</string>
+    <string name="repo_status_clean">All up to date</string>
+    <string name="repo_status_ahead">%1$d ahead</string>
+    <string name="repo_status_behind">%1$d behind</string>
+    <string name="repo_status_changed">%1$d changed</string>
+    <string name="repo_status_conflict">Conflicts</string>
+    <string name="repo_status_detached">Detached at %1$s</string>
+    <string name="repo_status_no_upstream">No upstream</string>
+    <string name="repo_status_in_progress">Merge or rebase in progress</string>
+    <string name="repo_section_conflicts">Conflicts</string>
+    <string name="repo_section_staged">Ready to commit</string>
+    <string name="repo_section_unstaged">Changed</string>
+    <string name="repo_section_untracked">New</string>
+    <string name="repo_section_title">%1$s · %2$d</string>
+    <string name="repo_stage_all">Stage all</string>
+    <string name="repo_unstage_all">Unstage all</string>
+    <string name="repo_stage">Stage</string>
+    <string name="repo_unstage">Unstage</string>
+    <string name="repo_kind_added">Newly added</string>
+    <string name="repo_kind_modified">Changed</string>
+    <string name="repo_kind_deleted">Deleted</string>
+    <string name="repo_kind_untracked">New</string>
+    <string name="repo_kind_conflict">Conflict</string>
+    <string name="repo_file_description">%1$s, %2$s</string>
+    <string name="repo_discard">Discard changes</string>
+    <string name="repo_discard_title">Discard changes?</string>
+    <string name="repo_discard_body_one">The changes to %1$s are lost for good. New files are deleted.</string>
+    <string name="repo_discard_confirm">Discard</string>
+    <string name="repo_clean_title">Nothing to commit</string>
+    <string name="repo_clean_body">The working directory matches the last commit.</string>
+    <string name="repo_unreadable_title">Repo unreadable</string>
+    <string name="repo_unreadable_body">GitMax could not read the state of this repo. Check that the folder still exists and the repo is intact.</string>
+    <string name="repo_lfs_note">This repo uses Git LFS. GitMax does not download or upload LFS files: they stay small pointer files here, the real content lives on the server.</string>
+    <string name="repo_nothing_to_push">There is nothing to push.</string>
+    <string name="repo_menu_fetch">Fetch</string>
+    <string name="repo_menu_abort_merge">Abort merge</string>
+    <string name="repo_menu_copy_path">Copy path</string>
+    <string name="repo_path_copied">Path copied</string>
+    <string name="repo_abort_title">Abort merge?</string>
+    <string name="repo_abort_body">The state before the update is restored. Conflict resolutions you have already made and all uncommitted changes in this repo are lost.</string>
+    <string name="repo_abort_confirm">Abort</string>
+    <string name="repo_aborted">Merge aborted</string>
+    <string name="repo_menu_force_push">Force push …</string>
+    <string name="repo_force_push_title">Force push?</string>
+    <string name="repo_force_push_body">The branch on the server is replaced by your local state. Commits that exist only there are lost. GitMax only overwrites if the server is still at the state you last fetched.</string>
+    <string name="repo_force_push_confirm">Force</string>
+    <string name="repo_force_push_started">Force push started</string>
+    <string name="repo_menu_delete">Delete from device …</string>
+    <string name="repo_delete_title">Delete repo from device?</string>
+    <string name="repo_delete_body">“%1$s” is deleted from the phone with all its files, including unpushed commits, other branches and uncommitted changes. Everything on the server stays.</string>
+    <string name="repo_delete_confirm">Delete</string>
+    <string name="repo_deleted">Repo deleted from device</string>
+    <string name="repo_delete_busy">An operation is still running for this repo.</string>
+    <string name="repo_delete_failed">Deleting failed. The folder may be partly deleted.</string>
+    <string name="repo_delete_root">A workspace folder cannot be deleted here.</string>
+    <string name="typed_confirm_hint">Type “%1$s” to confirm</string>
+    <string name="repo_banner_dismiss">Dismiss</string>
+    <string name="repo_banner_update">Update</string>
+    <string name="repo_banner_stash_update">Stash and update</string>
+    <string name="repo_operation_running">%1$s: %2$s</string>
+
+    <!-- Commit -->
+    <string name="commit_title">Commit</string>
+    <string name="commit_message_hint">Message</string>
+    <string name="commit_message_error">Write a commit message.</string>
+    <string name="commit_identity">As %1$s &lt;%2$s&gt;</string>
+    <string name="commit_identity_change">Change</string>
+    <string name="commit_identity_missing">Commits need a name and email.</string>
+    <string name="commit_identity_set">Set</string>
+    <string name="commit_amend">Amend last commit</string>
+    <string name="commit_amend_pushed_hint">The last commit is already pushed. Afterwards only “Force push …” in the repo menu brings the server in line; a normal push will be rejected.</string>
+    <string name="commit_stage_all">Include all changes</string>
+    <string name="commit_stage_all_hint">Nothing is staged. With this switch all changes go into the commit.</string>
+    <string name="commit_confirm">Commit</string>
+    <string name="commit_confirm_push">Commit and push</string>
+    <string name="commit_done">Commit %1$s created</string>
+    <string name="commit_conflicts">Resolve the conflicts first.</string>
+    <string name="commit_lfs_note">This repo uses Git LFS. Pointer files can be committed as usual; a file that LFS is meant to manage would go into the repo in full without LFS.</string>
+    <string name="commit_nothing">There is nothing to commit.</string>
+    <string name="identity_dialog_title">Identity for this repo</string>
+    <string name="identity_name_hint">Name</string>
+    <string name="identity_email_hint">Email</string>
+    <string name="identity_save">Save</string>
+
+    <!-- Local: filters, selection, bulk actions -->
+    <string name="local_filter_all">All</string>
+    <string name="local_filter_changed">Changed</string>
+    <string name="local_filter_ahead">Ahead</string>
+    <string name="local_filter_behind">Behind</string>
+    <string name="local_filter_conflict">Conflict</string>
+    <string name="local_filter_with_count">%1$s · %2$d</string>
+    <string name="local_selected_count">%1$d selected</string>
+    <string name="local_clear_selection">Clear selection</string>
+    <string name="local_update_selected">Update</string>
+    <string name="local_push_selected">Push</string>
+    <string name="local_fetch_selected">Fetch</string>
+    <string name="local_update_all">Update all</string>
+    <string name="local_search_hint">Search repos</string>
+    <string name="local_nothing_to_do">None of the selected repos qualifies for this.</string>
+    <string name="local_no_match_title">No matches</string>
+    <string name="local_no_match_body">There is no repo with this filter.</string>
+    <string name="local_no_match_reset">Reset filter</string>
+
+    <!-- Files -->
+    <string name="files_empty_title">Empty folder</string>
+    <string name="files_empty_body">Nothing here yet. Use the menu to create a file or a folder.</string>
+    <string name="files_no_match">No entry matches the search text.</string>
+    <string name="files_search_hint">Filter entries</string>
+    <string name="files_new_file">New file</string>
+    <string name="files_new_folder">New folder</string>
+    <string name="files_name_file_hint">File name</string>
+    <string name="files_name_folder_hint">Folder name</string>
+    <string name="files_create">Create</string>
+    <string name="files_rename">Rename</string>
+    <string name="files_rename_title">Rename</string>
+    <string name="files_delete">Delete</string>
+    <string name="files_delete_title">Delete?</string>
+    <string name="files_delete_file_body">“%1$s” is deleted for good. Git can only bring it back if it was already committed.</string>
+    <string name="files_delete_folder_body">The folder “%1$s” is deleted for good, with everything in it.</string>
+    <string name="files_open_external">Open in another app</string>
+    <string name="files_share">Share</string>
+    <string name="files_no_app">No app can open this file.</string>
+    <string name="files_more">More actions</string>
+    <string name="files_detail_folder">Folder</string>
+    <string name="files_detail_with_kind">%1$s · %2$s</string>
+    <string name="files_folder_has_changes">Contains changes</string>
+    <string name="files_row_description">%1$s, %2$s</string>
+    <string name="files_error_invalid_name">The name is empty or contains forbidden characters.</string>
+    <string name="files_error_exists">This name already exists.</string>
+    <string name="files_error_not_found">Not found.</string>
+    <string name="files_error_protected">That is not allowed.</string>
+    <string name="files_error_io">The file system rejected the action.</string>
+
+    <!-- Viewer and editor -->
+    <string name="viewer_edit">Edit</string>
+    <string name="viewer_done_editing">Done editing</string>
+    <string name="viewer_save">Save</string>
+    <string name="viewer_undo">Undo</string>
+    <string name="viewer_redo">Redo</string>
+    <string name="viewer_wrap">Word wrap</string>
+    <string name="viewer_find">Find</string>
+    <string name="viewer_goto_line">Go to line</string>
+    <string name="viewer_line_hint">Line number</string>
+    <string name="viewer_goto">Go</string>
+    <string name="viewer_save_and_commit">Save and commit</string>
+    <string name="viewer_saved">Saved</string>
+    <string name="viewer_save_failed">Saving failed. The file system rejected the file.</string>
+    <string name="viewer_unsaved_title">Save changes?</string>
+    <string name="viewer_unsaved_body">The file has unsaved changes.</string>
+    <string name="viewer_unsaved_save">Save</string>
+    <string name="viewer_unsaved_discard">Discard</string>
+    <string name="viewer_unsaved_cancel">Keep editing</string>
+    <string name="viewer_changed_title">File was changed</string>
+    <string name="viewer_changed_body">The file has changed since you opened it, for example through another app. If you save, those changes are lost.</string>
+    <string name="viewer_overwrite">Overwrite</string>
+    <string name="viewer_binary_title">Binary file</string>
+    <string name="viewer_binary_body">This file does not contain text (%1$s).</string>
+    <string name="viewer_not_utf8_title">Not UTF-8 text</string>
+    <string name="viewer_not_utf8_body">GitMax cannot show files in another character encoding without loss.</string>
+    <string name="viewer_too_large_title">Large file</string>
+    <string name="viewer_too_large_body">This file is %1$s in size. Opening it can take a long time.</string>
+    <string name="viewer_open_anyway">Open anyway</string>
+    <string name="viewer_read_only_large">The file is too large to edit. It is read-only.</string>
+    <string name="viewer_lfs_pointer">This is a Git LFS pointer. The real content (%1$s) lives on the server, GitMax does not download it.</string>
+    <string name="viewer_read_only_mixed">The file has mixed line endings and is read-only so nothing is normalized unnoticed.</string>
+    <string name="viewer_find_hint">Find</string>
+    <string name="viewer_replace_hint">Replace with</string>
+    <string name="viewer_find_next">Next match</string>
+    <string name="viewer_find_previous">Previous match</string>
+    <string name="viewer_replace">Replace</string>
+    <string name="viewer_replace_all">All</string>
+    <string name="viewer_find_count">%1$d of %2$d</string>
+    <string name="viewer_find_none">No matches</string>
+    <string name="viewer_find_close">Close search</string>
+
+    <string name="files_title">Files</string>
+    <string name="repo_menu_files">Files</string>
+
+    <!-- Advanced -->
+    <string name="advanced_title">Advanced</string>
+    <string name="advanced_history">History</string>
+    <string name="advanced_history_hint">View, search and compare commits</string>
+    <string name="advanced_branches_hint">Switch, create, merge, rebase</string>
+    <string name="advanced_stash_hint">Set changes aside and bring them back</string>
+    <string name="advanced_tags_hint">Mark and share versions</string>
+    <string name="advanced_remotes_hint">Manage the addresses of the other side</string>
+    <string name="repo_menu_advanced">Advanced</string>
+    <string name="repo_file_diff">View diff</string>
+
+    <!-- Branches -->
+    <string name="branches_title">Branches</string>
+    <string name="branches_empty_title">No branches</string>
+    <string name="branches_empty_body">The repo has no commit yet, so there is no branch either.</string>
+    <string name="branches_current">Current</string>
+    <string name="branches_follows">follows %1$s</string>
+    <string name="branches_section_local">Local</string>
+    <string name="branches_section_remote">Remote</string>
+    <string name="branches_checkout">Check out</string>
+    <string name="branches_merge">Merge into current branch</string>
+    <string name="branches_merge_body">“%1$s” is merged into “%2$s”. On conflicts the repo stays in the merge state until you resolve them or abort the merge.</string>
+    <string name="branches_rebase">Rebase current branch onto this</string>
+    <string name="branches_rebase_body">“%1$s” is rebased onto “%2$s”. Its commits are rewritten in the process.</string>
+    <string name="branches_rename">Rename</string>
+    <string name="branches_delete">Delete</string>
+    <string name="branches_delete_body">The branch “%1$s” is deleted.</string>
+    <string name="branches_delete_anyway">Delete anyway</string>
+    <string name="branches_delete_remote">Delete on the remote</string>
+    <string name="branches_delete_remote_body">The branch “%1$s” is deleted on the remote. That affects everyone who uses it.</string>
+    <string name="branches_name_hint">Branch name</string>
+    <string name="branches_new_title">New branch</string>
+    <string name="branches_start_hint">Start (empty: current state)</string>
+    <string name="branches_checkout_toggle">Check out right away</string>
+    <string name="branches_checked_out">Checked out</string>
+    <string name="branches_merge_nothing">Already up to date</string>
+    <string name="branches_merged">Merged</string>
+    <string name="branches_rebased">Rebased</string>
+    <string name="branches_renamed">Renamed</string>
+    <string name="branches_deleted">Deleted</string>
+    <string name="branches_delete_remote_started">Deleting on the remote started</string>
+
+    <!-- Stash -->
+    <string name="stash_title">Stash</string>
+    <string name="stash_empty_title">Nothing stashed</string>
+    <string name="stash_empty_body">Use the plus to set the current changes aside and bring them back later.</string>
+    <string name="stash_apply">Apply</string>
+    <string name="stash_pop">Apply and delete</string>
+    <string name="stash_drop">Delete</string>
+    <string name="stash_drop_body">This stash is deleted. That cannot be undone.</string>
+    <string name="stash_new_title">Stash changes</string>
+    <string name="stash_new_confirm">Stash</string>
+    <string name="stash_message_hint">Message (optional)</string>
+    <string name="stash_include_untracked">Include new files</string>
+    <string name="stash_applied">Applied</string>
+    <string name="stash_dropped">Deleted</string>
+
+    <!-- Tags -->
+    <string name="tags_title">Tags</string>
+    <string name="tags_empty_title">No tags</string>
+    <string name="tags_empty_body">Tags mark states such as versions. Create one with the plus.</string>
+    <string name="tags_annotated">annotated</string>
+    <string name="tags_lightweight">lightweight</string>
+    <string name="tags_checkout">Check out</string>
+    <string name="tags_push">Push to remote</string>
+    <string name="tags_delete">Delete locally</string>
+    <string name="tags_delete_body">The tag “%1$s” is deleted locally. It stays on the remote.</string>
+    <string name="tags_delete_remote">Delete on the remote</string>
+    <string name="tags_delete_remote_body">The tag “%1$s” is deleted on the remote.</string>
+    <string name="tags_new_title">New tag</string>
+    <string name="tags_name_hint">Tag name</string>
+    <string name="tags_message_hint">Message (empty: lightweight tag)</string>
+    <string name="tags_checked_out">Checked out (HEAD is detached)</string>
+    <string name="tags_deleted">Deleted</string>
+    <string name="tags_push_started">Push started</string>
+    <string name="tags_delete_remote_started">Deleting on the remote started</string>
+
+    <!-- Remotes -->
+    <string name="remotes_title">Remotes</string>
+    <string name="remotes_empty_title">No remotes</string>
+    <string name="remotes_empty_body">Without a remote the repo cannot fetch or push. Add one with the plus.</string>
+    <string name="remotes_set_url">Change address</string>
+    <string name="remotes_rename">Rename</string>
+    <string name="remotes_remove">Remove</string>
+    <string name="remotes_remove_body">The remote “%1$s” is removed from this repo. Everything on the server stays.</string>
+    <string name="remotes_new_title">Add remote</string>
+    <string name="remotes_name_hint">Name</string>
+    <string name="remotes_url_hint">Address</string>
+    <string name="remotes_url_changed">Address changed</string>
+    <string name="remotes_renamed">Renamed</string>
+    <string name="remotes_removed">Removed</string>
+
+    <!-- History -->
+    <string name="history_all_branches">All branches</string>
+    <string name="history_filter">Filter</string>
+    <string name="history_filter_apply">Apply</string>
+    <string name="history_filter_author">Author (name or email)</string>
+    <string name="history_filter_path">Path</string>
+    <string name="history_search_hint">Search messages</string>
+    <string name="history_empty_title">No commits</string>
+    <string name="history_empty_body">There are no commits with these filters, or the repo has none yet.</string>
+    <string name="history_merge">Merge</string>
+
+    <!-- Commit detail -->
+    <string name="commit_detail_title">Commit</string>
+    <string name="commit_copy_hash">Copy hash</string>
+    <string name="commit_hash_copied">Hash copied</string>
+    <string name="commit_checkout">Check out</string>
+    <string name="commit_checkout_body">HEAD will then point to this commit instead of a branch. New commits then belong to no branch.</string>
+    <string name="commit_checked_out">Checked out (HEAD is detached)</string>
+    <string name="commit_branch_here">Create branch here</string>
+    <string name="commit_branch_created">Branch created</string>
+    <string name="commit_tag_here">Create tag here</string>
+    <string name="commit_tag_created">Tag created</string>
+    <string name="commit_author_line">%1$s &lt;%2$s&gt; · %3$s</string>
+    <string name="commit_parents">Parents: %1$s</string>
+    <plurals name="commit_files_title">
+        <item quantity="one">%1$d file changed</item>
+        <item quantity="other">%1$d files changed</item>
+    </plurals>
+    <string name="commit_file_binary">Binary</string>
+
+    <!-- Diff -->
+    <string name="diff_ignore_whitespace">Ignore whitespace</string>
+    <string name="diff_side_by_side">Side by side</string>
+    <string name="diff_added">Added</string>
+    <string name="diff_removed">Removed</string>
+    <string name="diff_unchanged">Unchanged</string>
+    <string name="diff_binary_title">Binary file</string>
+    <string name="diff_binary_body">There is no line comparison for this file.</string>
+    <string name="diff_too_large_title">File too large</string>
+    <string name="diff_too_large_body">GitMax does not show a line comparison for very large files.</string>
+    <string name="diff_empty_title">No difference</string>
+    <string name="diff_empty_body">There is nothing to compare in this file, or the change only affects whitespace.</string>
+
+    <!-- Conflicts -->
+    <string name="conflicts_title">Conflicts</string>
+    <string name="conflicts_running_merge">Merge in progress</string>
+    <string name="conflicts_running_rebase">Rebase in progress</string>
+    <string name="conflicts_running_cherry_pick">Cherry-pick in progress</string>
+    <string name="conflicts_running_revert">Revert in progress</string>
+    <plurals name="conflicts_open">
+        <item quantity="one">%1$d file with a conflict. Resolve it, then continue.</item>
+        <item quantity="other">%1$d files with conflicts. Resolve them, then continue.</item>
+    </plurals>
+    <string name="conflicts_all_resolved">All conflicts are resolved. Use “Continue” to finish the operation.</string>
+    <string name="conflicts_none_title">No conflicts</string>
+    <string name="conflicts_none_body">No operation is running that would need resolving.</string>
+    <string name="conflicts_continue">Continue</string>
+    <string name="conflicts_skip">Skip commit</string>
+    <string name="conflicts_abort">Abort operation</string>
+    <string name="conflicts_row_markers">Still contains conflict markers</string>
+    <string name="conflicts_row_no_markers">No markers left: mark as resolved</string>
+    <string name="conflicts_take_mine">My version</string>
+    <string name="conflicts_take_theirs">The other side\'s version</string>
+    <string name="conflicts_take_target">Version of the target branch</string>
+    <string name="conflicts_take_mine_rebase">My version (replayed commit)</string>
+    <string name="conflicts_keep_both">Keep both</string>
+    <string name="conflicts_edit">Edit by hand</string>
+    <string name="conflicts_mark_resolved">Mark as resolved</string>
+    <string name="conflicts_kind_both_modified">Changed on both sides</string>
+    <string name="conflicts_kind_both_added">Added on both sides</string>
+    <string name="conflicts_kind_both_deleted">Deleted on both sides</string>
+    <string name="conflicts_kind_deleted_by_us">Deleted by me, changed elsewhere</string>
+    <string name="conflicts_kind_deleted_by_them">Deleted elsewhere, changed by me</string>
+    <string name="conflicts_kind_added_by_us">Added only by me</string>
+    <string name="conflicts_kind_added_by_them">Added only elsewhere</string>
+    <string name="conflicts_kind_rebase_deleted_by_us">Deleted in the target branch, changed by me</string>
+    <string name="conflicts_kind_rebase_deleted_by_them">Deleted by me, changed in the target branch</string>
+    <string name="conflicts_kind_rebase_added_by_us">Added only in the target branch</string>
+    <string name="conflicts_kind_rebase_added_by_them">Added only by me</string>
+    <string name="conflicts_abort_title">Abort operation?</string>
+    <string name="conflicts_abort_body">The state before the operation is restored. Conflict resolutions you have already made and all uncommitted changes in this repo are lost.</string>
+    <string name="conflicts_abort_confirm">Abort</string>
+    <string name="conflicts_keep_solving">Keep resolving</string>
+    <string name="conflicts_skip_title">Skip this commit?</string>
+    <string name="conflicts_skip_body">The commit is not replayed. Its changes will be missing on this branch afterwards.</string>
+    <string name="conflicts_skip_confirm">Skip</string>
+    <string name="conflicts_aborted">Operation aborted</string>
+    <string name="conflicts_done_commit">Finished: commit %1$s</string>
+    <string name="conflicts_done">Finished</string>
+    <string name="conflicts_next_step">Next step: more conflicts</string>
+    <string name="conflicts_error_identity">This commit needs an identity. Connect an account or set one in the repo settings.</string>
+    <string name="conflicts_open">Resolve conflicts</string>
+
+    <!-- Commit actions: cherry-pick, revert, reset -->
+    <string name="commit_cherry_pick">Apply to current branch</string>
+    <string name="commit_cherry_pick_body">The changes of this commit are added to the current branch as a new commit. The author is kept.</string>
+    <string name="commit_cherry_picked">Commit applied</string>
+    <string name="commit_revert">Revert</string>
+    <string name="commit_revert_body">A new commit is created that undoes the changes of this commit. The history is kept.</string>
+    <string name="commit_reverted">A new commit undoes the change</string>
+    <string name="commit_reset">Reset branch to here</string>
+    <string name="commit_reset_title">Reset to %1$s</string>
+    <string name="commit_reset_soft">Soft: changes stay staged</string>
+    <string name="commit_reset_mixed">Mixed: changes stay, unstaged</string>
+    <string name="commit_reset_hard">Hard: changes are lost</string>
+    <string name="commit_reset_confirm">Reset</string>
+    <string name="commit_reset_hard_title">Really reset hard?</string>
+    <string name="commit_reset_hard_body">All uncommitted changes are lost. Commits after this one can no longer be reached through the branch.</string>
+    <string name="commit_reset_done">Branch reset</string>
+
+    <!-- Repo settings and maintenance -->
+    <string name="tools_title">Repo settings</string>
+    <string name="advanced_tools_hint">Identity, update strategy, exclusions, cleanup, submodules</string>
+    <string name="advanced_conflicts_hint">Resolve a merge, rebase or cherry-pick in progress</string>
+    <string name="tools_section_commits">Commits</string>
+    <string name="tools_section_update">Update</string>
+    <string name="tools_section_files">Files</string>
+    <string name="tools_section_maintenance">Maintenance</string>
+    <string name="tools_section_submodules">Submodules</string>
+    <string name="tools_identity">Commit identity</string>
+    <string name="tools_identity_none">None known: set one or connect an account</string>
+    <string name="tools_identity_account">%1$s &lt;%2$s&gt; · from the account</string>
+    <string name="tools_identity_value">%1$s &lt;%2$s&gt;</string>
+    <string name="tools_strategy">Update strategy</string>
+    <string name="tools_strategy_merge">Merge</string>
+    <string name="tools_strategy_rebase">Rebase</string>
+    <string name="tools_strategy_ff">Fast-forward only</string>
+    <string name="tools_strategy_hint">Applies when local and remote commits have diverged.</string>
+    <string name="tools_prune">Prune deleted branches</string>
+    <string name="tools_prune_on">On fetch: drop what the server no longer has</string>
+    <string name="tools_prune_off">On fetch: keep old remote branches</string>
+    <string name="tools_prune_toggle">Prune on fetch</string>
+    <string name="tools_gitignore">Edit .gitignore</string>
+    <string name="tools_gitignore_hint">Files Git should never track. Applies to everyone who clones the repo.</string>
+    <string name="tools_exclude">Personal exclusions</string>
+    <string name="tools_exclude_hint">Like .gitignore, but only on this device.</string>
+    <string name="tools_exclude_field">Exclusion patterns, one per line</string>
+    <string name="tools_saved">Saved</string>
+    <string name="tools_clean">Remove untracked files</string>
+    <string name="tools_clean_hint">Deletes files Git does not know and that are not ignored.</string>
+    <string name="tools_clean_nothing">Nothing to remove</string>
+    <string name="tools_clean_title">Delete these files?</string>
+    <string name="tools_clean_body">The files are deleted for good, they do not go to a trash:\n\n%1$s</string>
+    <string name="tools_clean_more">… and %1$d more</string>
+    <string name="tools_clean_confirm">Delete</string>
+    <string name="tools_cleaned">Files removed</string>
+    <string name="tools_gc">Compact Git data</string>
+    <string name="tools_gc_hint">Packs loose objects together and saves space.</string>
+    <string name="tools_gc_stats">Loose objects: %1$d · Packs: %2$d · %3$s</string>
+    <string name="tools_gc_done">Compacted: %1$s instead of %2$s</string>
+    <string name="tools_gc_confirm">Compact</string>
+    <string name="tools_submodule_ready">Checked out, up to date</string>
+    <string name="tools_submodule_outdated">Checked out, different state than expected</string>
+    <string name="tools_submodule_missing">Not checked out</string>
+    <string name="tools_submodules_update">Update submodules</string>
+    <string name="tools_submodules_updated">Submodules updated</string>
+
+    <!-- SSH: keys and servers -->
+    <string name="ssh_keys_title">SSH keys</string>
+    <string name="settings_ssh_none">None set up yet</string>
+    <plurals name="settings_ssh_count">
+        <item quantity="one">%1$d key</item>
+        <item quantity="other">%1$d keys</item>
+    </plurals>
+    <string name="ssh_keys_empty_title">No SSH key yet</string>
+    <string name="ssh_keys_empty_body">With a key you sign in to GitHub or GitLab over SSH, no token needed. Generate one and register its public part with the provider.</string>
+    <string name="ssh_keys_create">Generate key</string>
+    <string name="ssh_keys_import">Import key</string>
+    <string name="ssh_hosts_title">Known servers</string>
+    <string name="ssh_key_name_hint">Name, e.g. My phone</string>
+    <string name="ssh_key_rsa_toggle">RSA 4096 instead of Ed25519 (only for old servers)</string>
+    <string name="ssh_key_passphrase_hint">Key passphrase (not stored)</string>
+    <string name="ssh_key_import_title">Import key</string>
+    <string name="ssh_key_import_confirm">Import</string>
+    <string name="ssh_key_created">Key generated</string>
+    <string name="ssh_key_imported">Key imported</string>
+    <string name="ssh_key_copy">Copy public key</string>
+    <string name="ssh_key_copied">Public key copied</string>
+    <string name="ssh_key_share">Share</string>
+    <string name="ssh_key_register">Register with %1$s</string>
+    <string name="ssh_key_register_hint">The public key is on the clipboard. Paste it on the provider\'s page.</string>
+    <string name="ssh_key_delete">Delete</string>
+    <string name="ssh_key_delete_title">Delete key?</string>
+    <string name="ssh_key_delete_body">“%1$s” is removed from this device. It stays registered with the provider but stops working until you add a new key there.</string>
+    <string name="ssh_key_deleted">Key deleted</string>
+    <string name="ssh_key_subtitle">%1$s · %2$s</string>
+    <string name="ssh_key_type_ed25519">Ed25519</string>
+    <string name="ssh_key_type_rsa">RSA</string>
+    <string name="ssh_key_type_ecdsa">ECDSA</string>
+    <string name="ssh_error_passphrase_required">The key is protected by a passphrase.</string>
+    <string name="ssh_error_wrong_passphrase">The passphrase does not match the key.</string>
+    <string name="ssh_error_unsupported">GitMax does not support this key type.</string>
+    <string name="ssh_error_invalid">That is not a readable key file.</string>
+    <string name="ssh_error_duplicate">This key is already set up.</string>
+    <string name="ssh_error_name">The name must be 1 to 60 characters long.</string>
+    <string name="ssh_error_failed">The key could not be stored securely.</string>
+    <string name="ssh_error_too_large">The file is too large for a key.</string>
+    <string name="ssh_error_read">The file could not be read.</string>
+    <string name="ssh_hosts_empty_title">No server known yet</string>
+    <string name="ssh_hosts_empty_body">On first contact with an SSH server GitMax shows its fingerprint and remembers it here once you trust it.</string>
+    <string name="ssh_host_subtitle">%1$s · %2$s</string>
+    <string name="ssh_host_verified">confirmed by the provider</string>
+    <string name="ssh_host_trusted">confirmed by you</string>
+    <string name="ssh_host_forget">Forget</string>
+    <string name="ssh_host_forget_title">Forget server?</string>
+    <string name="ssh_host_forget_body">GitMax asks for the fingerprint again on the next contact with %1$s.</string>
+    <string name="ssh_host_forgotten">Server forgotten</string>
+
+    <!-- SSH: check a server fingerprint -->
+    <string name="hostkey_title_unknown">New server: %1$s</string>
+    <string name="hostkey_title_changed">The key of %1$s has changed</string>
+    <string name="hostkey_body_unknown">%1$s shows this fingerprint (%2$s):\n\n%3$s\n\nTrust it only if it matches the one your provider publishes.</string>
+    <string name="hostkey_body_changed">This server has shown a different key so far.\n\nSo far:\n%1$s\n\nNow (%2$s):\n%3$s\n\nThis can be an attack. Trust the new key only if the provider announced the change.</string>
+    <string name="hostkey_contradiction">Warning: for this server the provider publishes different fingerprints. This is very likely an attack.</string>
+    <string name="hostkey_trust">Trust</string>
+    <string name="hostkey_trust_changed">Trust new key</string>
+    <string name="hostkey_trust_anyway">Trust anyway</string>
+    <string name="hostkey_copy">Copy fingerprint</string>
+    <string name="hostkey_gone">The request has expired. Try the operation again.</string>
+    <string name="hostkey_copied">Fingerprint copied</string>
+    <string name="op_failure_host_key_unknown">Unknown server. Check its fingerprint before you trust it.</string>
+    <string name="op_failure_host_key_changed">The server\'s key has changed. This can be an attack.</string>
+    <string name="op_failure_ssh_no_key">SSH needs a key. Create one under “Settings › SSH keys”.</string>
+    <string name="op_failure_ssh_rejected">The server did not accept your SSH key. Register the public key with the provider.</string>
+    <string name="repo_banner_check_server">Check server</string>
+    <string name="activity_check_server">Check server</string>
+
+    <!-- SSH when cloning and for existing repos -->
+    <string name="clone_option_ssh">Clone over SSH</string>
+    <string name="clone_option_ssh_hint">Needs an SSH key that is registered with the provider.</string>
+    <string name="clone_option_ssh_missing">An SSH key is still missing. Create one under Settings › SSH keys.</string>
+    <string name="remotes_switch_ssh">Switch to SSH</string>
+    <string name="remotes_switch_https">Switch to HTTPS</string>
+    <string name="remotes_switched">Address switched</string>
+
+    <!-- Share → clone -->
+    <string name="share_no_url">The shared text contains no repo address. GitMax only accepts https addresses.</string>
+
+    <!-- New repo -->
+    <string name="local_menu_new_repo">New repo</string>
+    <string name="new_repo_title">New repo</string>
+    <string name="new_repo_account">Account: %1$s</string>
+    <string name="new_repo_no_account">No account connected</string>
+    <string name="new_repo_no_account_hint">First connect a GitHub or GitLab account under Settings › Accounts.</string>
+    <string name="new_repo_account_label">Account</string>
+    <string name="new_repo_name_hint">Name</string>
+    <string name="new_repo_description_hint">Description (optional)</string>
+    <string name="new_repo_private">Private</string>
+    <string name="new_repo_readme">Create a README</string>
+    <string name="new_repo_readme_hint">Without a README the repo stays empty. The first push then follows with your first commit.</string>
+    <string name="new_repo_confirm">Create</string>
+    <string name="new_repo_error_empty">Enter a name.</string>
+    <string name="new_repo_error_too_long">The name is too long (100 characters at most).</string>
+    <string name="new_repo_error_characters">Allowed are letters, digits, dot, underscore and hyphen.</string>
+    <string name="new_repo_error_reserved">This name is not allowed: do not start with a dot or end with .git.</string>
+    <string name="new_repo_error_folder_exists">The target folder already has a folder with this name.</string>
+    <string name="new_repo_started">Creating started</string>
+
+    <!-- Blame -->
+    <string name="viewer_blame">Blame: who changed which line</string>
+    <string name="blame_title">Blame</string>
+    <string name="blame_author_line">%1$s · %2$s</string>
+    <string name="blame_header_description">Commit %1$s by %2$s: %3$s</string>
+    <string name="blame_not_committed">Not committed yet</string>
+    <string name="blame_empty_title">No history</string>
+    <string name="blame_empty_body">This file is not in any commit yet, so there is nothing to attribute.</string>
+    <string name="blame_too_large_title">File too long</string>
+    <string name="blame_too_large_body">GitMax does not compute blame for files with more than 20,000 lines.</string>
+
+    <!-- About GitMax and licenses -->
+    <string name="about_title">About GitMax</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_description">A personal Git client for Android: clone, update, commit and push projects from GitHub and GitLab.</string>
+    <string name="about_privacy">GitMax sends nothing to third parties: no analytics, no crash reports. Connections go only to your Git servers and your providers\' APIs.</string>
+    <string name="about_licenses_title">Licenses</string>
+    <string name="about_licenses_intro">GitMax is built on free software. Tap an entry to read its license text.</string>
+    <string name="about_license_unreadable">The license text cannot be read.</string>
+    <string name="settings_about_summary">Version %1$s · Licenses</string>
+    <string name="license_jgit">JGit</string>
+    <string name="license_jgit_detail">Eclipse Foundation · Eclipse Distribution License 1.0</string>
+    <string name="license_sshd">Apache MINA SSHD</string>
+    <string name="license_sshd_detail">The Apache Software Foundation · Apache License 2.0</string>
+    <string name="license_javaewah">JavaEWAH</string>
+    <string name="license_javaewah_detail">Daniel Lemire and contributors · Apache License 2.0</string>
+    <string name="license_eddsa">EdDSA-Java</string>
+    <string name="license_eddsa_detail">Ed25519 for SSH · CC0 1.0 (public domain)</string>
+    <string name="license_slf4j">SLF4J and slf4j-android</string>
+    <string name="license_slf4j_detail">QOS.ch Sarl, Simon Arlott · MIT License</string>
+    <string name="license_jcl">jcl-over-slf4j</string>
+    <string name="license_jcl_detail">QOS.ch Sarl · Apache License 2.0</string>
+    <string name="license_androidx">AndroidX</string>
+    <string name="license_androidx_detail">Google · Apache License 2.0</string>
+    <string name="license_material">Material Components for Android</string>
+    <string name="license_material_detail">Google · Apache License 2.0</string>
+    <string name="license_symbols">Material Symbols (icons)</string>
+    <string name="license_symbols_detail">Google · Apache License 2.0</string>
+    <string name="license_figtree">Figtree (typeface)</string>
+    <string name="license_figtree_detail">The Figtree Project Authors · SIL Open Font License 1.1</string>
+    <string name="license_commit_mono">Commit Mono (typeface)</string>
+    <string name="license_commit_mono_detail">Commit Mono authors · SIL Open Font License 1.1</string>
+
+    <!-- Settings: appearance, language and network -->
+    <string name="settings_theme_title">Theme</string>
+    <string name="settings_theme_system">Same as system</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_system_colors">System colors</string>
+    <string name="settings_system_colors_hint">Takes the colors from your wallpaper. Off: the GitMax colors in berry and sage.</string>
+    <string name="settings_system_colors_unavailable">This device does not offer system colors.</string>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_system">Same as system</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_german">Deutsch</string>
+    <string name="settings_wifi_only">Wi-Fi only</string>
+    <string name="settings_wifi_only_hint">Cloning, updating and pushing run on Wi-Fi only. On mobile data they say so and can still be started on purpose.</string>
+    <string name="repo_banner_metered_retry">Try anyway</string>
+
+</resources>

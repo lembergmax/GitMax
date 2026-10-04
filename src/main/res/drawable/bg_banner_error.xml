@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hinweisfläche für Probleme, die der Nutzer beheben soll. Radius = Karten-Radius (radius_m). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/colorErrorContainer" />
+    <corners android:radius="@dimen/radius_m" />
+</shape>

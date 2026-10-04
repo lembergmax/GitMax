@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Git-Status-Rollen: werden vom Theme auf die Farben in colors.xml gelegt und wie die Material-Rollen
+         per ?attr/… benutzt. Die Farbe trägt nie allein die Information (Icon + Text kommen dazu). -->
+    <attr name="colorGitAdded" format="color" />
+    <attr name="colorGitAddedContainer" format="color" />
+    <attr name="colorOnGitAddedContainer" format="color" />
+    <attr name="colorGitModified" format="color" />
+    <attr name="colorGitModifiedContainer" format="color" />
+    <attr name="colorOnGitModifiedContainer" format="color" />
+    <attr name="colorGitConflict" format="color" />
+    <attr name="colorGitConflictContainer" format="color" />
+    <attr name="colorOnGitConflictContainer" format="color" />
+
+    <!-- Diff-Hintergründe: dezent, der Text behält colorOnSurface. -->
+    <attr name="colorDiffAddedBackground" format="color" />
+    <attr name="colorDiffRemovedBackground" format="color" />
+    <attr name="colorDiffAddedWordBackground" format="color" />
+    <attr name="colorDiffRemovedWordBackground" format="color" />
+
+
+    <!-- Syntaxfärbung im Viewer und Editor; Kontrast gegen den Hintergrund mindestens 5,3 : 1. -->
+    <attr name="colorSyntaxKeyword" format="color" />
+    <attr name="colorSyntaxString" format="color" />
+    <attr name="colorSyntaxComment" format="color" />
+    <attr name="colorSyntaxNumber" format="color" />
+    <attr name="colorSyntaxTag" format="color" />
+    <attr name="colorSyntaxAttribute" format="color" />
+    <attr name="colorSyntaxKey" format="color" />
+    <attr name="colorSyntaxLiteral" format="color" />
+    <attr name="colorSyntaxHeading" format="color" />
+</resources>

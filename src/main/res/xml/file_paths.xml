@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Dateien aus Repos dürfen anderen Apps zum Öffnen oder Teilen freigegeben werden. Der Provider ist nicht
+    exportiert; jede Freigabe vergibt GitMax selbst für genau eine Datei (Lese-Recht auf den einen URI).
+-->
+<paths>
+    <root-path
+        name="repo_files"
+        path="/" />
+</paths>

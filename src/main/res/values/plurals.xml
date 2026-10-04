@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Counted texts with a singular form: "1 file", not "1 files". -->
+    <plurals name="local_row_ahead">
+        <item quantity="one">%1$d commit ahead</item>
+        <item quantity="other">%1$d commits ahead</item>
+    </plurals>
+    <plurals name="local_row_behind">
+        <item quantity="one">%1$d commit behind</item>
+        <item quantity="other">%1$d commits behind</item>
+    </plurals>
+    <plurals name="local_row_changed">
+        <item quantity="one">%1$d changed file</item>
+        <item quantity="other">%1$d changed files</item>
+    </plurals>
+    <plurals name="error_rate_limited">
+        <item quantity="one">The provider\'s rate limit has been reached. Try again in %1$d minute.</item>
+        <item quantity="other">The provider\'s rate limit has been reached. Try again in %1$d minutes.</item>
+    </plurals>
+    <plurals name="op_failure_conflict_files">
+        <item quantity="one">Conflict in %1$d file that you have to resolve by hand.</item>
+        <item quantity="other">Conflicts in %1$d files that you have to resolve by hand.</item>
+    </plurals>
+    <plurals name="commit_staged_count">
+        <item quantity="one">%1$d file goes into the commit.</item>
+        <item quantity="other">%1$d files go into the commit.</item>
+    </plurals>
+    <plurals name="viewer_line_count">
+        <item quantity="one">%1$d line</item>
+        <item quantity="other">%1$d lines</item>
+    </plurals>
+
+</resources>

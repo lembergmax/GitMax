@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sheet öffnet: von unten hereingleiten. Öffnen ist langsamer als Schließen (fast gegen quick). -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@integer/motion_fast"
+    android:fromYDelta="100%p"
+    android:interpolator="@interpolator/smooth_out"
+    android:toYDelta="0" />

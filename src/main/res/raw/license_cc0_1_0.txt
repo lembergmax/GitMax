@@ -1,0 +1,4 @@
+CC0 1.0 Universal (Public Domain Dedication)
+
+net.i2p.crypto:eddsa wurde vom Urheber ausdrücklich von allen Urheberrechten freigestellt, soweit das Recht es zulässt.
+Der vollständige Rechtstext steht unter https://creativecommons.org/publicdomain/zero/1.0/legalcode

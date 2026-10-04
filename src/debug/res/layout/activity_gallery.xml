@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_gutter">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gallery_title"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnSurface" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_1"
+            android:text="@string/gallery_intro"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <!-- Farben (dynamisch befüllt) -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_colors" />
+        <LinearLayout
+            android:id="@+id/swatches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Schrift (dynamisch befüllt) -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_type" />
+        <LinearLayout
+            android:id="@+id/type_samples"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Buttons -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_buttons" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_2"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_download"
+                app:iconGravity="textStart"
+                android:text="@string/gallery_clone" />
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.GitMax.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_sync"
+                app:iconGravity="textStart"
+                android:text="@string/gallery_update" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_2"
+                android:layout_weight="1"
+                app:icon="@drawable/ic_arrow_upward"
+                app:iconGravity="textStart"
+                android:text="@string/gallery_push" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="@string/gallery_disabled" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_pressed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_2"
+                android:layout_weight="1"
+                android:text="@string/gallery_clone" />
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.GitMax.Button.Text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/gallery_cancel" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_snackbar"
+            style="@style/Widget.GitMax.Button.Tonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_2"
+            android:text="@string/gallery_snackbar_button" />
+
+        <!-- Chips -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_chips" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/gallery_all" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_changed" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_ahead" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gallery_behind" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <!-- Kieselsteine (dynamisch befüllt) -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_pebbles" />
+        <GridLayout
+            android:id="@+id/pebbles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_progress"
+                style="@style/Widget.GitMax.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/space_2"
+                android:layout_weight="1"
+                android:text="@string/gallery_progress_start" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_indeterminate"
+                style="@style/Widget.GitMax.Button.Tonal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/gallery_progress_indeterminate" />
+        </LinearLayout>
+
+        <!-- Listenzeile -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_row" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:minHeight="72dp"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/space_2">
+
+            <de.lembergmax.gitmax.ui.common.PebbleView
+                android:id="@+id/row_pebble"
+                android:layout_width="@dimen/pebble_size_list"
+                android:layout_height="@dimen/pebble_size_list"
+                android:contentDescription="@string/gallery_row_title" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_4"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/gallery_row_title"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="middle"
+                    android:maxLines="1"
+                    android:text="@string/gallery_row_subtitle"
+                    android:textAppearance="@style/TextAppearance.GitMax.CodeSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Eingaben -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_fields" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/gallery_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_3"
+            android:hint="@string/gallery_hint"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_error">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/field_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Code -->
+        <TextView
+            style="@style/Gallery.Section"
+            android:text="@string/gallery_section_code" />
+
+        <TextView
+            android:id="@+id/code_sample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurfaceContainerLow"
+            android:padding="@dimen/space_3"
+            android:textAppearance="@style/TextAppearance.GitMax.Code"
+            android:textColor="?attr/colorOnSurface" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_12" />
+    </LinearLayout>
+</ScrollView>

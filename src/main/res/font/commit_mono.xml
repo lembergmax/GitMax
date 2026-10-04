@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Commit Mono (OFL) für Code, Hashes, Pfade und Diffs. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:font="@font/commit_mono_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+    <font
+        android:font="@font/commit_mono_bold"
+        android:fontStyle="normal"
+        android:fontWeight="700" />
+</font-family>

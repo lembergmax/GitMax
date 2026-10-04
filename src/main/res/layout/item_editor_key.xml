@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/touch_target"
+    android:background="?attr/selectableItemBackground"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:gravity="center"
+    android:minWidth="@dimen/touch_target"
+    android:textAppearance="@style/TextAppearance.GitMax.Code"
+    android:textColor="?attr/colorOnSurface" />

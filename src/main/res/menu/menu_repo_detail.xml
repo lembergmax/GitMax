@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_files"
+        android:icon="@drawable/ic_folder_open"
+        android:title="@string/repo_menu_files"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_fetch"
+        android:icon="@drawable/ic_cloud_download"
+        android:title="@string/repo_menu_fetch"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_advanced"
+        android:title="@string/repo_menu_advanced"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_resolve_conflicts"
+        android:title="@string/conflicts_open"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_abort_merge"
+        android:title="@string/repo_menu_abort_merge"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_copy_path"
+        android:title="@string/repo_menu_copy_path"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_force_push"
+        android:title="@string/repo_menu_force_push"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_delete_repo"
+        android:title="@string/repo_menu_delete"
+        app:showAsAction="never" />
+</menu>

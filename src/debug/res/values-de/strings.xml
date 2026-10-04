@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gallery_title">Design-Galerie</string>
+    <string name="gallery_intro">Nur im Debug-Build. Alle Beispiele sind synthetisch und kommen nie ins Release.</string>
+    <string name="gallery_section_colors">Farben</string>
+    <string name="gallery_section_type">Schrift</string>
+    <string name="gallery_section_buttons">Buttons</string>
+    <string name="gallery_section_chips">Chips</string>
+    <string name="gallery_section_pebbles">Kieselsteine</string>
+    <string name="gallery_section_row">Listenzeile</string>
+    <string name="gallery_section_fields">Eingaben</string>
+    <string name="gallery_section_code">Code und Hashes</string>
+    <string name="gallery_clone">Klonen</string>
+    <string name="gallery_update">Update</string>
+    <string name="gallery_push">Push</string>
+    <string name="gallery_cancel">Abbrechen</string>
+    <string name="gallery_disabled">Gesperrt</string>
+    <string name="gallery_all">Alle</string>
+    <string name="gallery_changed">Geändert</string>
+    <string name="gallery_ahead">Voraus</string>
+    <string name="gallery_behind">Zurück</string>
+    <string name="gallery_hint">Repo-Name</string>
+    <string name="gallery_error_text">Dieser Name ist schon vergeben.</string>
+    <string name="gallery_snackbar_button">Snackbar zeigen</string>
+    <string name="gallery_snackbar_text">Update für 3 Repos abgeschlossen</string>
+    <string name="gallery_snackbar_action">Rückgängig</string>
+    <string name="gallery_row_title">beispiel-projekt</string>
+    <string name="gallery_row_subtitle">/storage/emulated/0/GitMax/beispiel-projekt</string>
+    <string name="gallery_progress_start">Fortschritt starten</string>
+    <string name="gallery_progress_indeterminate">Unbestimmt</string>
+</resources>

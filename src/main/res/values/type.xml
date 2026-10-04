@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Material-3-Typskala mit Figtree. Größen und Zeilenhöhen bleiben die der Material-Rollen (in sp),
+         Gewichte werden nachgeschärft: kleine Rollen brauchen mehr Gewicht, damit sie tragen. -->
+
+    <style name="TextAppearance.GitMax.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    <style name="TextAppearance.GitMax.DisplayMedium" parent="TextAppearance.Material3.DisplayMedium">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    <style name="TextAppearance.GitMax.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="TextAppearance.GitMax.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    <style name="TextAppearance.GitMax.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    <style name="TextAppearance.GitMax.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="TextAppearance.GitMax.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+    <style name="TextAppearance.GitMax.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <style name="TextAppearance.GitMax.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="TextAppearance.GitMax.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+    <style name="TextAppearance.GitMax.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+    <style name="TextAppearance.GitMax.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="TextAppearance.GitMax.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <style name="TextAppearance.GitMax.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <style name="TextAppearance.GitMax.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">@font/figtree</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <!-- Code, Pfade, Diffs: Commit Mono. Nur für Code und Messwerte, nie als Zierschrift. -->
+    <style name="TextAppearance.GitMax.Code" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/commit_mono</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+    </style>
+
+    <!-- Hashes und kurze Kennungen. -->
+    <style name="TextAppearance.GitMax.CodeSmall" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/commit_mono</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <!-- Zähler und Fortschrittswerte: gleich breite Ziffern, damit nichts springt. -->
+    <style name="TextAppearance.GitMax.Numeric" parent="TextAppearance.GitMax.LabelLarge">
+        <item name="android:fontFeatureSettings">"tnum"</item>
+    </style>
+
+</resources>

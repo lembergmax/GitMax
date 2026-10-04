@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sheet schließt: zügig nach unten wegrutschen, ohne die Handlung des Nutzers aufzuhalten. -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@integer/motion_quick"
+    android:fromYDelta="0"
+    android:interpolator="@interpolator/smooth_out"
+    android:toYDelta="100%p" />

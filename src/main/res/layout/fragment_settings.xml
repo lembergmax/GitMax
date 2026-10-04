@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/settings_title" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/row_workspace"
+                layout="@layout/item_setting" />
+
+            <include
+                android:id="@+id/row_accounts"
+                layout="@layout/item_setting" />
+
+            <include
+                android:id="@+id/row_ssh"
+                layout="@layout/item_setting" />
+
+            <include
+                android:id="@+id/row_theme"
+                layout="@layout/item_setting" />
+
+            <include
+                android:id="@+id/row_language"
+                layout="@layout/item_setting" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_system_colors"
+                style="@style/Widget.GitMax.SettingSwitch"
+                android:drawableStart="@drawable/ic_palette"
+                android:text="@string/settings_system_colors" />
+
+            <TextView
+                android:id="@+id/hint_system_colors"
+                style="@style/Widget.GitMax.SettingHint" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_wifi_only"
+                style="@style/Widget.GitMax.SettingSwitch"
+                android:drawableStart="@drawable/ic_wifi"
+                android:text="@string/settings_wifi_only" />
+
+            <TextView
+                android:id="@+id/hint_wifi_only"
+                style="@style/Widget.GitMax.SettingHint"
+                android:text="@string/settings_wifi_only_hint" />
+
+            <include
+                android:id="@+id/row_about"
+                layout="@layout/item_setting" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Zähltexte mit Einzahl: „1 Datei“, nicht „1 Dateien“. -->
+    <plurals name="local_row_ahead">
+        <item quantity="one">%1$d Commit voraus</item>
+        <item quantity="other">%1$d Commits voraus</item>
+    </plurals>
+    <plurals name="local_row_behind">
+        <item quantity="one">%1$d Commit zurück</item>
+        <item quantity="other">%1$d Commits zurück</item>
+    </plurals>
+    <plurals name="local_row_changed">
+        <item quantity="one">%1$d geänderte Datei</item>
+        <item quantity="other">%1$d geänderte Dateien</item>
+    </plurals>
+    <plurals name="error_rate_limited">
+        <item quantity="one">Das Anfragelimit des Anbieters ist erreicht. Versuche es in %1$d Minute erneut.</item>
+        <item quantity="other">Das Anfragelimit des Anbieters ist erreicht. Versuche es in %1$d Minuten erneut.</item>
+    </plurals>
+    <plurals name="op_failure_conflict_files">
+        <item quantity="one">Konflikt in %1$d Datei, den du von Hand lösen musst.</item>
+        <item quantity="other">Konflikte in %1$d Dateien, die du von Hand lösen musst.</item>
+    </plurals>
+    <plurals name="commit_staged_count">
+        <item quantity="one">%1$d Datei kommt in den Commit.</item>
+        <item quantity="other">%1$d Dateien kommen in den Commit.</item>
+    </plurals>
+    <plurals name="viewer_line_count">
+        <item quantity="one">%1$d Zeile</item>
+        <item quantity="other">%1$d Zeilen</item>
+    </plurals>
+
+</resources>

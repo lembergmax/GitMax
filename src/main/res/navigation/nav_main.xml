@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/localFragment">
+
+    <!-- Die vier gleichrangigen Ziele der Navigationsleiste. Bis zu den Meilensteinen M2 bis M5
+         zeigen sie einen Platzhalter; die Ids bleiben, die Klasse wird je Ziel ersetzt. -->
+    <fragment
+        android:id="@+id/localFragment"
+        android:name="de.lembergmax.gitmax.ui.local.LocalFragment"
+        android:label="@string/nav_local" />
+
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="de.lembergmax.gitmax.ui.discover.DiscoverFragment"
+        android:label="@string/nav_discover" />
+
+    <fragment
+        android:id="@+id/activityFragment"
+        android:name="de.lembergmax.gitmax.ui.activity.ActivityFragment"
+        android:label="@string/nav_activity" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="de.lembergmax.gitmax.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings" />
+
+    <!-- Ein Repo im Detail: erreichbar aus der Lokal-Liste, ohne Navigationsleiste. -->
+    <fragment
+        android:id="@+id/repoDetailFragment"
+        android:name="de.lembergmax.gitmax.ui.repo.RepoDetailFragment"
+        android:label="@string/nav_local" />
+
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="de.lembergmax.gitmax.ui.files.FilesFragment"
+        android:label="@string/files_title" />
+
+    <fragment
+        android:id="@+id/fileViewerFragment"
+        android:name="de.lembergmax.gitmax.ui.viewer.FileViewerFragment"
+        android:label="@string/files_title" />
+
+    <fragment
+        android:id="@+id/advancedFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.AdvancedFragment"
+        android:label="@string/advanced_title" />
+
+    <fragment
+        android:id="@+id/advancedListFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.AdvancedListFragment"
+        android:label="@string/advanced_title" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.HistoryFragment"
+        android:label="@string/advanced_history" />
+
+    <fragment
+        android:id="@+id/commitDetailFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.CommitDetailFragment"
+        android:label="@string/commit_detail_title" />
+
+    <fragment
+        android:id="@+id/diffFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.DiffFragment"
+        android:label="@string/diff_empty_title" />
+
+    <fragment
+        android:id="@+id/blameFragment"
+        android:name="de.lembergmax.gitmax.ui.viewer.BlameFragment"
+        android:label="@string/blame_title" />
+
+    <fragment
+        android:id="@+id/conflictsFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.ConflictsFragment"
+        android:label="@string/conflicts_title" />
+
+    <fragment
+        android:id="@+id/repoToolsFragment"
+        android:name="de.lembergmax.gitmax.ui.advanced.RepoToolsFragment"
+        android:label="@string/tools_title" />
+
+    <!-- Unterseiten der Einstellungen: ohne Navigationsleiste, mit Zurück-Pfeil. -->
+    <fragment
+        android:id="@+id/workspaceFragment"
+        android:name="de.lembergmax.gitmax.ui.workspace.WorkspaceFragment"
+        android:label="@string/workspace_title" />
+
+    <fragment
+        android:id="@+id/folderPickerFragment"
+        android:name="de.lembergmax.gitmax.ui.picker.FolderPickerFragment"
+        android:label="@string/picker_title" />
+
+    <fragment
+        android:id="@+id/sshKeysFragment"
+        android:name="de.lembergmax.gitmax.ui.ssh.SshKeysFragment"
+        android:label="@string/ssh_keys_title" />
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="de.lembergmax.gitmax.ui.settings.AboutFragment"
+        android:label="@string/about_title" />
+
+    <fragment
+        android:id="@+id/knownHostsFragment"
+        android:name="de.lembergmax.gitmax.ui.ssh.KnownHostsFragment"
+        android:label="@string/ssh_hosts_title" />
+
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="de.lembergmax.gitmax.ui.accounts.AccountsFragment"
+        android:label="@string/accounts_title" />
+
+    <fragment
+        android:id="@+id/connectAccountFragment"
+        android:name="de.lembergmax.gitmax.ui.accounts.ConnectAccountFragment"
+        android:label="@string/connect_title" />
+
+    <fragment
+        android:id="@+id/accountDetailFragment"
+        android:name="de.lembergmax.gitmax.ui.accounts.AccountDetailFragment"
+        android:label="@string/account_detail_title" />
+
+</navigation>

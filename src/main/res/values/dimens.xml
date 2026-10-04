@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 4-dp-Raster -->
+    <dimen name="space_1">4dp</dimen>
+    <dimen name="space_2">8dp</dimen>
+    <dimen name="space_3">12dp</dimen>
+    <dimen name="space_4">16dp</dimen>
+    <dimen name="space_5">20dp</dimen>
+    <dimen name="space_6">24dp</dimen>
+    <dimen name="space_8">32dp</dimen>
+    <dimen name="space_10">40dp</dimen>
+    <dimen name="space_12">48dp</dimen>
+
+    <!-- Seitenrand der Inhalte; auf breiten Fenstern wird der Inhalt zusätzlich in der Breite begrenzt. -->
+    <dimen name="screen_gutter">16dp</dimen>
+    <dimen name="content_max_width">640dp</dimen>
+
+    <!-- Radien. Konzentrisch: äußerer Radius = innerer Radius + Innenabstand. -->
+    <dimen name="radius_xs">8dp</dimen>
+    <dimen name="radius_s">12dp</dimen>
+    <dimen name="radius_m">16dp</dimen>
+    <dimen name="radius_l">24dp</dimen>
+    <dimen name="radius_xl">28dp</dimen>
+
+    <!-- Seitenwechsel verschieben nur um 8 dp (Motion-Token „Seite gleiten“); Materials Standard wären 30 dp. -->
+    <dimen name="motion_distance_page">8dp</dimen>
+
+    <!-- Breite der Navigationsrail ab 600 dp: Materials 80 dp kürzen „Einstellungen“ ab. -->
+    <dimen name="rail_min_width">96dp</dimen>
+
+    <!-- Texteinzug der Einstellungszeilen: Seitenrand + Symbol (24 dp) + Abstand (16 dp). -->
+    <dimen name="setting_text_inset">56dp</dimen>
+
+    <!-- Trefferflächen: Material verlangt mindestens 48 dp. -->
+    <dimen name="touch_target">48dp</dimen>
+
+    <!-- Kieselstein (Repo-Status): Größen für Liste, Detailkopf und Benachrichtigung. -->
+    <dimen name="pebble_size_list">48dp</dimen>
+    <dimen name="pebble_size_header">72dp</dimen>
+
+    <!-- Nebeneinander-Diff und Zweispalter erst ab dieser Breite. -->
+
+</resources>

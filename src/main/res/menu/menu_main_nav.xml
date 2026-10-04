@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/localFragment"
+        android:icon="@drawable/sel_nav_local"
+        android:title="@string/nav_local" />
+    <item
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/sel_nav_discover"
+        android:title="@string/nav_discover" />
+    <item
+        android:id="@+id/activityFragment"
+        android:icon="@drawable/sel_nav_activity"
+        android:title="@string/nav_activity" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/sel_nav_settings"
+        android:title="@string/nav_settings" />
+</menu>

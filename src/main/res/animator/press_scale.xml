@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Druck-Rückmeldung: kurz auf 0,96 einsinken, weicher zurück. Nur für Primärbuttons, FAB und
+     Navigations-Chips, nie für Listenzeilen (hochfrequente Taps bekommen keine eigene Animation). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:state_pressed="true">
+        <set>
+            <objectAnimator
+                android:duration="@integer/motion_micro"
+                android:interpolator="@interpolator/smooth_out"
+                android:propertyName="scaleX"
+                android:valueTo="0.96"
+                android:valueType="floatType" />
+            <objectAnimator
+                android:duration="@integer/motion_micro"
+                android:interpolator="@interpolator/smooth_out"
+                android:propertyName="scaleY"
+                android:valueTo="0.96"
+                android:valueType="floatType" />
+        </set>
+    </item>
+    <item>
+        <set>
+            <objectAnimator
+                android:duration="@integer/motion_quick"
+                android:interpolator="@interpolator/smooth_out"
+                android:propertyName="scaleX"
+                android:valueTo="1"
+                android:valueType="floatType" />
+            <objectAnimator
+                android:duration="@integer/motion_quick"
+                android:interpolator="@interpolator/smooth_out"
+                android:propertyName="scaleY"
+                android:valueTo="1"
+                android:valueType="floatType" />
+        </set>
+    </item>
+</selector>

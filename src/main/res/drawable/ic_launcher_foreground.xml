@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher-Vordergrund: der Kieselstein der App in Beere mit dem Commit-Symbol (Knoten mit Linie). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.62"
+        android:scaleY="0.62"
+        android:translateX="20.5"
+        android:translateY="20.5">
+        <path
+            android:fillColor="#8D1767"
+            android:pathData="M50,12 C70,8 94,22 96,44 C98,68 78,88 52,88 C26,88 4,76 4,52 C4,30 28,14 50,12 Z" />
+    </group>
+    <group
+        android:scaleX="0.043"
+        android:scaleY="0.043"
+        android:translateX="31.48"
+        android:translateY="29.62">
+        <path
+            android:fillColor="#FEF8FB"
+            android:pathData="M480,680Q407,680 352.5,634.5Q298,589 284,520L120,520Q103,520 91.5,508.5Q80,497 80,480Q80,463 91.5,451.5Q103,440 120,440L284,440Q298,371 352.5,325.5Q407,280 480,280Q553,280 607.5,325.5Q662,371 676,440L840,440Q857,440 868.5,451.5Q880,463 880,480Q880,497 868.5,508.5Q857,520 840,520L676,520Q662,589 607.5,634.5Q553,680 480,680ZM480,600Q530,600 565,565Q600,530 600,480Q600,430 565,395Q530,360 480,360Q430,360 395,395Q360,430 360,480Q360,530 395,565Q430,600 480,600Z" />
+    </group>
+</vector>

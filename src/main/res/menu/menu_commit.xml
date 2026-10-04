@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_copy_hash"
+        android:icon="@drawable/ic_content_copy"
+        android:title="@string/commit_copy_hash"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_checkout"
+        android:title="@string/commit_checkout"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_branch_here"
+        android:title="@string/commit_branch_here"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_cherry_pick"
+        android:title="@string/commit_cherry_pick"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_revert"
+        android:title="@string/commit_revert"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_reset"
+        android:title="@string/commit_reset"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_tag_here"
+        android:title="@string/commit_tag_here"
+        app:showAsAction="never" />
+</menu>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_create_key"
+        android:icon="@drawable/ic_add"
+        android:title="@string/ssh_keys_create"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_import_key"
+        android:title="@string/ssh_keys_import"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_known_hosts"
+        android:title="@string/ssh_hosts_title"
+        app:showAsAction="never" />
+</menu>

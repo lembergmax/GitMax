@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog schließt: kürzer als das Öffnen (quick), gleiche Skala wie beim Öffnen. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@interpolator/smooth_out">
+    <alpha
+        android:duration="@integer/motion_quick"
+        android:fromAlpha="1"
+        android:toAlpha="0" />
+    <scale
+        android:duration="@integer/motion_quick"
+        android:fromXScale="1"
+        android:fromYScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="0.96"
+        android:toYScale="0.96" />
+</set>

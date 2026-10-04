@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Motion-Tokens (Dauern in ms). Einzige Quelle: Java liest sie über Motion, XML-Animationen
+         verweisen mit @integer/… darauf. -->
+    <integer name="motion_micro">80</integer>        <!-- Absicht-Verzögerung, Druck-Eingang -->
+    <integer name="motion_quick">150</integer>       <!-- Schließen von Sheet/Dialog, Textwechsel -->
+    <integer name="motion_fast">250</integer>        <!-- Öffnen von Sheet/Dialog, Seitenwechsel, Icon-Wechsel -->
+
+    <!-- Stagger: Gesamtdeckel ≈ 300 ms, also höchstens so viele Einträge gestaffelt. -->
+
+</resources>

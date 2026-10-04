@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ===================================================================================== -->
+    <!-- Basis-Theme. Alle Farben kommen als Material-3-Rollen aus colors.xml (Hell) bzw.        -->
+    <!-- values-night/colors.xml (Dunkel). In Layouts und Code nur ?attr/… benutzen, nie Hex.    -->
+    <!-- ===================================================================================== -->
+    <style name="Theme.GitMax" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/on_primary_container</item>
+        <item name="colorPrimaryInverse">@color/inverse_primary</item>
+
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondaryContainer">@color/secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/on_secondary_container</item>
+
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/on_tertiary_container</item>
+
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/on_error</item>
+        <item name="colorErrorContainer">@color/error_container</item>
+        <item name="colorOnErrorContainer">@color/on_error_container</item>
+
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
+        <item name="colorSurfaceInverse">@color/inverse_surface</item>
+        <item name="colorOnSurfaceInverse">@color/inverse_on_surface</item>
+        <item name="colorSurfaceDim">@color/surface_dim</item>
+        <item name="colorSurfaceBright">@color/surface_bright</item>
+        <item name="colorSurfaceContainerLowest">@color/surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/surface_container_highest</item>
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline_variant</item>
+
+        <!-- Git-Status und Diff -->
+        <item name="colorGitAdded">@color/git_added</item>
+        <item name="colorGitAddedContainer">@color/git_added_container</item>
+        <item name="colorOnGitAddedContainer">@color/on_git_added_container</item>
+        <item name="colorGitModified">@color/git_modified</item>
+        <item name="colorGitModifiedContainer">@color/git_modified_container</item>
+        <item name="colorOnGitModifiedContainer">@color/on_git_modified_container</item>
+        <item name="colorGitConflict">@color/git_conflict</item>
+        <item name="colorGitConflictContainer">@color/git_conflict_container</item>
+        <item name="colorOnGitConflictContainer">@color/on_git_conflict_container</item>
+        <item name="colorDiffAddedBackground">@color/diff_added_bg</item>
+        <item name="colorDiffRemovedBackground">@color/diff_removed_bg</item>
+        <item name="colorDiffAddedWordBackground">@color/diff_added_word_bg</item>
+        <item name="colorDiffRemovedWordBackground">@color/diff_removed_word_bg</item>
+
+        <!-- Syntaxfärbung -->
+        <item name="colorSyntaxKeyword">@color/syntax_keyword</item>
+        <item name="colorSyntaxString">@color/syntax_string</item>
+        <item name="colorSyntaxComment">@color/syntax_comment</item>
+        <item name="colorSyntaxNumber">@color/syntax_number</item>
+        <item name="colorSyntaxTag">@color/syntax_tag</item>
+        <item name="colorSyntaxAttribute">@color/syntax_attribute</item>
+        <item name="colorSyntaxKey">@color/syntax_key</item>
+        <item name="colorSyntaxLiteral">@color/syntax_literal</item>
+        <item name="colorSyntaxHeading">@color/syntax_heading</item>
+
+        <!-- Randlos: Systemleisten transparent, Inhalte setzen die Insets selbst. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
+        <item name="android:windowLightNavigationBar">@bool/light_system_bars</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+
+        <!-- Schrift. Bewusst KEINE Theme-weite fontFamily: AppCompat liest sie in einem zweiten Durchgang
+             ohne Gewicht und würde das textFontWeight jeder Text-Appearance verwerfen (alles wäre
+             normal statt fett). Die Familie steckt stattdessen in jeder Text-Appearance, und
+             Widget.GitMax.TextView setzt BodyMedium als Standard für alle TextViews. -->
+        <item name="android:textViewStyle">@style/Widget.GitMax.TextView</item>
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.GitMax.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.GitMax.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.GitMax.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.GitMax.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.GitMax.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.GitMax.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.GitMax.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.GitMax.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.GitMax.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.GitMax.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.GitMax.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.GitMax.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.GitMax.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.GitMax.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.GitMax.LabelSmall</item>
+
+        <!-- Formen -->
+        <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.GitMax.Corner.ExtraSmall</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.GitMax.Corner.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.GitMax.Corner.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.GitMax.Corner.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.GitMax.Corner.ExtraLarge</item>
+
+        <!-- Komponenten -->
+        <item name="materialButtonStyle">@style/Widget.GitMax.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.GitMax.Button.Outlined</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.GitMax.ExtendedFab</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.GitMax.BottomSheetDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.GitMax.MaterialAlertDialog</item>
+    </style>
+
+    <!-- Bewegung von Sheets und Dialogen: Öffnen (fast) ist langsamer als Schließen (quick). -->
+    <style name="Animation.GitMax.Sheet" parent="">
+        <item name="android:windowEnterAnimation">@anim/sheet_enter</item>
+        <item name="android:windowExitAnimation">@anim/sheet_exit</item>
+    </style>
+    <style name="Animation.GitMax.Dialog" parent="">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+    <style name="ThemeOverlay.GitMax.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:windowAnimationStyle">@style/Animation.GitMax.Sheet</item>
+    </style>
+    <style name="ThemeOverlay.GitMax.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="android:windowAnimationStyle">@style/Animation.GitMax.Dialog</item>
+    </style>
+
+    <!-- Start-Theme für den System-Splash; wechselt nach dem Start auf Theme.GitMax. -->
+    <style name="Theme.GitMax.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.GitMax</item>
+    </style>
+
+    <!-- ================================== Formen ================================== -->
+    <style name="ShapeAppearance.GitMax.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
+        <item name="cornerSize">@dimen/radius_xs</item>
+    </style>
+    <style name="ShapeAppearance.GitMax.Corner.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">@dimen/radius_s</item>
+    </style>
+    <style name="ShapeAppearance.GitMax.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">@dimen/radius_m</item>
+    </style>
+    <style name="ShapeAppearance.GitMax.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerSize">@dimen/radius_l</item>
+    </style>
+    <style name="ShapeAppearance.GitMax.Corner.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerSize">@dimen/radius_xl</item>
+    </style>
+
+    <!-- ================================== Text ==================================== -->
+    <style name="Widget.GitMax.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.GitMax.BodyMedium</item>
+    </style>
+
+    <!-- Kleine Angabe mit Symbol in Listenzeilen (Branch, voraus, zurück, geändert); gleich breite Ziffern. -->
+    <style name="Widget.GitMax.Fact" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/space_1</item>
+        <item name="android:drawableTint">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textAppearance">@style/TextAppearance.GitMax.Numeric</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- Schalter-Zeile der Einstellungen: Symbol, Titel, Schalter; der Hinweis steht als eigener Text darunter. -->
+    <style name="Widget.GitMax.SettingSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="android:paddingStart">@dimen/screen_gutter</item>
+        <item name="android:paddingTop">@dimen/space_3</item>
+        <item name="android:paddingEnd">@dimen/screen_gutter</item>
+        <item name="android:paddingBottom">@dimen/space_1</item>
+        <item name="android:drawablePadding">@dimen/space_4</item>
+        <item name="android:drawableTint">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="Widget.GitMax.SettingHint" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/setting_text_inset</item>
+        <item name="android:layout_marginEnd">@dimen/screen_gutter</item>
+        <item name="android:paddingBottom">@dimen/space_3</item>
+        <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- ================================== Buttons ================================= -->
+    <!-- Mindesthöhe 48 dp (Trefferfläche) und Druck-Rückmeldung 0,96. -->
+    <style name="Widget.GitMax.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="android:stateListAnimator">@animator/press_scale</item>
+    </style>
+
+    <style name="Widget.GitMax.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="android:stateListAnimator">@animator/press_scale</item>
+    </style>
+
+    <style name="Widget.GitMax.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="android:stateListAnimator">@animator/press_scale</item>
+    </style>
+
+    <style name="Widget.GitMax.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/touch_target</item>
+    </style>
+
+    <style name="Widget.GitMax.Button.Text.Danger" parent="Widget.GitMax.Button.Text">
+        <item name="android:textColor">@color/button_danger_text</item>
+        <item name="iconTint">@color/button_danger_text</item>
+    </style>
+
+    <style name="Widget.GitMax.ExtendedFab" parent="Widget.Material3.ExtendedFloatingActionButton.Primary">
+        <item name="android:stateListAnimator">@animator/press_scale</item>
+    </style>
+
+</resources>

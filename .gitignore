@@ -1,0 +1,22 @@
+*.iml
+.gradle
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/.idea/
+
+# Eingecheckte Build-Ausgaben gehören nicht in die Versionsverwaltung.
+/release/
+/builds/
+*.apk
+*.aab
+
+# Signiermaterial darf nie eingecheckt werden – die Release-Signierung liest
+# RELEASE_STORE_FILE / *_PASSWORD / *_KEY_ALIAS aus local.properties oder der Umgebung.
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key

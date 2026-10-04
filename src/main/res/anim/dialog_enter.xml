@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dialog öffnet: einblenden und von 0,96 auf 1 wachsen (Modal-Skala), fast. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@interpolator/smooth_out">
+    <alpha
+        android:duration="@integer/motion_fast"
+        android:fromAlpha="0"
+        android:toAlpha="1" />
+    <scale
+        android:duration="@integer/motion_fast"
+        android:fromXScale="0.96"
+        android:fromYScale="0.96"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="1"
+        android:toYScale="1" />
+</set>
