@@ -138,7 +138,7 @@ Gemessen mit `src/androidTest/.../spike/JgitSpikeTest.java` auf dem Telefonspeic
   LFS bleibt aus, die Oberfläche benennt es). Geprüft: JVM-Tests für alles Genannte, Emulator-Abläufe für jeden Zusatz.
 - **M11** Politur und Auslieferung: Motion-Audit, Barrierefreiheit (Schrift 1,3/2,0, Dunkel, Tablet-Rail), Lint, Plurals, Einstellungen
   (Design, Systemfarben, Nur im WLAN, Über GitMax mit Lizenzen), Sicherheitsprüfung, Release-Build und -Test, `README.md`,
-  `DESIGN.md`. Stand nach dem Prüfdurchlauf (unten): 543 JVM-Tests, 6 Gerätetests (Debug und R8, API 35), signierte APK unter `builds/`.
+  `DESIGN.md`. Stand nach den Prüfdurchläufen (unten) und der Klartext-HTTP-Anpassung: 579 JVM-Tests, 6 Gerätetests (Debug und R8, API 35), signierte APK unter `builds/`.
 
 ## Zusätze (M10): Entscheidungen und Fallen
 
@@ -211,9 +211,24 @@ Was der Spike (`LfsSpikeTest`, mit Test-LFS-Server `LfsSpikeServer`, Basic-Anmel
   demselben Host und Schema. `PromptDialog` setzt `FLAG_SECURE`, wenn ein Feld geheim ist (SSH-Passphrase). `data_extraction_rules.xml` schließt
   Cloud-Sicherung und Geräte-Übertragung ganz aus. Geprüft ohne Befund: Vault (AES-GCM mit Name als AAD), Token-Schwärzung in Provider-Meldungen,
   keine Token in Logs, nur `MainActivity` exportiert, `FileProvider` nicht exportiert.
-- **`BuildConfig.TEST_BUILD`** (nur `debug` und `minified`) lockert Klartext-HTTP zu Emulator-Adressen und `FLAG_SECURE`. Der Build-Typ
-  `minified` (R8 an, debug-signiert) hat dafür eine eigene `network_security_config` unter `src/minified`; so laufen die Emulator-Abläufe
-  gegen die geschrumpfte App. Die Release-APK hat beides aus.
+- **`BuildConfig.TEST_BUILD`** (nur `debug` und `minified`) lockert nur noch `FLAG_SECURE` (Screenshots der Prüfläufe). Der Build-Typ
+  `minified` (R8 an, debug-signiert) lässt die Emulator-Abläufe gegen die geschrumpfte App laufen. Die Release-APK hat es aus.
+- **Klartext-HTTP (selbst gehostete Server ohne HTTPS).** Ein GitLab, das nur HTTP auf Port 80 anbietet, ließ sich nicht verknüpfen: Das Manifest
+  hatte `usesCleartextTraffic="false"`, und `AccountEndpoint` machte aus `http://host` stillschweigend `https://host` (die HTTPS-Adresse zeigte dann
+  eine fremde „Service not found“-Seite). Jetzt: `res/xml/network_security_config.xml` erlaubt Klartext **auf Plattformebene für alle Hosts**, weil
+  die Adresse erst zur Laufzeit feststeht (`domain-config` geht nur für feste Namen; Lint-Regel `InsecureBaseConfiguration` ist dort begründet
+  unterdrückt); die Grenze zieht die App, in allen Build-Typen gleich:
+  - `AccountEndpoint.fromHostInput` behält `http://` nur für selbst gehostete Server (nie github.com/gitlab.com); `isInsecure()` und
+    `webBaseUrl()` leiten das Schema aus der gespeicherten `apiBaseUrl` ab, es gibt kein eigenes Feld.
+  - Die Oberfläche verlangt eine Bestätigung (`ConnectAccountFragment.confirmInsecure`; `ConnectViewModel.connect` lehnt ohne sie ab),
+    Kontenliste und -detail zeigen „(unverschlüsselt)“ und ein Banner.
+  - **Zugangsdaten über HTTP nur für solche Konten:** `HostBoundCredentials(…, allowCleartext)` gibt Login und Token bei `http://` nur heraus, wenn
+    das Konto so verknüpft ist; sonst könnte jemand im Netz auf eine `http://`-Adresse eines HTTPS-Kontos (Submodul, Remote) mit „401“ antworten und
+    das Token im Klartext abholen. `AccountCredentials.forUrl` wirft dafür `GitFailureKind.INSECURE_TRANSPORT`. `TransportPolicy` regelt dasselbe
+    für „Klonen per Adresse“ und die Remote-Umstellung (SSH → HTTP statt HTTPS bei solchen Servern).
+  - Weiterleitungen: `Http` folgt nur gleichem Host und Schema (ein Server, der auf HTTPS umleitet, braucht die `https://`-Eingabe; die
+    Fehlermeldung nennt beides), JGit folgt einem Schemawechsel nur auf HTTPS (`TransportHttp.isValidRedirect`, im Bytecode geprüft).
+  - Nicht betroffen: `ShareTarget` (nimmt Adressen fremder Apps) bleibt strikt `https://`.
 - **Predictive Back ist aus** (`enableOnBackInvokedCallback="false"`): Mit der Option blieben nach der Zurück-**Taste** (auch Drei-Tasten-
   Navigation, `adb shell input keyevent 4`) alte Ansichten stehen oder der Inhalt fehlte in der Zugänglichkeits-Hierarchie (Material-Übergänge,
   Fragment 1.8.5); mit echter Wischgeste war alles in Ordnung. Auf Android 16 gilt Predictive Back sonst für `targetSdk 36` automatisch.
@@ -262,6 +277,59 @@ einen Test oder eine Emulator-Prüfung; die Regeln gelten für künftige Änderu
   einschränken (`connected…AndroidTest` läuft sonst auf jedem Gerät und deinstalliert die App danach). Der Emulator als Hintergrundaufgabe
   endet nach zwei Stunden und muss neu gestartet werden.
 
+## Prüfdurchlauf 2026-10-06: gefundene Fehler und neue Regeln
+
+Zweite vollständige Durchsicht (alle Schichten gelesen, Oberfläche auf dem Emulator geprüft). 579 JVM-Tests grün, `lintDebug` ohne Fehler und mit
+4 Warnungen (die beiden Arten aus M11). Jeder Fund unten ist behoben; die Regeln gelten weiter.
+
+- **Leerzustände müssen scrollen.** Bei Schriftgröße 2,0 im Querformat schnitt der Leerzustand (Symbol, Titel, Text, Knopf) den Knopf ab. Alle `empty`-Blöcke
+  (Lokal, Entdecken, Aktivität, Konten, Dateien, Listen, Konflikte) liegen jetzt in einem `NestedScrollView` mit `fillViewport`.
+- **Knöpfe mit eigener Tönung brauchen Zustandslisten.** `RepoDetailAdapter.emphasise` setzte feste Farben: Die drei Hauptknöpfe sahen während eines Vorgangs
+  bedienbar aus, ohne es zu sein. Jetzt `whenDisabled(…)` mit 12 % bzw. 38 % `colorOnSurface`.
+- **`TextView.setTypeface(tf, NORMAL)` setzt nur `tf`.** `SimpleRowAdapter` nahm das zuletzt gesetzte (fette) Typeface als Basis, recycelte Zeilen blieben fett.
+  Das Basis-Typeface wird im Holder gemerkt.
+- **`PebbleView` setzt abgebrochene Übergänge auf ihren Endzustand** (`settleTransitions` beim Lösen vom Fenster): Ein beim Scrollen unterbrochener Stein blieb sonst
+  halb umgefärbt, weil ein erneutes Binden mit demselben Zustand nichts mehr ändert. Ein unlesbares Repo zeigt in „Lokal“ den Stein `FAILED`, nicht `CLEAN`.
+- **Bestätigungsdialoge für Zerstörendes:** DE „Merge abbrechen?“ hatte „Abbrechen“ als Bestätigung und „Schließen“ als Gegenknopf. Jetzt „Merge abbrechen“ /
+  „Merge behalten“ (`repo_abort_keep`); der Verwerfen-Dialog nutzt `activity_cancel`. Das Umbenennen-Fenster hieß „Anlegen“ (jetzt „Umbenennen“).
+- **Eingabefehler löschen:** `AccountDetailFragment` ließ „Name darf nicht leer sein“ auch nach dem erfolgreichen Speichern stehen.
+- **Klon in Teilschritten (`BatchedClone`):** Der Rückfall „holt den Rest am Stück“ war wirkungslos (JGit überspringt Wants, deren Tracking-Refs schon stimmen; der
+  Server schickt Inhalte zu Commits, die der Client „hat“, nicht noch einmal). Verweigert der Server einzelne Objekte oder fehlen danach Inhalte, liefert `run()`
+  jetzt `Optional.empty()` und der normale Klon übernimmt. Die Pause zwischen zwei Klon-Versuchen prüft den Abbruch in 200-ms-Schritten.
+- **`KeystoreSecretCipher.loadOrCreateKey` ist synchronisiert:** Zwei Threads beim allerersten Zugriff hätten zwei Schlüssel unter demselben Namen erzeugt.
+- **Konfliktlösung „Beide behalten“ liest und schreibt ISO-8859-1** (die Marken sind ASCII): Eine Datei, die nicht UTF-8 ist, bekam sonst für jedes fremde Byte ein
+  Ersatzzeichen. Test: `keepingBothSidesLeavesTheBytesOfAFileThatIsNotUtf8Untouched`.
+- **Fehlerabbildung:** Statuscodes („401“, „403“) werden nur im Text ohne Adressen gesucht (ein Repo „projekt-403“ ist kein Berechtigungsproblem); ein
+  `EOFException` zählt nur zusammen mit einer `TransportException` als Verbindungsproblem, nicht bei einer abgeschnittenen lokalen Datei.
+- **Editor:** „Zu Zeile springen“ kopierte den ganzen Text je Zeile (quadratisch, in großen Dateien ein ANR); die Suche nutzt ein Muster statt `toLowerCase` (`„İ“`
+  ändert die Länge, „Alle ersetzen“ traf dann die falschen Stellen); ein zweites Speichern vor dem Ende des ersten (`saving`) löste einen falschen
+  „Datei geändert“-Dialog aus.
+- **Einstellungen:** „Systemfarben“ baut die Activity erst nach dem Schreiben der Einstellung neu auf (vorher Wettlauf mit dem Hintergrund-Thread). „Rückgängig“ beim
+  Entfernen eines Arbeitsordners stellt auch die Markierung „Standard“ wieder her (`WorkspaceViewModel.restore`).
+- **Tests:** `JgitLargeFilesTest` setzte die JVM-weite `WindowCacheConfig` und stellte sie nie zurück (alle späteren Klassen liefen mit dem kleinen Schwellwert);
+  `SshDeviceTest` ließ je Lauf zwei Preferences-Dateien in den App-Daten liegen. Neu: `PersistentCloneJournalTest` (löscht Ordner rekursiv, war ungetestet).
+  `JgitLargeFilesTest` kann den Android-Fehler „Inflater has been closed“ auf der JVM nicht zeigen (das JDK beendet übergebene Inflater nicht): Den Schutz tragen
+  `InflaterCacheTest` und die Gerätetests.
+- **„Branches › Zusammenführen“ verweigert einen echten Merge bei lokalen Änderungen** (`BranchOperations.merge`, `DIRTY_TREE`), wie der Update-Pfad: Ein
+  abgebrochener Konflikt (`reset --hard`) risse sonst unbeteiligte Änderungen mit. Vorspulen geht weiter (`FF_ONLY` bei schmutzigem Baum). Tests in `JgitAdvancedTest`.
+- **Toter Code entfernt:** `PlaceholderFragment`, `fragment_placeholder.xml` und der Text `placeholder_body` (die Navigation zeigt längst die echten Ziele).
+
+## Große Klone und Android-Besonderheiten (2026-10-05)
+
+- **Androids `InflaterInputStream.close()` beendet auch einen übergebenen Inflater** (JDK nicht). JGit liest Dateien über der Stromgrenze (8 MiB)
+  so und gibt den Inflater danach an `InflaterCache` zurück: „Inflater has been closed“, jeder Klon mit einer großen Datei brach beim Auschecken ab.
+  Fix: `src/main/java/org/eclipse/jgit/lib/InflaterCache.java` ersetzt die JGit-Klasse (Inflater aus `get()` ignorieren `end()` von außen); in
+  `build.gradle.kts` entfernt der Task `patchedJgit` die Original-Klasse aus dem JGit-Jar (`jgitOriginal`-Konfiguration, slf4j-api bleibt aus der App).
+  Tests: `InflaterCacheTest`, `InflaterProbeTest` (Gerät), `JgitLargeFilesDeviceTest`.
+- **Klon in Teilschritten** (`BatchedClone`): Erst `blob:none` (Commits und Bäume), dann die Dateiinhalte in Paketen per `want <sha>` (Größe nach Dauer
+  und Bytes je Objekt, Ziel ≈ 200 MiB), jedes Paket bleibt liegen, bei Verbindungsabbruch wird nur das Paket wiederholt (bis 8×). HEAD zeigt erst am Ende
+  auf den Branch. Rückfall auf den normalen Klon, wenn der Server keine Filter oder keine Einzelanforderung erlaubt. Grund: Der Testserver kappt
+  HTTP-Antworten nach etwa 5 Minuten, und ein Klon ist eine einzige Antwort. `GitErrorMapper` prüft Netzfehler vor dem Textvergleich (Androids
+  HTTP-Stapel meldet einen Abbruch als „not found: size=0“).
+- **Prüfen auf dem Handy:** `adb install -r` für Debug- und Test-APK (kein `connected…AndroidTest`, das deinstalliert die App samt Konten),
+  Tests mit `adb shell am instrument -w …`. `JgitHugeCloneDeviceTest` klont über `git daemon` + `adb reverse tcp:9418` (`-e hugeRepo name.git`).
+- Der Emulator `KCD_Pixel` hat nur etwa 1 GB frei; große Klone brauchen das Handy.
+
 ## Zweisprachigkeit und Veröffentlichung
 
 - **Sprachen:** `res/values/` ist Englisch (Standard, auch für alle anderen Gerätesprachen), `res/values-de/` Deutsch. Die Schlüssel beider
@@ -286,9 +354,8 @@ einen Test oder eine Emulator-Prüfung; die Regeln gelten für künftige Änderu
 - **Navigationsleiste nur auf den vier Hauptzielen**, Unterseiten haben einen Zurück-Pfeil.
 - **Unit-Tests sehen nur `android.jar`:** `com.sun.net.httpserver` ist nicht verfügbar, deshalb nutzt
   `FakeServer` einen eigenen `ServerSocket`.
-- **Debug-Build:** Server-Eingabe `http://10.0.2.2:PORT` ist nur dort erlaubt
-  (`AccountEndpoint.fromHostInput(..., true)` + `network_security_config` im Debug-Quellsatz).
-  `FLAG_SECURE` auf Token-Bildschirmen ist im Debug-Build aus, damit Screenshots gehen.
+- **Emulator-Tests gegen Fake-Server:** Server-Eingabe `http://10.0.2.2:PORT` funktioniert in jedem Build (siehe „Klartext-HTTP“ oben; die
+  Bestätigung kommt als Dialog). `FLAG_SECURE` auf Token-Bildschirmen ist im Debug-Build aus, damit Screenshots gehen.
 - **Test-Werkzeuge** (nur lokal, im Scratchpad der Session): `uia.py` (UI-Automatisierung über
   `uiautomator`), `fake_github.py` (Fake-Anbieter, Port 8080), `make_repos.sh` (Test-Repos in allen
   Zuständen), `palette.py` (Farbtokens), `apicheck.py` (statische API-Prüfung).
