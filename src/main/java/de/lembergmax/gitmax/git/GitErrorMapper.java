@@ -1,7 +1,10 @@
 package de.lembergmax.gitmax.git;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import de.lembergmax.gitmax.BuildConfig;
 import de.lembergmax.gitmax.domain.GitFailureException;
 import de.lembergmax.gitmax.domain.HostKeyRejectedException;
 import de.lembergmax.gitmax.domain.model.HostKeyChallenge;
@@ -22,6 +25,7 @@ import org.eclipse.jgit.errors.NotSupportedException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.errors.TransportException;
 
+import java.io.EOFException;
 import java.io.InterruptedIOException;
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
@@ -32,6 +36,7 @@ import java.nio.channels.UnresolvedAddressException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLException;
 
@@ -40,6 +45,9 @@ import javax.net.ssl.SSLException;
  * Handlungshinweis verwandelt. Technische Details bleiben in der Meldung und in der Ursache.
  */
 public final class GitErrorMapper {
+
+    /** Eine Adresse mit Schema in einer Meldung. */
+    private static final Pattern ADDRESS = Pattern.compile("\\S+://\\S+");
 
     private GitErrorMapper() {
     }
@@ -54,6 +62,10 @@ public final class GitErrorMapper {
             final boolean cancelled
     ) {
         Objects.requireNonNull(failure, "failure");
+        if (BuildConfig.TEST_BUILD) {
+            // Nur in Prüf-Builds: der vollständige Stapel hilft, unbekannte Fehler am Gerät zu finden.
+            Log.w("GitMax", "Git-Fehler", failure);
+        }
         if (failure instanceof GitFailureException already) {
             return already;
         }
@@ -105,11 +117,15 @@ public final class GitErrorMapper {
         if (isAuth(failure, lower)) {
             return new GitFailureException(GitFailureKind.AUTH, message, failure);
         }
-        if (causedBy(failure, NoRemoteRepositoryException.class) || lower.contains("not found")) {
+        if (causedBy(failure, NoRemoteRepositoryException.class)) {
             return new GitFailureException(GitFailureKind.NOT_FOUND, message, failure);
         }
+        // Vor dem Textvergleich: Androids HTTP-Stapel meldet eine abgerissene Verbindung mit „not found: size=0“.
         if (isNetwork(failure)) {
             return new GitFailureException(GitFailureKind.NETWORK, message, failure);
+        }
+        if (lower.contains("not found")) {
+            return new GitFailureException(GitFailureKind.NOT_FOUND, message, failure);
         }
         if (lower.contains("no space left") || lower.contains("enospc")) {
             return new GitFailureException(GitFailureKind.DISK_FULL, message, failure);
@@ -137,10 +153,12 @@ public final class GitErrorMapper {
         if (!causedBy(failure, TransportException.class) && !causedBy(failure, NotSupportedException.class)) {
             return lower.contains("not authorized") || lower.contains("authentication");
         }
+        // Die Statuscodes nur im Text ohne Adressen suchen: Ein Repo „projekt-403“ ist kein Hinweis auf „verboten“.
+        final String withoutAddresses = ADDRESS.matcher(lower).replaceAll(" ");
         return lower.contains("not authorized")
                 || lower.contains("authentication")
-                || lower.contains("401")
-                || lower.contains("403")
+                || withoutAddresses.contains("401")
+                || withoutAddresses.contains("403")
                 || lower.contains("auth fail")
                 || lower.contains("permission denied")
                 || lower.contains("credentials");
@@ -158,7 +176,8 @@ public final class GitErrorMapper {
                 return true;
             }
         }
-        return false;
+        // Ein Ende des Datenstroms zählt nur beim Übertragen als Verbindungsproblem; eine abgeschnittene lokale Datei ist es nicht.
+        return causedBy(failure, EOFException.class) && causedBy(failure, TransportException.class);
     }
 
     /** Die verständlichste Meldung aus der Ursachenkette: die der innersten Ausnahme mit Text. */

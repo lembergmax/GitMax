@@ -50,9 +50,9 @@ android {
     }
 
     buildTypes {
-        // TEST_BUILD lockert zwei Schutzmaßnahmen, die für Prüfläufe auf dem Emulator im Weg sind: Klartext-HTTP zu
-        // Emulator-Adressen (Fake-Server) und FLAG_SECURE (Screenshots). Nur debug und minified setzen es; der
-        // Release-Build hat es aus.
+        // TEST_BUILD lockert FLAG_SECURE (Screenshots der Prüfläufe auf dem Emulator) und schaltet zusätzliche Protokollzeilen
+        // der Git-Engine ein (Fehlerstapel, Paketgrößen des Klons). Klartext-HTTP hängt nicht daran: Es gilt in allen
+        // Build-Typen gleich (siehe TransportPolicy). Nur debug und minified setzen es; der Release-Build hat es aus.
         debug {
             buildConfigField("boolean", "TEST_BUILD", "true")
         }
@@ -158,7 +158,36 @@ android {
     }
 }
 
+// JGit mit eigener InflaterCache: Androids InflaterInputStream.close() beendet einen übergebenen Inflater (anders als
+// die JDK-Version). JGit gibt ihn danach in den Cache zurück, dort scheitert reset() mit „Inflater has been closed“
+// (siehe src/main/java/org/eclipse/jgit/lib/InflaterCache.java). Die Original-Klasse wird deshalb aus dem JGit-Jar entfernt.
+val jgitOriginal: Configuration by configurations.creating
+val patchedJgit = tasks.register<Jar>("patchedJgit") {
+    archiveFileName.set("jgit-patched.jar")
+    destinationDirectory.set(layout.buildDirectory.dir("patched"))
+    from({ jgitOriginal.incoming.artifactView { componentFilter { it.isJgitCore() } }.files.map { zipTree(it) } }) {
+        exclude("org/eclipse/jgit/lib/InflaterCache.class")
+        // Die Signatur gilt nur für das unveränderte Jar.
+        exclude("META-INF/*.SF", "META-INF/*.RSA", "META-INF/*.DSA")
+    }
+}
+configurations.configureEach {
+    if (name != jgitOriginal.name) {
+        exclude(group = "org.eclipse.jgit", module = "org.eclipse.jgit")
+    }
+}
+
+fun ComponentIdentifier.isJgitCore(): Boolean =
+    this is ModuleComponentIdentifier && group == "org.eclipse.jgit" && module == "org.eclipse.jgit"
+
+fun ComponentIdentifier.isSlf4jApi(): Boolean =
+    this is ModuleComponentIdentifier && group == "org.slf4j" && module == "slf4j-api"
+
 dependencies {
+    jgitOriginal(libs.jgit)
+    implementation(files(patchedJgit))
+    // slf4j-api kommt über slf4j-android in der neueren Version; eine zweite Kopie bricht den Dex-Schritt.
+    implementation(jgitOriginal.incoming.artifactView { componentFilter { !it.isJgitCore() && !it.isSlf4jApi() } }.files)
     implementation(libs.androidx.core)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.appcompat)
@@ -174,7 +203,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.swiperefreshlayout)
 
-    implementation(libs.jgit)
     implementation(libs.jgit.ssh.apache)
     // Ed25519 für MINA SSHD: die Android-Plattform bringt es nicht verlässlich mit (JDK 15+ schon, Android nicht).
     implementation(libs.eddsa)

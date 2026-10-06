@@ -10,6 +10,7 @@ public final class ProgressAdapterTest {
     public void transferTitlesMapToTheirPhases() {
         assertEquals(GitProgress.Phase.RECEIVING, ProgressAdapter.phaseFor("Receiving objects"));
         assertEquals(GitProgress.Phase.RECEIVING, ProgressAdapter.phaseFor("remote: Counting objects"));
+        assertEquals(GitProgress.Phase.RECEIVING, ProgressAdapter.phaseFor("remote: Compressing objects"));
         assertEquals(GitProgress.Phase.RESOLVING, ProgressAdapter.phaseFor("Resolving deltas"));
         assertEquals(GitProgress.Phase.PUSHING, ProgressAdapter.phaseFor("Writing objects"));
         assertEquals(GitProgress.Phase.PUSHING, ProgressAdapter.phaseFor("Compressing objects"));

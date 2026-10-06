@@ -65,6 +65,30 @@ public final class GitFixtures {
         seed(remote, scratch, work -> write(new File(work, path), content));
     }
 
+    /**
+     * Füllt das Remote mit {@code smallCount} kleinen und {@code largeCount} großen Dateien aus Zufallsbytes
+     * (nicht komprimierbar) in einem normalen Repo, das direkt als Quelle für einen Klon dient. Dateien über der Stromgrenze von JGit werden beim Auschecken als Datenstrom gelesen.
+     */
+    public static void seedWithBinaryFiles(
+            @NonNull final File repo,
+            final int smallCount,
+            final int largeCount,
+            final int largeBytes
+    ) throws Exception {
+        try (Git git = Git.init().setInitialBranch("main").setDirectory(repo).call()) {
+            final java.util.Random random = new java.util.Random(7);
+            for (int i = 0; i < smallCount + largeCount; i++) {
+                final byte[] content = new byte[i < largeCount ? largeBytes : 2048];
+                random.nextBytes(content);
+                Files.write(new File(repo, "datei" + i + ".bin").toPath(), content);
+            }
+            git.add().addFilepattern(".").call();
+            git.commit().setMessage("Ausgangsstand").setAuthor(IDENT).setCommitter(IDENT).call();
+            // Als Paket packen: so liefert der Server im Test die Objekte wie ein echter.
+            git.gc().call();
+        }
+    }
+
     /** Commit-Kennung des Branches im Bare-Repo. */
     @NonNull
     public static String branchHead(

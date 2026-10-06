@@ -33,6 +33,39 @@ public final class GitErrorMapperTest {
     }
 
     @Test
+    public void aConnectionThatBrokeOffMidTransferIsANetworkProblemEvenWithAMisleadingText() {
+        final GitFailureException failure = GitErrorMapper.map(
+                new TransportException("transfer failed", new java.io.EOFException("\n not found: size=0 content=...")), false);
+
+        assertEquals(GitFailureKind.NETWORK, failure.kind());
+    }
+
+    @Test
+    public void aRepoNameThatContainsAStatusCodeIsNoReasonToBlameTheCredentials() {
+        final GitFailureException failure = GitErrorMapper.map(
+                new TransportException("https://git.example.org/team/projekt-403.git: Connection reset",
+                        new java.net.SocketException("Connection reset")), false);
+
+        assertEquals(GitFailureKind.NETWORK, failure.kind());
+    }
+
+    @Test
+    public void aRealForbiddenStatusIsStillAnAuthProblem() {
+        final GitFailureException failure = GitErrorMapper.map(
+                new TransportException("https://git.example.org/team/projekt.git: 403 Forbidden"), false);
+
+        assertEquals(GitFailureKind.AUTH, failure.kind());
+    }
+
+    @Test
+    public void aTruncatedLocalFileIsNotAConnectionProblem() {
+        final GitFailureException failure = GitErrorMapper.map(
+                new IOException("Pack file is cut off", new java.io.EOFException("Unexpected end of file")), false);
+
+        assertEquals(GitFailureKind.UNKNOWN, failure.kind());
+    }
+
+    @Test
     public void aMissingRepoIsNotFound() throws Exception {
         final GitFailureException failure = GitErrorMapper.map(
                 new NoRemoteRepositoryException(new URIish("https://github.com/max/weg.git"), "not found"), false);

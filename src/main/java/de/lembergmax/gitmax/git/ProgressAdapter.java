@@ -71,7 +71,8 @@ final class ProgressAdapter implements ProgressMonitor {
             final String title
     ) {
         final String lower = title == null ? "" : title.toLowerCase(Locale.ROOT);
-        if (lower.contains("receiving") || lower.contains("counting") || lower.contains("enumerating")) {
+        // Meldungen des Servers („remote: Compressing objects“) gehören zum Abrufen, auch wenn sie „compressing“ enthalten.
+        if (lower.startsWith("remote:") || lower.contains("receiving") || lower.contains("counting") || lower.contains("enumerating")) {
             return GitProgress.Phase.RECEIVING;
         }
         if (lower.contains("resolving")) {
