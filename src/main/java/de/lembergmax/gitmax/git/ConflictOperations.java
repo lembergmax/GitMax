@@ -249,9 +249,11 @@ final class ConflictOperations {
     ) throws Exception {
         final File file = new File(repository.getWorkTree(), path);
         if (file.isFile() && file.length() <= MAX_SCAN_BYTES) {
-            final String text = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+            // Als ISO-8859-1 gelesen und geschrieben bleibt jedes Byte, wie es war: Die Marken sind ASCII, und eine Datei in
+            // einer anderen Kodierung als UTF-8 bekäme beim Umweg über UTF-8 für jedes fremde Byte ein Ersatzzeichen.
+            final String text = new String(Files.readAllBytes(file.toPath()), StandardCharsets.ISO_8859_1);
             if (ConflictMarkers.hasMarkers(text)) {
-                Files.write(file.toPath(), ConflictMarkers.keepBoth(text).getBytes(StandardCharsets.UTF_8));
+                Files.write(file.toPath(), ConflictMarkers.keepBoth(text).getBytes(StandardCharsets.ISO_8859_1));
             }
         }
         stagePath(git, path);

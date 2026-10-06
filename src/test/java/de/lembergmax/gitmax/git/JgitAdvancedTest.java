@@ -399,6 +399,37 @@ public final class JgitAdvancedTest {
     }
 
     @Test
+    public void aRealMergeIsRefusedWhileLocalChangesAreInTheWay() throws Exception {
+        advanced.createBranch(repo, "feature", null, true);
+        commit("f.txt", "f\n", "Feature", AUTHOR);
+        advanced.checkoutBranch(repo, "main");
+        commit("m.txt", "m\n", "Main", AUTHOR);
+        write("andere.txt", "lokal geändert\n");
+
+        final GitFailureException failure = assertThrows(GitFailureException.class, () -> advanced.merge(repo, "feature"));
+
+        // Ein Konflikt würde mit „reset --hard“ zurückgenommen und risse die unbeteiligte Änderung mit.
+        assertEquals(GitFailureKind.DIRTY_TREE, failure.kind());
+        assertEquals("lokal geändert\n", read("andere.txt"));
+        try (Git git = Git.open(repo)) {
+            assertEquals(RepositoryState.SAFE, git.getRepository().getRepositoryState());
+        }
+    }
+
+    @Test
+    public void aFastForwardStillWorksWhileUnrelatedLocalChangesExist() throws Exception {
+        advanced.createBranch(repo, "feature", null, true);
+        commit("f.txt", "f\n", "Feature", AUTHOR);
+        advanced.checkoutBranch(repo, "main");
+        write("andere.txt", "lokal geändert\n");
+
+        assertEquals(GitAdvanced.MergeOutcome.FAST_FORWARDED, advanced.merge(repo, "feature"));
+
+        assertTrue(new File(repo, "f.txt").isFile());
+        assertEquals("lokal geändert\n", read("andere.txt"));
+    }
+
+    @Test
     public void mergingAnUnknownBranchIsNotFound() {
         assertEquals(GitFailureKind.NOT_FOUND, kindOf(() -> advanced.merge(repo, "gibt-es-nicht")));
     }

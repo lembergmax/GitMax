@@ -1,5 +1,6 @@
 package de.lembergmax.gitmax.git;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -27,6 +28,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -157,6 +161,23 @@ public final class JgitConflictAndRewriteTest {
 
         assertEquals("main\nfeature\n", repo.read("datei.txt"));
         assertTrue(advanced.conflicts(repo.directory()).isEmpty());
+    }
+
+    @Test
+    public void keepingBothSidesLeavesTheBytesOfAFileThatIsNotUtf8Untouched() throws Exception {
+        // Ein einzelnes 0xE4 ist in ISO-8859-1 ein „ä“, in UTF-8 aber keine gültige Folge.
+        final byte[] feature = "feature ä\n".getBytes(StandardCharsets.ISO_8859_1);
+        final byte[] main = "main ö\n".getBytes(StandardCharsets.ISO_8859_1);
+        repo.createBranch("feature");
+        commitBytes("datei.txt", feature, "Feature ändert");
+        repo.checkout("main");
+        commitBytes("datei.txt", main, "Main ändert");
+        assertConflictOnMerge();
+
+        advanced.resolveConflict(repo.directory(), "datei.txt", Resolution.BOTH);
+
+        assertArrayEquals("main ö\nfeature ä\n".getBytes(StandardCharsets.ISO_8859_1),
+                Files.readAllBytes(new File(repo.directory(), "datei.txt").toPath()));
     }
 
     @Test
@@ -469,6 +490,18 @@ public final class JgitConflictAndRewriteTest {
         repo.commit("datei.txt", "feature\n", "Feature ändert", TestRepo.ANNA);
         repo.checkout("main");
         repo.commit("datei.txt", "main\n", "Main ändert", TestRepo.ANNA);
+    }
+
+    private void commitBytes(
+            final String path,
+            final byte[] content,
+            final String message
+    ) throws Exception {
+        Files.write(new File(repo.directory(), path).toPath(), content);
+        try (Git git = repo.open()) {
+            git.add().addFilepattern(path).call();
+            git.commit().setMessage(message).setAuthor(TestRepo.ANNA).setCommitter(TestRepo.ANNA).call();
+        }
     }
 
     private void assertConflictOnMerge() {

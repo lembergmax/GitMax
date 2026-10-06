@@ -78,7 +78,12 @@ public final class KeystoreSecretCipher implements SecretCipher {
         }
     }
 
-    private static SecretKey loadOrCreateKey() throws GeneralSecurityException {
+    /**
+     * Synchronisiert: Greifen beim allerersten Start zwei Threads zugleich zu (Token und SSH-Schlüssel), erzeugte
+     * jeder einen eigenen Schlüssel unter demselben Namen, und alles, was mit dem ersten verschlüsselt wurde, wäre
+     * unlesbar.
+     */
+    private static synchronized SecretKey loadOrCreateKey() throws GeneralSecurityException {
         try {
             final KeyStore keyStore = KeyStore.getInstance(KEYSTORE);
             keyStore.load(null);
