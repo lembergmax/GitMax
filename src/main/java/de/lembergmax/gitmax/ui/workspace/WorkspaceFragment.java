@@ -125,7 +125,7 @@ public final class WorkspaceFragment extends Fragment {
                 return true;
             }
             if (entry.getItemId() == R.id.action_remove) {
-                remove(item.folder());
+                remove(item.folder(), item.isDefault());
                 return true;
             }
             return false;
@@ -135,11 +135,12 @@ public final class WorkspaceFragment extends Fragment {
 
     /** Entfernt sofort und bietet Rückgängig an, statt vorher zu fragen. */
     private void remove(
-            @NonNull final File folder
+            @NonNull final File folder,
+            final boolean wasDefault
     ) {
         viewModel.remove(folder);
         Snackbar.make(binding.getRoot(), R.string.workspace_removed, Snackbar.LENGTH_LONG)
-                .setAction(R.string.workspace_undo, undo -> viewModel.add(folder))
+                .setAction(R.string.workspace_undo, undo -> viewModel.restore(folder, wasDefault))
                 .show();
     }
 

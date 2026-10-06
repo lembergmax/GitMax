@@ -86,6 +86,8 @@ public final class DiffFragment extends Fragment {
         final boolean wide = requireContext().getResources().getConfiguration().screenWidthDp >= WIDE_DP;
         menu.findItem(R.id.action_side_by_side).setVisible(wide);
         menu.findItem(R.id.action_side_by_side).setChecked(sideBySide);
+        // Das ViewModel überlebt die Drehung, das neu aufgebaute Menü nicht: ohne das stünde der Haken falsch.
+        menu.findItem(R.id.action_ignore_whitespace).setChecked(viewModel.ignoreWhitespace());
         binding.toolbar.setOnMenuItemClickListener(this::onMenuItem);
 
         adapter = new DiffAdapter();

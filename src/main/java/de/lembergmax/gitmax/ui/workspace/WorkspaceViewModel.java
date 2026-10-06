@@ -71,6 +71,20 @@ public final class WorkspaceViewModel extends AndroidViewModel {
         });
     }
 
+    /** Nimmt einen entfernten Arbeitsordner wieder auf, auf Wunsch auch als Standard-Zielordner. */
+    public void restore(
+            @NonNull final File folder,
+            final boolean asDefault
+    ) {
+        services.io().execute(() -> {
+            services.workspace().addRoot(folder);
+            if (asDefault) {
+                services.workspace().setDefaultTarget(folder);
+            }
+            publish();
+        });
+    }
+
     public void remove(
             @NonNull final File folder
     ) {

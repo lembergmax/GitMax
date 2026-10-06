@@ -53,8 +53,9 @@ import de.lembergmax.gitmax.ui.repo.RepoDetailFragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Zeigt eine Datei und bearbeitet sie: Text mit Zeilennummern, Suchen und Ersetzen, Zeilensprung,
@@ -593,9 +594,11 @@ public final class FileViewerFragment extends Fragment {
         if (text == null || line < 1) {
             return;
         }
+        // Einmal kopieren: toString() je Zeile machte den Sprung in einer großen Datei quadratisch langsam.
+        final String content = text.toString();
         int offset = 0;
         for (int current = 1; current < line; current += 1) {
-            final int next = text.toString().indexOf('\n', offset);
+            final int next = content.indexOf('\n', offset);
             if (next < 0) {
                 break;
             }
@@ -692,11 +695,12 @@ public final class FileViewerFragment extends Fragment {
             binding.findCount.setText("");
             return;
         }
-        final String haystack = text.toString().toLowerCase(Locale.ROOT);
-        final String lowered = needle.toLowerCase(Locale.ROOT);
-        for (int index = haystack.indexOf(lowered); index >= 0 && matches.size() < MAX_MATCHES;
-                index = haystack.indexOf(lowered, index + lowered.length())) {
-            matches.add(index);
+        // Ein Muster statt toLowerCase: Umwandlungen wie „İ“ ändern die Länge des Textes, die Treffer lägen dann an der
+        // falschen Stelle, und „Alle ersetzen“ risse fremde Zeichen mit.
+        final Matcher matcher = Pattern.compile(Pattern.quote(needle), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+                .matcher(text);
+        while (matches.size() < MAX_MATCHES && matcher.find()) {
+            matches.add(matcher.start());
         }
         highlightMatches();
         if (matches.isEmpty()) {

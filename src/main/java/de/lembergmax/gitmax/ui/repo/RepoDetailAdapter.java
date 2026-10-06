@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -135,6 +137,9 @@ final class RepoDetailAdapter extends ListAdapter<RepoDetailAdapter.Item, Recycl
     private static final int TYPE_FILE = 2;
     private static final int TYPE_CLEAN = 3;
     private static final int PERCENT = 100;
+    // Material 3: 12 % für den Untergrund und 38 % für Text und Symbol eines nicht bedienbaren Knopfs.
+    private static final int DISABLED_BACKGROUND_ALPHA = 31;
+    private static final int DISABLED_CONTENT_ALPHA = 97;
 
     private static final DiffUtil.ItemCallback<Item> DIFF = new DiffUtil.ItemCallback<>() {
         @Override
@@ -565,13 +570,25 @@ final class RepoDetailAdapter extends ListAdapter<RepoDetailAdapter.Item, Recycl
             for (final MaterialButton button : new MaterialButton[] {binding.actionUpdate, binding.actionCommit, binding.actionPush}) {
                 final boolean filled = button == primary;
                 final Context context = button.getContext();
-                button.setBackgroundTintList(ColorStateList.valueOf(MaterialColors.getColor(context,
-                        filled ? androidx.appcompat.R.attr.colorPrimary : com.google.android.material.R.attr.colorSecondaryContainer, 0)));
+                final int onSurface = MaterialColors.getColor(context, com.google.android.material.R.attr.colorOnSurface, 0);
+                final int background = MaterialColors.getColor(context,
+                        filled ? androidx.appcompat.R.attr.colorPrimary : com.google.android.material.R.attr.colorSecondaryContainer, 0);
                 final int text = MaterialColors.getColor(context,
                         filled ? com.google.android.material.R.attr.colorOnPrimary : com.google.android.material.R.attr.colorOnSecondaryContainer, 0);
-                button.setTextColor(text);
-                button.setIconTint(ColorStateList.valueOf(text));
+                // Mit einer einzigen Farbe sähen die Knöpfe während eines Vorgangs noch bedienbar aus, ohne es zu sein.
+                button.setBackgroundTintList(whenDisabled(background, ColorUtils.setAlphaComponent(onSurface, DISABLED_BACKGROUND_ALPHA)));
+                button.setTextColor(whenDisabled(text, ColorUtils.setAlphaComponent(onSurface, DISABLED_CONTENT_ALPHA)));
+                button.setIconTint(whenDisabled(text, ColorUtils.setAlphaComponent(onSurface, DISABLED_CONTENT_ALPHA)));
             }
+        }
+
+        private static ColorStateList whenDisabled(
+                @ColorInt final int enabled,
+                @ColorInt final int disabled
+        ) {
+            return new ColorStateList(
+                    new int[][] {new int[] {-android.R.attr.state_enabled}, new int[0]},
+                    new int[] {disabled, enabled});
         }
 
         private static String summary(

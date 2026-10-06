@@ -32,43 +32,49 @@
         android:paddingBottom="@dimen/space_6"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="@dimen/space_8"
+        android:fillViewport="true"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:id="@+id/empty_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_folder_open"
-            app:tint="?attr/colorOnSurfaceVariant" />
-
-        <TextView
-            android:id="@+id/empty_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_4"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/files_empty_title"
-            android:breakStrategy="balanced"
-            android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textColor="?attr/colorOnSurface" />
+            android:orientation="vertical"
+            android:padding="@dimen/space_8">
 
-        <TextView
-            android:id="@+id/empty_body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_2"
-            android:gravity="center"
-            android:text="@string/files_empty_body"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/empty_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_folder_open"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/empty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_4"
+                android:gravity="center"
+                android:text="@string/files_empty_title"
+                android:breakStrategy="balanced"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/empty_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_2"
+                android:gravity="center"
+                android:text="@string/files_empty_body"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

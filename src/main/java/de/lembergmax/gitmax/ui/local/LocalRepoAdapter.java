@@ -186,7 +186,12 @@ final class LocalRepoAdapter extends ListAdapter<LocalViewModel.Row, LocalRepoAd
                 }
                 return;
             }
-            binding.pebble.setStatus(status == null ? PebbleView.Status.CLEAN : pebbleFor(status.health()));
+            if (status == null) {
+                // Ein Repo, dessen Zustand sich nicht lesen ließ, darf nicht wie ein sauberes aussehen.
+                binding.pebble.setStatus(row.unreadable() ? PebbleView.Status.FAILED : PebbleView.Status.CLEAN);
+                return;
+            }
+            binding.pebble.setStatus(pebbleFor(status.health()));
         }
 
         private void bindFacts(

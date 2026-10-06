@@ -84,12 +84,15 @@ public final class SimpleRowAdapter extends ListAdapter<SimpleRow, SimpleRowAdap
     public static final class Holder extends RecyclerView.ViewHolder {
 
         private final ItemSimpleRowBinding binding;
+        // setTypeface(tf, NORMAL) setzt nur tf: ginge man vom zuletzt gesetzten (fetten) Typeface aus, bliebe jede recycelte Zeile fett.
+        private final Typeface titleTypeface;
 
         Holder(
                 @NonNull final ItemSimpleRowBinding binding
         ) {
             super(binding.getRoot());
             this.binding = binding;
+            this.titleTypeface = binding.title.getTypeface();
         }
 
         void bind(
@@ -101,7 +104,7 @@ public final class SimpleRowAdapter extends ListAdapter<SimpleRow, SimpleRowAdap
             binding.section.setVisibility(showSection ? View.VISIBLE : View.GONE);
             binding.section.setText(row.section());
             binding.title.setText(row.title());
-            binding.title.setTypeface(binding.title.getTypeface(), row.emphasized() ? Typeface.BOLD : Typeface.NORMAL);
+            binding.title.setTypeface(titleTypeface, row.emphasized() ? Typeface.BOLD : Typeface.NORMAL);
             binding.subtitle.setText(row.subtitle());
             binding.subtitle.setVisibility(row.subtitle().isEmpty() ? View.GONE : View.VISIBLE);
             binding.icon.setImageResource(row.icon());
