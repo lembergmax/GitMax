@@ -200,6 +200,8 @@ public final class OperationTexts {
                 return R.string.op_failure_ssh_no_key;
             case SSH_REJECTED:
                 return R.string.op_failure_ssh_rejected;
+            case INSECURE_TRANSPORT:
+                return R.string.op_failure_insecure;
             case METERED_NETWORK:
                 return R.string.op_failure_metered;
             case CANCELLED:

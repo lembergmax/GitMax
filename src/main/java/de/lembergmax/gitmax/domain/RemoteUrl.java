@@ -105,8 +105,19 @@ public record RemoteUrl(
     /** Dieselbe Adresse über HTTPS; ein SSH-Port wird nicht übernommen, er gilt nur für SSH. */
     @NonNull
     public String toHttpsUrl() {
+        return toWebUrl(true);
+    }
+
+    /**
+     * Dieselbe Adresse über HTTPS oder, für einen Server ohne HTTPS, über HTTP; ein SSH-Port wird nicht übernommen, er
+     * gilt nur für SSH.
+     */
+    @NonNull
+    public String toWebUrl(
+            final boolean encrypted
+    ) {
         final boolean keepPort = scheme != Scheme.SSH && port != NO_PORT;
-        return "https://" + host + (keepPort ? ":" + port : "") + "/" + path + GIT_SUFFIX;
+        return (encrypted ? "https://" : "http://") + host + (keepPort ? ":" + port : "") + "/" + path + GIT_SUFFIX;
     }
 
     /** Dieselbe Adresse über SSH, in der kurzen Form, solange kein eigener Port nötig ist. */

@@ -24,9 +24,9 @@ public final class TokenPage {
     ) {
         Objects.requireNonNull(endpoint, "endpoint");
         if (endpoint.provider() == ProviderType.GITHUB) {
-            return "https://" + endpoint.host() + "/settings/tokens/new?scopes=repo,workflow&description=" + TOKEN_NAME;
+            return endpoint.webBaseUrl() + "/settings/tokens/new?scopes=repo,workflow&description=" + TOKEN_NAME;
         }
-        return "https://" + endpoint.host() + "/-/user_settings/personal_access_tokens?name=" + TOKEN_NAME
+        return endpoint.webBaseUrl() + "/-/user_settings/personal_access_tokens?name=" + TOKEN_NAME
                 + "&scopes=api,read_repository,write_repository";
     }
 }

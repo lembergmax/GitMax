@@ -28,6 +28,7 @@ import com.google.android.material.transition.MaterialSharedAxis;
 import de.lembergmax.gitmax.R;
 import de.lembergmax.gitmax.databinding.FragmentSimpleListBinding;
 import de.lembergmax.gitmax.domain.model.Account;
+import de.lembergmax.gitmax.domain.model.AccountEndpoint;
 import de.lembergmax.gitmax.domain.model.ProviderType;
 import de.lembergmax.gitmax.domain.model.SshKeyInfo;
 import de.lembergmax.gitmax.domain.model.SshKeyType;
@@ -289,9 +290,15 @@ public final class SshKeysFragment extends Fragment {
                 .anyMatch(account -> account.endpoint().provider() == ProviderType.GITHUB)
                 || host.equals(ProviderType.GITHUB.defaultHost());
         final String path = github ? "/settings/ssh/new" : "/-/user_settings/ssh_keys";
+        final String webBase = viewModel.accounts().stream()
+                .map(Account::endpoint)
+                .filter(endpoint -> endpoint.host().equals(host))
+                .map(AccountEndpoint::webBaseUrl)
+                .findFirst()
+                .orElse("https://" + host);
         Snackbar.make(binding.getRoot(), R.string.ssh_key_register_hint, Snackbar.LENGTH_LONG).show();
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + host + path)));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webBase + path)));
         } catch (final ActivityNotFoundException noBrowser) {
             // Ohne Browser bleibt der Hinweis: Der Schlüssel liegt in der Zwischenablage und die Seite lässt sich anders öffnen.
         }

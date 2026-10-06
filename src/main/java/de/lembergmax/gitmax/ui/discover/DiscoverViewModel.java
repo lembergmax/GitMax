@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import de.lembergmax.gitmax.R;
 import de.lembergmax.gitmax.ServiceLocator;
 import de.lembergmax.gitmax.domain.RemoteUrl;
+import de.lembergmax.gitmax.domain.TransportPolicy;
 import de.lembergmax.gitmax.domain.model.Account;
 import de.lembergmax.gitmax.domain.model.LocalRepo;
 import de.lembergmax.gitmax.domain.model.ProviderType;
@@ -215,6 +216,13 @@ public final class DiscoverViewModel extends AndroidViewModel {
         publish();
     }
 
+    /** Ob die Adresse über ihren Übertragungsweg geklont werden darf: HTTP nur zu einem unverschlüsselt verknüpften Server. */
+    public boolean allowsTransport(
+            @NonNull final RemoteUrl url
+    ) {
+        return TransportPolicy.allows(url, services.accounts().all().stream().map(Account::endpoint).toList());
+    }
+
     public void selectAccount(
             @Nullable final String accountId
     ) {
@@ -309,6 +317,10 @@ public final class DiscoverViewModel extends AndroidViewModel {
             } catch (final IOException unreadable) {
                 Log.w(LOG_TAG, "Caching failed: " + unreadable);
                 appendFailure(failures, account, getApplication().getString(R.string.error_network));
+            } catch (final RuntimeException unexpected) {
+                // Sonst bliebe der Ladebalken für immer stehen: das Ende dieses Laufs wird unten gemeldet.
+                Log.w(LOG_TAG, "Refresh failed unexpectedly: " + unexpected);
+                appendFailure(failures, account, getApplication().getString(R.string.error_malformed));
             }
         }
         final String message = failures.length() == 0 ? null : failures.toString();

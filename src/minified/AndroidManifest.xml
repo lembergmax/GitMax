@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Nur im minified-Prüfbuild (R8 an): Klartext-HTTP zu Fake-Servern auf dem Rechner, siehe TEST_BUILD. -->
-    <application android:networkSecurityConfig="@xml/network_security_config" />
-</manifest>

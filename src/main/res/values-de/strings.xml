@@ -9,9 +9,6 @@
     <string name="nav_settings">Einstellungen</string>
     <string name="navigate_back">Zurück</string>
 
-    <!-- Platzhalter bis die Bereiche gebaut sind (ersetzt in den Meilensteinen M3 bis M5) -->
-    <string name="placeholder_body">Dieser Bereich wird gerade gebaut.</string>
-
     <!-- Lokal -->
     <string name="local_title">Lokal</string>
     <string name="local_permission_title">Zugriff auf Dateien nötig</string>
@@ -85,6 +82,7 @@
     <string name="accounts_status_rejected">Token abgelehnt</string>
     <string name="accounts_status_secret_lost">Token verloren</string>
     <string name="accounts_row_description">%1$s, %2$s</string>
+    <string name="accounts_row_description_insecure">%1$s, %2$s (unverschlüsselt)</string>
 
     <!-- Konto verbinden -->
     <string name="connect_title">Konto verbinden</string>
@@ -103,6 +101,13 @@
     <string name="connect_submit">Verbinden</string>
     <string name="connect_busy">Prüfe Token …</string>
     <string name="connect_error_host">Das ist keine gültige Server-Adresse.</string>
+    <string name="connect_server_helper">http:// nur angeben, wenn dein Server kein HTTPS anbietet.</string>
+    <string name="connect_insecure_title">Unverschlüsselte Verbindung</string>
+    <string name="connect_insecure_body">Mit http:// laufen dein Token und dein Code unverschlüsselt durchs Netz, und jeder im selben Netz kann sie mitlesen. Nutze es nur in einem Netz, dem du vertraust, etwa im Firmennetz oder über ein VPN, oder richte HTTPS auf dem Server ein.\n\nServer: %1$s</string>
+    <string name="connect_insecure_confirm">Trotzdem verbinden</string>
+    <string name="connect_error_insecure_unconfirmed">Bestätige zuerst die unverschlüsselte Verbindung.</string>
+    <string name="connect_hint_try_http">Bietet der Server nur HTTP an, gib ihn als http://Adresse ein.</string>
+    <string name="connect_hint_try_https">Leitet der Server auf HTTPS um, gib ihn als https://Adresse ein.</string>
     <string name="connect_error_token_empty">Füge zuerst einen Token ein.</string>
     <string name="connect_success">Verbunden als %1$s</string>
     <string name="connect_browser_missing">Es wurde kein Browser gefunden.</string>
@@ -132,6 +137,7 @@
     <string name="account_detail_error_name">Der Name darf nicht leer sein.</string>
     <string name="account_detail_error_email">Das ist keine gültige E-Mail-Adresse.</string>
     <string name="account_detail_banner_rejected">Der Anbieter hat den Token abgelehnt. Erneuere ihn, damit GitMax wieder auf deine Repos zugreifen kann.</string>
+    <string name="account_detail_banner_insecure">Dieses Konto spricht den Server über unverschlüsseltes HTTP an. Token und Code kann jeder im Netz mitlesen. Nutze es nur in einem Netz, dem du vertraust.</string>
     <string name="account_detail_banner_secret_lost">Der gespeicherte Token ist auf diesem Gerät nicht mehr lesbar. Erneuere ihn, um das Konto weiter zu nutzen.</string>
 
     <!-- Fehler der Anbieter-APIs -->
@@ -190,6 +196,7 @@
     <string name="op_failure_invalid_name">Dieser Name ist nach den Git-Regeln nicht erlaubt.</string>
     <string name="op_failure_not_merged">Der Branch ist noch nicht eingearbeitet. Wenn du ihn löschst, gehen seine Commits verloren.</string>
     <string name="op_failure_current_branch">Das geht nicht mit dem Branch, auf dem du gerade arbeitest.</string>
+    <string name="op_failure_insecure">Diese Adresse nutzt unverschlüsseltes http://, das Konto dieses Servers ist aber über HTTPS verknüpft. GitMax schickt das Token deshalb nicht im Klartext. Stelle das Remote unter Erweitert › Remotes auf HTTPS um.</string>
     <string name="op_failure_metered">Nur im WLAN erlaubt, und das Gerät ist mit mobilen Daten verbunden. Verbinde dich mit einem WLAN oder versuche es trotzdem.</string>
     <string name="op_failure_cancelled">Abgebrochen.</string>
     <string name="op_failure_interrupted">Abgebrochen, weil die App beendet wurde.</string>
@@ -256,7 +263,7 @@
     <string name="discover_empty_reset">Filter zurücksetzen</string>
     <string name="discover_error_title">Repos konnten nicht geladen werden</string>
     <string name="discover_error_retry">Erneut versuchen</string>
-    <string name="discover_banner_stale">%1$s\nStand von %2$s.</string>
+    <string name="discover_banner_stale">%1$s\nZuletzt aktualisiert: %2$s.</string>
     <string name="discover_fact_private">Privat</string>
     <string name="discover_fact_public">Öffentlich</string>
     <string name="discover_fact_fork">Fork</string>
@@ -287,7 +294,7 @@
     <string name="clone_url_title">Per Adresse klonen</string>
     <string name="clone_url_hint">https://github.com/besitzer/repo.git</string>
     <string name="clone_url_invalid">Das ist keine gültige Git-Adresse.</string>
-    <string name="clone_url_insecure">Aus Sicherheitsgründen ist nur https:// erlaubt.</string>
+    <string name="clone_url_insecure">Erlaubt ist nur https://, oder http:// für einen Server, den du über HTTP verknüpft hast.</string>
     <string name="clone_url_continue">Weiter</string>
 
     <!-- Zeitangaben -->
@@ -340,7 +347,8 @@
     <string name="repo_path_copied">Pfad kopiert</string>
     <string name="repo_abort_title">Merge abbrechen?</string>
     <string name="repo_abort_body">Der Stand vor dem Update wird wiederhergestellt. Konfliktlösungen, die du schon gemacht hast, und alle nicht committeten Änderungen in diesem Repo gehen verloren.</string>
-    <string name="repo_abort_confirm">Abbrechen</string>
+    <string name="repo_abort_confirm">Merge abbrechen</string>
+    <string name="repo_abort_keep">Merge behalten</string>
     <string name="repo_aborted">Merge abgebrochen</string>
     <string name="repo_menu_force_push">Push erzwingen …</string>
     <string name="repo_force_push_title">Push erzwingen?</string>
@@ -803,6 +811,7 @@
     <string name="clone_option_ssh_missing">Dafür fehlt noch ein SSH-Schlüssel. Lege ihn unter Einstellungen › SSH-Schlüssel an.</string>
     <string name="remotes_switch_ssh">Auf SSH umstellen</string>
     <string name="remotes_switch_https">Auf HTTPS umstellen</string>
+    <string name="remotes_switch_http">Auf HTTP umstellen</string>
     <string name="remotes_switched">Adresse umgestellt</string>
 
     <!-- Teilen → Klonen -->

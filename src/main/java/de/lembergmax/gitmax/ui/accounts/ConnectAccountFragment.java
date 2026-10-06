@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.transition.MaterialSharedAxis;
 
@@ -145,11 +146,38 @@ public final class ConnectAccountFragment extends Fragment {
         hideKeyboard();
         binding.hostLayout.setError(null);
         binding.tokenLayout.setError(null);
+        final Optional<AccountEndpoint> endpoint = AccountEndpoint.fromHostInput(
+                selectedProvider(),
+                binding.customServer.isChecked() ? String.valueOf(binding.hostInput.getText()) : null
+        );
+        if (endpoint.isPresent() && endpoint.get().isInsecure()) {
+            confirmInsecure(endpoint.get());
+            return;
+        }
+        connect(false);
+    }
+
+    /** Klartext-HTTP nur nach ausdrücklicher Bestätigung: Token und Code liefen sonst unverschlüsselt durchs Netz. */
+    private void confirmInsecure(
+            @NonNull final AccountEndpoint endpoint
+    ) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.connect_insecure_title)
+                .setMessage(getString(R.string.connect_insecure_body, endpoint.host()))
+                .setNegativeButton(R.string.activity_cancel, null)
+                .setPositiveButton(R.string.connect_insecure_confirm, (dialog, which) -> connect(true))
+                .show();
+    }
+
+    private void connect(
+            final boolean insecureConfirmed
+    ) {
         viewModel.connect(
                 selectedProvider(),
                 binding.customServer.isChecked(),
                 String.valueOf(binding.hostInput.getText()),
-                String.valueOf(binding.tokenInput.getText())
+                String.valueOf(binding.tokenInput.getText()),
+                insecureConfirmed
         );
     }
 

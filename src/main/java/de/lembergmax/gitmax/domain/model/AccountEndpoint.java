@@ -33,28 +33,16 @@ public record AccountEndpoint(
     }
 
     /**
-     * Baut den Endpunkt aus einer Nutzereingabe. Schema, Pfad und Schrägstriche werden verworfen; die
-     * API wird immer über HTTPS angesprochen. Leere Eingabe ergibt den öffentlichen Host des Anbieters.
+     * Baut den Endpunkt aus einer Nutzereingabe. Pfad und Schrägstriche werden verworfen. Die API wird über HTTPS
+     * angesprochen; nur wenn die Eingabe ausdrücklich {@code http://} trägt und einen selbst gehosteten Server meint,
+     * bleibt es bei HTTP (Server, die kein HTTPS anbieten). Die öffentlichen Hosts der Anbieter ({@code github.com},
+     * {@code gitlab.com}) sprechen immer HTTPS, auch bei {@code http://}-Eingabe. Leere Eingabe ergibt den öffentlichen
+     * Host des Anbieters.
      */
     @NonNull
     public static Optional<AccountEndpoint> fromHostInput(
             @NonNull final ProviderType provider,
             final String input
-    ) {
-        return fromHostInput(provider, input, false);
-    }
-
-    /**
-     * Wie {@link #fromHostInput(ProviderType, String)}. Mit {@code allowInsecureLocal} darf die Eingabe
-     * zusätzlich {@code http://} tragen, aber nur für Hosts der eigenen Maschine bzw. des Emulators
-     * ({@code localhost}, {@code 127.0.0.1}, {@code 10.0.2.2}). Gedacht für Tests in den Prüfbuilds
-     * (debug, minified); andere Hosts sprechen immer HTTPS.
-     */
-    @NonNull
-    public static Optional<AccountEndpoint> fromHostInput(
-            @NonNull final ProviderType provider,
-            final String input,
-            final boolean allowInsecureLocal
     ) {
         Objects.requireNonNull(provider, "provider");
         final String raw = input == null || input.isBlank() ? provider.defaultHost() : input;
@@ -62,15 +50,27 @@ public record AccountEndpoint(
         if (host == null || !HOST_PATTERN.matcher(host).matches()) {
             return Optional.empty();
         }
-        final boolean insecure = allowInsecureLocal
-                && raw.trim().toLowerCase(Locale.ROOT).startsWith("http://")
-                && isLocalHost(host);
+        final boolean insecure = raw.trim().toLowerCase(Locale.ROOT).startsWith("http://") && !isPublicProviderHost(host);
         return Optional.of(new AccountEndpoint(provider, host, apiBaseFor(provider, host, insecure ? "http" : "https")));
     }
 
     /** {@code true} für den öffentlichen Host des Anbieters (nicht selbst gehostet). */
     public boolean isPublicHost() {
         return host.equals(provider.defaultHost());
+    }
+
+    /**
+     * {@code true}, wenn der Server unverschlüsselt (HTTP) angesprochen wird. Token und Code laufen dann im Klartext
+     * durchs Netz; die App erlaubt das nur für selbst gehostete Server und nur nach ausdrücklicher Bestätigung.
+     */
+    public boolean isInsecure() {
+        return apiBaseUrl.startsWith("http://");
+    }
+
+    /** Wurzel der Weboberfläche mit Schema, z. B. {@code https://gitlab.com} oder {@code http://git.firma.example}. */
+    @NonNull
+    public String webBaseUrl() {
+        return (isInsecure() ? "http://" : "https://") + host;
     }
 
     /** Hostname ohne Port. */
@@ -93,12 +93,17 @@ public record AccountEndpoint(
         return scheme + "://" + host + "/api/v4";
     }
 
-    private static boolean isLocalHost(
+    private static boolean isPublicProviderHost(
             final String host
     ) {
         final int colon = host.indexOf(':');
         final String hostname = colon < 0 ? host : host.substring(0, colon);
-        return hostname.equals("localhost") || hostname.equals("127.0.0.1") || hostname.equals("10.0.2.2");
+        for (final ProviderType type : ProviderType.values()) {
+            if (hostname.equals(type.defaultHost())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String normalizeHost(

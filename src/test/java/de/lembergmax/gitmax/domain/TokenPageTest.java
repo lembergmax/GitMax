@@ -41,6 +41,18 @@ public final class TokenPageTest {
         );
     }
 
+    @Test
+    public void aServerConnectedOverHttpOpensItsTokenPageOverHttp() {
+        assertEquals(
+                "http://gitlab.firma.example/-/user_settings/personal_access_tokens?name=GitMax&scopes=api,read_repository,write_repository",
+                TokenPage.url(endpoint(ProviderType.GITLAB, "http://gitlab.firma.example"))
+        );
+        assertEquals(
+                "http://git.firma.example/settings/tokens/new?scopes=repo,workflow&description=GitMax",
+                TokenPage.url(endpoint(ProviderType.GITHUB, "http://git.firma.example"))
+        );
+    }
+
     private static AccountEndpoint endpoint(
             final ProviderType provider,
             final String input

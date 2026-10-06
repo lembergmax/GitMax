@@ -47,6 +47,8 @@ public enum GitFailureKind {
     SSH_REJECTED,
     /** „Nur im WLAN“ ist an, und das Gerät hängt an einem gemessenen Netz (mobile Daten). */
     METERED_NETWORK,
+    /** Die Adresse ist unverschlüsselt (http://), das Konto des Hosts aber über HTTPS verknüpft: Das Token geht nicht im Klartext raus. */
+    INSECURE_TRANSPORT,
     /** Der Nutzer hat abgebrochen. */
     CANCELLED,
     /** Nicht zuordenbar; die technische Meldung steht in der Ausnahme. */

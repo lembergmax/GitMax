@@ -17,7 +17,6 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
-import de.lembergmax.gitmax.BuildConfig;
 import de.lembergmax.gitmax.R;
 import de.lembergmax.gitmax.databinding.DialogCloneUrlBinding;
 import de.lembergmax.gitmax.databinding.FragmentDiscoverBinding;
@@ -472,8 +471,6 @@ public final class DiscoverFragment extends Fragment {
         if (parsed.isEmpty()) {
             return getString(R.string.clone_url_invalid);
         }
-        final RemoteUrl.Scheme scheme = parsed.get().scheme();
-        final boolean allowed = scheme == RemoteUrl.Scheme.HTTPS || (BuildConfig.TEST_BUILD && scheme == RemoteUrl.Scheme.HTTP);
-        return allowed ? null : getString(R.string.clone_url_insecure);
+        return viewModel.allowsTransport(parsed.get()) ? null : getString(R.string.clone_url_insecure);
     }
 }

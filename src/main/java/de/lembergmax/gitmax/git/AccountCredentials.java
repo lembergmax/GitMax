@@ -42,12 +42,17 @@ public final class AccountCredentials implements GitCredentials {
         if (account.isEmpty()) {
             return null;
         }
+        final boolean cleartext = account.get().endpoint().isInsecure();
+        if (url.scheme() == RemoteUrl.Scheme.HTTP && !cleartext) {
+            throw new GitFailureException(GitFailureKind.INSECURE_TRANSPORT,
+                    "Refusing to send the credentials of account " + account.get().label() + " over plain http", null);
+        }
         try {
             final Optional<String> token = accounts.token(account.get().id());
             if (token.isEmpty()) {
                 throw new GitFailureException(GitFailureKind.AUTH, "No token stored for account " + account.get().label(), null);
             }
-            return new HostBoundCredentials(account.get().endpoint().hostname(), account.get().login(), token.get());
+            return new HostBoundCredentials(account.get().endpoint().hostname(), account.get().login(), token.get(), cleartext);
         } catch (final VaultException unreadable) {
             throw new GitFailureException(GitFailureKind.AUTH, "The token of account " + account.get().label() + " is unreadable", unreadable);
         }

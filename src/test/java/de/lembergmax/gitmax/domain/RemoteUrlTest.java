@@ -97,6 +97,15 @@ public final class RemoteUrlTest {
     }
 
     @Test
+    public void switchesFromSshToPlainHttpForAServerWithoutHttps() {
+        final RemoteUrl url = parse("git@gitlab.firma.example:team/tool.git");
+
+        assertEquals("http://gitlab.firma.example/team/tool.git", url.toWebUrl(false));
+        assertEquals("https://gitlab.firma.example/team/tool.git", url.toWebUrl(true));
+        assertEquals("http://gitlab.firma.example:8080/team/tool.git", parse("http://gitlab.firma.example:8080/team/tool.git").toWebUrl(false));
+    }
+
+    @Test
     public void plainHttpIsMarkedUnencrypted() {
         final RemoteUrl url = parse("http://10.0.2.2:8080/owner/repo.git");
 

@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import de.lembergmax.gitmax.BuildConfig;
 import de.lembergmax.gitmax.R;
 import de.lembergmax.gitmax.ServiceLocator;
 import de.lembergmax.gitmax.domain.model.Account;
@@ -68,24 +67,29 @@ public final class ConnectViewModel extends AndroidViewModel {
     }
 
     /**
-     * @param provider     gewählter Anbieter
-     * @param customServer {@code true}, wenn {@code hostInput} einen eigenen Server meint
-     * @param hostInput    Eingabe im Server-Feld
-     * @param token        eingefügter Token
+     * @param provider          gewählter Anbieter
+     * @param customServer      {@code true}, wenn {@code hostInput} einen eigenen Server meint
+     * @param hostInput         Eingabe im Server-Feld
+     * @param token             eingefügter Token
+     * @param insecureConfirmed {@code true}, wenn der Nutzer die unverschlüsselte Verbindung ({@code http://}) bestätigt hat
      */
     public void connect(
             @NonNull final ProviderType provider,
             final boolean customServer,
             @NonNull final String hostInput,
-            @NonNull final String token
+            @NonNull final String token,
+            final boolean insecureConfirmed
     ) {
         if (Boolean.TRUE.equals(busy.getValue())) {
             return;
         }
-        final Optional<AccountEndpoint> endpoint = AccountEndpoint.fromHostInput(
-                provider, customServer ? hostInput : null, BuildConfig.TEST_BUILD);
+        final Optional<AccountEndpoint> endpoint = AccountEndpoint.fromHostInput(provider, customServer ? hostInput : null);
         if (endpoint.isEmpty() || (customServer && hostInput.isBlank())) {
             outcome.setValue(new Event<>(new Outcome(false, text(R.string.connect_error_host), Field.HOST)));
+            return;
+        }
+        if (endpoint.get().isInsecure() && !insecureConfirmed) {
+            outcome.setValue(new Event<>(new Outcome(false, text(R.string.connect_error_insecure_unconfirmed), Field.HOST)));
             return;
         }
         if (token.isBlank()) {
@@ -110,10 +114,30 @@ public final class ConnectViewModel extends AndroidViewModel {
             final Account account = services.accounts().connect(endpoint, token);
             return new Outcome(true, account.login(), Field.NONE);
         } catch (final ProviderException failure) {
-            return new Outcome(false, ProviderErrorTexts.describe(getApplication(), failure), fieldFor(failure, customServer));
+            return new Outcome(false, withTransportHint(endpoint, failure, customServer), fieldFor(failure, customServer));
         } catch (final VaultException failure) {
             return new Outcome(false, ProviderErrorTexts.describe(getApplication(), failure), Field.NONE);
         }
+    }
+
+    /**
+     * Bei einem eigenen Server liegt ein Verbindungsproblem oft am Übertragungsweg: Er bietet nur HTTP an (und die
+     * HTTPS-Adresse zeigt eine fremde Seite) oder er leitet von HTTP auf HTTPS um. Der Hinweis nennt die andere Schreibweise.
+     */
+    private String withTransportHint(
+            final AccountEndpoint endpoint,
+            final ProviderException failure,
+            final boolean customServer
+    ) {
+        final String message = ProviderErrorTexts.describe(getApplication(), failure);
+        final boolean transportProblem = failure.kind() == ProviderException.Kind.NETWORK
+                || failure.kind() == ProviderException.Kind.NOT_FOUND
+                || failure.kind() == ProviderException.Kind.MALFORMED
+                || failure.kind() == ProviderException.Kind.SERVER;
+        if (!customServer || !transportProblem) {
+            return message;
+        }
+        return message + " " + text(endpoint.isInsecure() ? R.string.connect_hint_try_https : R.string.connect_hint_try_http);
     }
 
     /** Abgelehnte Token hängen am Token-Feld; Verbindungsprobleme am Server-Feld, wenn es eines gibt. */

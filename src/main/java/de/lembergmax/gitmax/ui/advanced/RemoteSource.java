@@ -9,6 +9,8 @@ import de.lembergmax.gitmax.R;
 import de.lembergmax.gitmax.ServiceLocator;
 import de.lembergmax.gitmax.domain.GitFailureException;
 import de.lembergmax.gitmax.domain.RemoteUrl;
+import de.lembergmax.gitmax.domain.TransportPolicy;
+import de.lembergmax.gitmax.domain.model.Account;
 import de.lembergmax.gitmax.domain.model.RemoteInfo;
 
 import java.io.File;
@@ -75,8 +77,9 @@ final class RemoteSource implements ListSource {
                 List.of(new Field(R.string.remotes_url_hint, url, false, true)), List.of()), null));
         final Optional<RemoteUrl> parsed = RemoteUrl.parse(url);
         if (parsed.isPresent()) {
-            actions.add(new RowAction(SWITCH, parsed.get().scheme() == RemoteUrl.Scheme.SSH
-                    ? R.string.remotes_switch_https : R.string.remotes_switch_ssh, null, null));
+            actions.add(new RowAction(SWITCH, parsed.get().scheme() != RemoteUrl.Scheme.SSH
+                    ? R.string.remotes_switch_ssh
+                    : isInsecureHost(parsed.get()) ? R.string.remotes_switch_http : R.string.remotes_switch_https, null, null));
         }
         actions.add(new RowAction(RENAME, R.string.remotes_rename, new Prompt(R.string.remotes_rename, R.string.remotes_rename,
                 List.of(new Field(R.string.remotes_name_hint, row.title(), false, true)), List.of()), null));
@@ -134,7 +137,14 @@ final class RemoteSource implements ListSource {
         }
         final RemoteUrl url = parsed.get();
         services.advanced().setRemoteUrl(repo, row.title(),
-                url.scheme() == RemoteUrl.Scheme.SSH ? url.toHttpsUrl() : url.toSshUrl());
+                url.scheme() == RemoteUrl.Scheme.SSH ? url.toWebUrl(!isInsecureHost(url)) : url.toSshUrl());
         return R.string.remotes_switched;
+    }
+
+    /** Ob der Host der Adresse zu einem Konto gehört, das ausdrücklich unverschlüsselt (HTTP) verknüpft ist. */
+    private boolean isInsecureHost(
+            @NonNull final RemoteUrl url
+    ) {
+        return TransportPolicy.isInsecureHost(services.accounts().all().stream().map(Account::endpoint).toList(), url.host());
     }
 }
