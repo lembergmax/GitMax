@@ -96,7 +96,8 @@ final class AccountAdapter extends ListAdapter<Account, AccountAdapter.Holder> {
             binding.tile.setText(provider == ProviderType.GITHUB ? "GH" : "GL");
             binding.login.setText(account.login());
             binding.host.setText(context.getString(
-                    R.string.accounts_row_description, provider.displayName(), account.endpoint().host()));
+                    account.endpoint().isInsecure() ? R.string.accounts_row_description_insecure : R.string.accounts_row_description,
+                    provider.displayName(), account.endpoint().host()));
 
             final int statusText = statusText(account.status());
             if (statusText == 0) {
@@ -131,8 +132,12 @@ final class AccountAdapter extends ListAdapter<Account, AccountAdapter.Holder> {
                 final Account account,
                 final int statusText
         ) {
-            final String base = account.login() + ", " + account.endpoint().provider().displayName();
-            return statusText == 0 ? base : base + ", " + context.getString(statusText);
+            String described = account.login() + ", " + account.endpoint().provider().displayName();
+            if (account.endpoint().isInsecure()) {
+                // Die Host-Zeile zeigt „unverschlüsselt“; die Beschreibung der Zeile ersetzt ihren Text für TalkBack.
+                described += ", " + context.getString(R.string.connect_insecure_title);
+            }
+            return statusText == 0 ? described : described + ", " + context.getString(statusText);
         }
     }
 }

@@ -157,7 +157,8 @@ flowchart TD
 - Tokens and SSH keys live **only** in the `SecretVault`, encrypted with an Android Keystore key (AES-256-GCM, the secret's name is bound as associated data). They never appear in logs, remote URLs, `.git/config`, backups or error messages; remote URLs are stripped of credentials.
 - Credentials are only handed to the host of the account they belong to, so a redirect to a foreign host cannot receive your token. HTTP redirects are followed only for `GET` and only on the same host.
 - Cloud backup and device-to-device transfer are switched off completely (`allowBackup=false`, empty extraction rules). SSH passphrase prompts block screenshots.
-- No analytics, no crash reporting, no ads. Network traffic goes only to your Git hosts and the providers' APIs. Cleartext HTTP is forbidden in release builds.
+- No analytics, no crash reporting, no ads. Network traffic goes only to your Git hosts and the providers' APIs.
+- **HTTPS is the default and the rule.** Plain `http://` exists only for a self-hosted server that offers no HTTPS: you enter it as `http://address` when connecting, GitMax asks you to confirm the unencrypted connection, and the account shows a warning. It is never possible for github.com or gitlab.com, and your token is never sent over HTTP to any server that you did not connect that way.
 - Destructive actions ask first and say what is lost; the irreversible ones (force push, delete from device) ask you to type the repo name.
 - *Wi-Fi only* (Settings) stops transfers on mobile data until you choose *Try anyway*.
 

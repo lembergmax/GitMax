@@ -38,7 +38,7 @@ public final class GitOperationService extends Service {
     static final String ACTION_CANCEL_ALL = "de.lembergmax.gitmax.action.CANCEL_ALL";
 
     private static final long NOTIFICATION_INTERVAL_MS = 400L;
-    private static final long WAKE_LOCK_LIMIT_MS = 30L * 60L * 1000L;
+    private static final long WAKE_LOCK_LIMIT_MS = 6L * 60L * 60L * 1000L;
     private static final String WAKE_LOCK_TAG = "GitMax:operations";
 
     private final Handler handler = new Handler(Looper.getMainLooper());

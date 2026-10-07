@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:startDestination="@id/localFragment">
 
-    <!-- Die vier gleichrangigen Ziele der Navigationsleiste. Bis zu den Meilensteinen M2 bis M5
-         zeigen sie einen Platzhalter; die Ids bleiben, die Klasse wird je Ziel ersetzt. -->
+    <!-- Die vier gleichrangigen Ziele der Navigationsleiste. -->
     <fragment
         android:id="@+id/localFragment"
         android:name="de.lembergmax.gitmax.ui.local.LocalFragment"

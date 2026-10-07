@@ -73,10 +73,11 @@ public final class SshKeyStore {
 
     /**
      * Übernimmt einen vorhandenen privaten Schlüssel. Eine Passphrase wird nur zum Entschlüsseln gebraucht und
-     * nicht gespeichert: abgelegt wird der Schlüssel im {@link SecretVault}.
+     * nicht gespeichert: abgelegt wird der Schlüssel im {@link SecretVault}. Das Entschlüsseln eines geschützten Schlüssels
+     * dauert Sekunden und läuft deshalb ohne die Sperre, damit Abfragen vom Hauptthread ({@link #isEmpty()}) nicht warten.
      */
     @NonNull
-    public synchronized SshKeyInfo importKey(
+    public SshKeyInfo importKey(
             @NonNull final String label,
             @NonNull final String text,
             @Nullable final String passphrase

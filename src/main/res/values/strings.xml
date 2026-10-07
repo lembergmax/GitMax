@@ -9,9 +9,6 @@
     <string name="nav_settings">Settings</string>
     <string name="navigate_back">Back</string>
 
-    <!-- Placeholder until the areas are built (replaced in milestones M3 to M5) -->
-    <string name="placeholder_body">This area is still being built.</string>
-
     <!-- Local -->
     <string name="local_title">Local</string>
     <string name="local_permission_title">File access needed</string>
@@ -85,6 +82,7 @@
     <string name="accounts_status_rejected">Token rejected</string>
     <string name="accounts_status_secret_lost">Token lost</string>
     <string name="accounts_row_description">%1$s, %2$s</string>
+    <string name="accounts_row_description_insecure">%1$s, %2$s (unencrypted)</string>
 
     <!-- Connect account -->
     <string name="connect_title">Connect account</string>
@@ -103,6 +101,13 @@
     <string name="connect_submit">Connect</string>
     <string name="connect_busy">Checking token …</string>
     <string name="connect_error_host">That is not a valid server address.</string>
+    <string name="connect_server_helper">Add http:// only if your server does not offer HTTPS.</string>
+    <string name="connect_insecure_title">Unencrypted connection</string>
+    <string name="connect_insecure_body">With http:// your token and your code travel through the network unencrypted, and anyone on the same network can read them. Use it only in a network you trust, such as a company network or a VPN, or set up HTTPS on the server.\n\nServer: %1$s</string>
+    <string name="connect_insecure_confirm">Connect anyway</string>
+    <string name="connect_error_insecure_unconfirmed">Confirm the unencrypted connection first.</string>
+    <string name="connect_hint_try_http">If the server only offers HTTP, enter it as http://address.</string>
+    <string name="connect_hint_try_https">If the server redirects to HTTPS, enter it as https://address.</string>
     <string name="connect_error_token_empty">Paste a token first.</string>
     <string name="connect_success">Connected as %1$s</string>
     <string name="connect_browser_missing">No browser was found.</string>
@@ -132,6 +137,7 @@
     <string name="account_detail_error_name">The name must not be empty.</string>
     <string name="account_detail_error_email">That is not a valid email address.</string>
     <string name="account_detail_banner_rejected">The provider rejected the token. Renew it so GitMax can reach your repos again.</string>
+    <string name="account_detail_banner_insecure">This account talks to the server over unencrypted HTTP. Token and code can be read by anyone on the network. Use it only in a network you trust.</string>
     <string name="account_detail_banner_secret_lost">The stored token can no longer be read on this device. Renew it to keep using the account.</string>
 
     <!-- Provider API errors -->
@@ -190,6 +196,7 @@
     <string name="op_failure_invalid_name">This name is not allowed by Git\'s rules.</string>
     <string name="op_failure_not_merged">The branch has not been merged yet. If you delete it, its commits are lost.</string>
     <string name="op_failure_current_branch">That does not work with the branch you are currently on.</string>
+    <string name="op_failure_insecure">This address uses plain http://, but the account for this server is connected over HTTPS, so GitMax will not send the token unencrypted. Switch the remote to HTTPS under Advanced › Remotes.</string>
     <string name="op_failure_metered">Allowed on Wi-Fi only, and the device is on mobile data. Connect to Wi-Fi or try anyway.</string>
     <string name="op_failure_cancelled">Cancelled.</string>
     <string name="op_failure_interrupted">Cancelled because the app was closed.</string>
@@ -256,7 +263,7 @@
     <string name="discover_empty_reset">Reset filters</string>
     <string name="discover_error_title">Repos could not be loaded</string>
     <string name="discover_error_retry">Try again</string>
-    <string name="discover_banner_stale">%1$s\nAs of %2$s.</string>
+    <string name="discover_banner_stale">%1$s\nLast updated %2$s.</string>
     <string name="discover_fact_private">Private</string>
     <string name="discover_fact_public">Public</string>
     <string name="discover_fact_fork">Fork</string>
@@ -287,7 +294,7 @@
     <string name="clone_url_title">Clone by URL</string>
     <string name="clone_url_hint">https://github.com/owner/repo.git</string>
     <string name="clone_url_invalid">That is not a valid Git URL.</string>
-    <string name="clone_url_insecure">For security reasons only https:// is allowed.</string>
+    <string name="clone_url_insecure">Only https:// is allowed, or http:// for a server you connected over HTTP.</string>
     <string name="clone_url_continue">Continue</string>
 
     <!-- Time -->
@@ -340,7 +347,8 @@
     <string name="repo_path_copied">Path copied</string>
     <string name="repo_abort_title">Abort merge?</string>
     <string name="repo_abort_body">The state before the update is restored. Conflict resolutions you have already made and all uncommitted changes in this repo are lost.</string>
-    <string name="repo_abort_confirm">Abort</string>
+    <string name="repo_abort_confirm">Abort merge</string>
+    <string name="repo_abort_keep">Keep merge</string>
     <string name="repo_aborted">Merge aborted</string>
     <string name="repo_menu_force_push">Force push …</string>
     <string name="repo_force_push_title">Force push?</string>
@@ -803,6 +811,7 @@
     <string name="clone_option_ssh_missing">An SSH key is still missing. Create one under Settings › SSH keys.</string>
     <string name="remotes_switch_ssh">Switch to SSH</string>
     <string name="remotes_switch_https">Switch to HTTPS</string>
+    <string name="remotes_switch_http">Switch to HTTP</string>
     <string name="remotes_switched">Address switched</string>
 
     <!-- Share → clone -->
@@ -884,7 +893,7 @@
     <string name="settings_language_english">English</string>
     <string name="settings_language_german">Deutsch</string>
     <string name="settings_wifi_only">Wi-Fi only</string>
-    <string name="settings_wifi_only_hint">Cloning, updating and pushing run on Wi-Fi only. On mobile data they say so and can still be started on purpose.</string>
+    <string name="settings_wifi_only_hint">Cloning, updating and pushing run on Wi-Fi only. On mobile data they stop with a notice, and you can still start them anyway.</string>
     <string name="repo_banner_metered_retry">Try anyway</string>
 
 </resources>

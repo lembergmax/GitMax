@@ -332,7 +332,9 @@ public final class LocalViewModel extends AndroidViewModel {
             phase.setValue(Phase.LOADING);
         }
 
-        services.io().execute(() -> load(current));
+        // Ein Repo, an dem gerade ein Vorgang arbeitet (etwa ein Klon von Gigabytes), wird nicht zusätzlich durchgeprüft.
+        final Set<String> busy = new LinkedHashSet<>(activeByPath.keySet());
+        services.io().execute(() -> load(current, busy));
     }
 
     /** {@link #refresh()} ist für den Haupt-Thread gedacht; von einem Hintergrund-Thread aus dorthin wechseln. */
@@ -341,7 +343,8 @@ public final class LocalViewModel extends AndroidViewModel {
     }
 
     private void load(
-            final int current
+            final int current,
+            final Set<String> busy
     ) {
         final List<LocalRepo> repos = services.localRepos().scan(() -> generation.get() != current);
         if (generation.get() != current) {
@@ -359,6 +362,9 @@ public final class LocalViewModel extends AndroidViewModel {
         });
 
         for (int index = 0; index < loaded.size() && generation.get() == current; index += 1) {
+            if (busy.contains(loaded.get(index).key())) {
+                continue;
+            }
             final Row full = fullRow(loaded.get(index));
             loaded.set(index, full);
             final List<Row> snapshot = new ArrayList<>(loaded);

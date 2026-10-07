@@ -224,7 +224,8 @@ public final class GithubClientTest {
         assertTrue(repo.isArchived());
         assertTrue(repo.isFork());
         assertEquals("main", repo.defaultBranch());
-        assertEquals("https://github.example/max/alpha.git", repo.httpsUrl());
+        // Der Fake-Server spricht HTTP: die Klon-Adresse folgt dem Schema des Kontos (siehe BaseProviderClient.alignScheme).
+        assertEquals("http://github.example/max/alpha.git", repo.httpsUrl());
         assertEquals("git@github.example:max/alpha.git", repo.sshUrl());
         assertEquals("https://github.example/max/alpha", repo.webUrl());
         assertEquals(Instant.parse("2026-10-03T12:00:00Z").toEpochMilli(), repo.lastActivityMillis());
@@ -310,7 +311,7 @@ public final class GithubClientTest {
         assertTrue(body.getBoolean("private"));
         assertFalse(body.getBoolean("auto_init"));
         assertEquals("max/neu", created.fullPath());
-        assertEquals("https://github.example/max/neu.git", created.httpsUrl());
+        assertEquals("http://github.example/max/neu.git", created.httpsUrl());
         assertEquals("acc", created.accountId());
     }
 

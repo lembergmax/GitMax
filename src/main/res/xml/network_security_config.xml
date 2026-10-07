@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Die Plattform lässt unverschlüsseltes HTTP zu, weil sich die Adresse eines selbst gehosteten Servers erst zur Laufzeit ergibt
+    (ein Konfigurationsabschnitt je Host ginge nur für Adressen, die beim Bauen feststehen). Die Grenze zieht die App selbst:
+    - AccountEndpoint: http:// gilt nur für Server, nie für github.com oder gitlab.com, und die Oberfläche verlangt eine Bestätigung.
+    - TransportPolicy / AccountCredentials / HostBoundCredentials: Login und Token gehen nur über HTTP, wenn das Konto
+      ausdrücklich so verknüpft ist; zu jedem anderen Host nur über HTTPS oder SSH.
+    - Http (Anbieter-API) folgt Weiterleitungen nur auf demselben Host und Schema; JGit folgt einem Wechsel des Schemas nur auf HTTPS.
+-->
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <base-config
+        cleartextTrafficPermitted="true"
+        tools:ignore="InsecureBaseConfiguration">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

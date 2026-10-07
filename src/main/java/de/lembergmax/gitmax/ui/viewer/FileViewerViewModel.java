@@ -77,6 +77,7 @@ public final class FileViewerViewModel extends AndroidViewModel {
     private String path = "";
     private TextFileIo.Result text;
     private String draft;
+    private boolean saving;
 
     public FileViewerViewModel(
             @NonNull final Application application
@@ -157,9 +158,11 @@ public final class FileViewerViewModel extends AndroidViewModel {
             final boolean force
     ) {
         final TextFileIo.Result original = text;
-        if (original == null) {
+        // Ein zweites Speichern vor dem Ende des ersten sähe den Stand von vorher und hielte die eigene Änderung für fremd.
+        if (original == null || saving) {
             return;
         }
+        saving = true;
         services.io().execute(() -> {
             SaveOutcome outcome;
             TextFileIo.Result updated = original;
@@ -172,13 +175,14 @@ public final class FileViewerViewModel extends AndroidViewModel {
                             file.length(), file.lastModified());
                     outcome = SaveOutcome.SAVED;
                 }
-            } catch (final IOException failed) {
+            } catch (final IOException | RuntimeException failed) {
                 outcome = SaveOutcome.FAILED;
             }
             final SaveOutcome result = outcome;
             final TextFileIo.Result baseline = updated;
             main.post(() -> {
                 text = baseline;
+                saving = false;
                 saveOutcomes.setValue(new Event<>(result));
             });
         });

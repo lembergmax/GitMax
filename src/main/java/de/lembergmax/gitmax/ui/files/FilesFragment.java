@@ -172,11 +172,11 @@ public final class FilesFragment extends Fragment {
             @NonNull final MenuItem item
     ) {
         if (item.getItemId() == R.id.action_new_file) {
-            askForName(R.string.files_new_file, R.string.files_name_file_hint, "", viewModel::createFile);
+            askForName(R.string.files_new_file, R.string.files_name_file_hint, "", R.string.files_create, viewModel::createFile);
             return true;
         }
         if (item.getItemId() == R.id.action_new_folder) {
-            askForName(R.string.files_new_folder, R.string.files_name_folder_hint, "", viewModel::createFolder);
+            askForName(R.string.files_new_folder, R.string.files_name_folder_hint, "", R.string.files_create, viewModel::createFolder);
             return true;
         }
         return false;
@@ -216,7 +216,7 @@ public final class FilesFragment extends Fragment {
                 });
             } else if (id == R.id.item_rename) {
                 askForName(R.string.files_rename_title, entry.directory() ? R.string.files_name_folder_hint : R.string.files_name_file_hint,
-                        entry.name(), name -> viewModel.rename(entry, name));
+                        entry.name(), R.string.files_rename_title, name -> viewModel.rename(entry, name));
             } else if (id == R.id.item_delete) {
                 confirmDelete(entry);
             } else {
@@ -253,6 +253,7 @@ public final class FilesFragment extends Fragment {
             final int title,
             final int hint,
             @NonNull final String initial,
+            final int confirmLabel,
             @NonNull final Consumer<String> onConfirm
     ) {
         final DialogNewFolderBinding dialogBinding = DialogNewFolderBinding.inflate(getLayoutInflater());
@@ -262,7 +263,7 @@ public final class FilesFragment extends Fragment {
         final AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(title)
                 .setView(dialogBinding.getRoot())
-                .setPositiveButton(R.string.files_create, null)
+                .setPositiveButton(confirmLabel, null)
                 .setNegativeButton(R.string.activity_cancel, null)
                 .create();
         dialog.setOnShowListener(shown -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(button -> {

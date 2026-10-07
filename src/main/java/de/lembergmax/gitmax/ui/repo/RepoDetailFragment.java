@@ -201,7 +201,7 @@ public final class RepoDetailFragment extends Fragment {
                     viewModel.abortMerge();
                     Snackbar.make(binding.getRoot(), R.string.repo_aborted, Snackbar.LENGTH_SHORT).show();
                 })
-                .setNegativeButton(R.string.activity_close, null)
+                .setNegativeButton(R.string.repo_abort_keep, null)
                 .show();
     }
 
@@ -226,7 +226,7 @@ public final class RepoDetailFragment extends Fragment {
                 .setTitle(R.string.repo_discard_title)
                 .setMessage(getString(R.string.repo_discard_body_one, file.path()))
                 .setPositiveButton(R.string.repo_discard_confirm, (dialog, which) -> viewModel.discard(List.of(file.path())))
-                .setNegativeButton(R.string.activity_close, null)
+                .setNegativeButton(R.string.activity_cancel, null)
                 .show();
     }
 

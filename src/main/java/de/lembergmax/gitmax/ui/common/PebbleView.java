@@ -231,6 +231,7 @@ public final class PebbleView extends View {
 
     @Override
     protected void onDetachedFromWindow() {
+        settleTransitions();
         cancelAnimators();
         super.onDetachedFromWindow();
     }
@@ -393,6 +394,21 @@ public final class PebbleView extends View {
         } else if (!shouldSpin && spinAnimator != null) {
             spinAnimator.cancel();
             spinAnimator = null;
+        }
+    }
+
+    /**
+     * Setzt einen unterbrochenen Übergang auf seinen Endzustand. Ein abgebrochener Animator liefert keinen letzten Wert;
+     * eine Zeile, die beim Scrollen aus dem Fenster fällt, bliebe sonst halb umgefärbt, weil ein erneutes Binden mit
+     * demselben Zustand nichts mehr ändert.
+     */
+    private void settleTransitions() {
+        if (transitionAnimator != null && transitionAnimator.isRunning()) {
+            current = target.copy();
+        }
+        if (glyphAnimator != null && glyphAnimator.isRunning()) {
+            glyphTransition = 1f;
+            previousGlyph = null;
         }
     }
 

@@ -61,12 +61,13 @@ public final class SshDeviceTest {
     private SshKeyStore keys;
     private KnownHostsStore hosts;
     private File base;
+    private String suffix;
 
     @Before
     public void setUp() throws Exception {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         JgitEnvironment.install(context);
-        final String suffix = UUID.randomUUID().toString();
+        suffix = UUID.randomUUID().toString();
         metadata = new SharedPreferencesKeyValueStore(context, "ssh_test_meta_" + suffix);
         secrets = new SharedPreferencesKeyValueStore(context, "ssh_test_secrets_" + suffix);
         keys = new SshKeyStore(metadata, new SecretVault(secrets, new KeystoreSecretCipher()), System::currentTimeMillis,
@@ -86,6 +87,9 @@ public final class SshDeviceTest {
                 walk.sorted(Comparator.reverseOrder()).forEach(path -> path.toFile().delete());
             }
         }
+        // Die Tests laufen im Prozess der App: ihre Preferences-Dateien lägen sonst für immer in deren Daten.
+        context.deleteSharedPreferences("ssh_test_meta_" + suffix);
+        context.deleteSharedPreferences("ssh_test_secrets_" + suffix);
     }
 
     @Test

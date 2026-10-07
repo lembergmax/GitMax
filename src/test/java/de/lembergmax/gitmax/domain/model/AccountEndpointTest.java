@@ -57,18 +57,40 @@ public final class AccountEndpointTest {
     }
 
     @Test
-    public void plainHttpIsOnlyAcceptedForLocalHostsAndOnlyWhenAllowed() {
-        final AccountEndpoint local = AccountEndpoint.fromHostInput(ProviderType.GITHUB, "http://10.0.2.2:8080", true).orElseThrow();
+    public void plainHttpIsKeptForASelfHostedServerWhenTheInputSaysSo() {
+        final AccountEndpoint gitlab = endpoint(ProviderType.GITLAB, "http://gitlab.firma.example");
 
-        assertEquals("10.0.2.2:8080", local.host());
-        assertEquals("http://10.0.2.2:8080/api/v3", local.apiBaseUrl());
+        assertEquals("gitlab.firma.example", gitlab.host());
+        assertEquals("http://gitlab.firma.example/api/v4", gitlab.apiBaseUrl());
+        assertTrue(gitlab.isInsecure());
+        assertEquals("http://gitlab.firma.example", gitlab.webBaseUrl());
 
-        assertEquals("https://10.0.2.2:8080/api/v3",
-                AccountEndpoint.fromHostInput(ProviderType.GITHUB, "http://10.0.2.2:8080", false).orElseThrow().apiBaseUrl());
-        assertEquals("https://git.firma.example/api/v3",
-                AccountEndpoint.fromHostInput(ProviderType.GITHUB, "http://git.firma.example", true).orElseThrow().apiBaseUrl());
-        assertEquals("http://localhost:3000/api/v4",
-                AccountEndpoint.fromHostInput(ProviderType.GITLAB, "http://localhost:3000", true).orElseThrow().apiBaseUrl());
+        assertEquals("http://git.firma.example/api/v3", endpoint(ProviderType.GITHUB, "HTTP://git.firma.example/").apiBaseUrl());
+        assertEquals("http://10.0.2.2:8080/api/v3", endpoint(ProviderType.GITHUB, " http://10.0.2.2:8080 ").apiBaseUrl());
+        assertEquals("http://localhost:3000/api/v4", endpoint(ProviderType.GITLAB, "http://localhost:3000").apiBaseUrl());
+    }
+
+    @Test
+    public void aServerIsEncryptedUnlessTheInputNamesHttp() {
+        for (final String input : new String[]{"gitlab.firma.example", "https://gitlab.firma.example", "HTTPS://GitLab.Firma.example/"}) {
+            final AccountEndpoint gitlab = endpoint(ProviderType.GITLAB, input);
+
+            assertFalse(input, gitlab.isInsecure());
+            assertEquals(input, "https://gitlab.firma.example/api/v4", gitlab.apiBaseUrl());
+            assertEquals(input, "https://gitlab.firma.example", gitlab.webBaseUrl());
+        }
+    }
+
+    @Test
+    public void thePublicProviderHostsNeverUsePlainHttp() {
+        final AccountEndpoint github = endpoint(ProviderType.GITHUB, "http://github.com");
+        final AccountEndpoint gitlab = endpoint(ProviderType.GITLAB, "http://gitlab.com:80");
+
+        assertFalse(github.isInsecure());
+        assertEquals("https://api.github.com", github.apiBaseUrl());
+        assertEquals("https://github.com", github.webBaseUrl());
+        assertFalse(gitlab.isInsecure());
+        assertEquals("https://gitlab.com:80/api/v4", gitlab.apiBaseUrl());
     }
 
     private static AccountEndpoint endpoint(

@@ -24,6 +24,13 @@ public final class ShareTargetTest {
     }
 
     @Test
+    public void aGitlabPageAddressKeepsOnlyTheProjectPath() {
+        assertEquals("https://gitlab.com/gruppe/untergruppe/projekt.git",
+                accepted("https://gitlab.com/gruppe/untergruppe/projekt/-/tree/main/src"));
+        assertEquals("https://gitlab.com/gruppe/projekt.git", accepted("Schau mal: https://gitlab.com/gruppe/projekt/-/issues/4."));
+    }
+
+    @Test
     public void aGithubWebAddressIsAccepted() {
         assertEquals("https://github.com/max/alpha.git", accepted("https://github.com/max/alpha"));
     }

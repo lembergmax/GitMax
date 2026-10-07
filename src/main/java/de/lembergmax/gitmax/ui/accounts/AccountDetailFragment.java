@@ -68,10 +68,15 @@ public final class AccountDetailFragment extends Fragment {
         Toolbars.setupBack(this, binding.toolbar);
         InsetsPadding.apply(binding.scroll, false, true, false);
 
-        binding.saveIdentity.setOnClickListener(button -> viewModel.saveIdentity(
-                String.valueOf(binding.nameInput.getText()),
-                String.valueOf(binding.emailInput.getText())
-        ));
+        binding.saveIdentity.setOnClickListener(button -> {
+            // Eine frühere Fehlermeldung gilt nicht mehr: das Ergebnis dieses Versuchs setzt sie bei Bedarf neu.
+            binding.nameLayout.setError(null);
+            binding.emailLayout.setError(null);
+            viewModel.saveIdentity(
+                    String.valueOf(binding.nameInput.getText()),
+                    String.valueOf(binding.emailInput.getText())
+            );
+        });
         binding.renewToken.setOnClickListener(button -> showRenewDialog());
         binding.removeAccount.setOnClickListener(button -> showRemoveDialog());
 
@@ -116,7 +121,9 @@ public final class AccountDetailFragment extends Fragment {
         binding.toolbar.setTitle(account.login());
         binding.tile.setText(provider == ProviderType.GITHUB ? "GH" : "GL");
         binding.login.setText(account.login());
-        binding.server.setText(getString(R.string.accounts_row_description, provider.displayName(), account.endpoint().host()));
+        binding.server.setText(getString(
+                account.endpoint().isInsecure() ? R.string.accounts_row_description_insecure : R.string.accounts_row_description,
+                provider.displayName(), account.endpoint().host()));
 
         if (!identityFilled) {
             binding.nameInput.setText(account.identity().name());
@@ -124,12 +131,14 @@ public final class AccountDetailFragment extends Fragment {
             identityFilled = true;
         }
 
-        renderBanner(account.status());
+        renderBanner(account.status(), account.endpoint().isInsecure());
         renderScopes(account);
     }
 
+    /** Ein abgelehnter oder verlorener Token geht vor; sonst warnt das Banner vor einer unverschlüsselten Verbindung. */
     private void renderBanner(
-            @NonNull final Account.Status status
+            @NonNull final Account.Status status,
+            final boolean insecure
     ) {
         switch (status) {
             case TOKEN_REJECTED:
@@ -142,7 +151,8 @@ public final class AccountDetailFragment extends Fragment {
                 break;
             case ACTIVE:
             default:
-                binding.statusBanner.setVisibility(View.GONE);
+                binding.statusBanner.setText(R.string.account_detail_banner_insecure);
+                binding.statusBanner.setVisibility(insecure ? View.VISIBLE : View.GONE);
                 break;
         }
     }

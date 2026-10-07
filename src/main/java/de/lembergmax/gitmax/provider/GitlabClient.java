@@ -79,7 +79,7 @@ public final class GitlabClient extends BaseProviderClient {
             for (int index = 0; index < items.length(); index += 1) {
                 final JSONObject item = items.optJSONObject(index);
                 if (item != null) {
-                    toRepo(accountId, item).ifPresent(repos::add);
+                    toRepo(accountId, endpoint, item).ifPresent(repos::add);
                 }
             }
             listener.onProgress(repos.size());
@@ -117,7 +117,7 @@ public final class GitlabClient extends BaseProviderClient {
         if (!response.isSuccess()) {
             throw ProviderErrors.fromCreateResponse(response, context, token);
         }
-        return toRepo(accountId, parseObject(response.body(), context)).orElseThrow(() ->
+        return toRepo(accountId, endpoint, parseObject(response.body(), context)).orElseThrow(() ->
                 new ProviderException(ProviderException.Kind.MALFORMED, context + ": response without clone URL", null));
     }
 
@@ -168,6 +168,7 @@ public final class GitlabClient extends BaseProviderClient {
 
     private static Optional<RemoteRepo> toRepo(
             final String accountId,
+            final AccountEndpoint endpoint,
             final JSONObject item
     ) {
         final String name = Json.string(item, "name");
@@ -186,7 +187,7 @@ public final class GitlabClient extends BaseProviderClient {
                 item.optBoolean("archived"),
                 !item.isNull("forked_from_project") && item.has("forked_from_project"),
                 Json.stringOr(item, "default_branch", ""),
-                httpsUrl,
+                alignScheme(httpsUrl, endpoint),
                 Json.stringOr(item, "ssh_url_to_repo", ""),
                 Json.stringOr(item, "web_url", ""),
                 parseMillis(Json.string(item, "last_activity_at"))

@@ -1,5 +1,6 @@
 package de.lembergmax.gitmax.ui.settings;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -81,9 +82,14 @@ public final class SettingsFragment extends Fragment {
         binding.hintSystemColors.setText(colorsAvailable ? R.string.settings_system_colors_hint
                 : R.string.settings_system_colors_unavailable);
         binding.switchSystemColors.setOnCheckedChangeListener((button, checked) -> {
-            saveInBackground(() -> settings.setSystemColors(checked));
-            // Das Theme wird beim Erzeugen der Activity gesetzt; neu aufbauen, damit die Farben wirken.
-            requireActivity().recreate();
+            final Activity activity = requireActivity();
+            // Erst nach dem Speichern neu aufbauen: Die neue Activity liest die Einstellung beim Erzeugen, und ein
+            // gleichzeitiger Schreibvorgang im Hintergrund könnte noch nicht fertig sein.
+            saveInBackground(() -> {
+                settings.setSystemColors(checked);
+                // Das Theme wird beim Erzeugen der Activity gesetzt; neu aufbauen, damit die Farben wirken.
+                activity.runOnUiThread(activity::recreate);
+            });
         });
 
         binding.switchWifiOnly.setChecked(settings.wifiOnly());

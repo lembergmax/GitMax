@@ -50,6 +50,7 @@ import org.eclipse.jgit.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -58,6 +59,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -67,7 +69,12 @@ import java.util.function.Predicate;
  */
 public final class JgitEngine implements GitEngine {
 
-    private static final int TIMEOUT_SECONDS = 60;
+    // Ein großer Server braucht vor dem ersten Byte oft Minuten, um das Paket zusammenzustellen.
+    private static final int TIMEOUT_SECONDS = 300;
+    private static final int MAX_CLONE_ATTEMPTS = 3;
+    private static final long RETRY_PAUSE_MS = 5_000L;
+    private static final long PAUSE_SLICE_MS = 200L;
+    private static final long MIN_FREE_BYTES = 256L * 1024 * 1024;
     private static final int SHORT_ID_LENGTH = 7;
     private static final String DEFAULT_REMOTE = "origin";
     private static final int MAX_SUBMODULE_DEPTH = 5;
@@ -147,15 +154,12 @@ public final class JgitEngine implements GitEngine {
     ) throws GitFailureException {
         final File target = request.target();
         requireEmptyTarget(target);
+        requireFreeSpace(target);
         journal.begin(target);
         boolean completed = false;
         try {
-            doClone(request, progress);
+            cloneWithRetries(request, progress);
             completed = true;
-        } catch (final GitFailureException failure) {
-            throw failure;
-        } catch (final Exception failure) {
-            throw GitErrorMapper.map(failure, progress.isCancelled());
         } finally {
             // Auch bei einem Error (zu wenig Speicher) darf kein halber Klon liegen bleiben, sobald das Journal ihn vergisst.
             if (!completed) {
@@ -165,15 +169,118 @@ public final class JgitEngine implements GitEngine {
         }
     }
 
-    private void doClone(
+    /**
+     * Ein Klon lässt sich nicht fortsetzen. Bricht nur die Verbindung ab (WLAN-Wechsel, VPN-Neuaufbau, Server-Neustart),
+     * beginnt er deshalb von vorn, statt den ganzen Vorgang scheitern zu lassen.
+     */
+    private void cloneWithRetries(
             final CloneRequest request,
             final GitProgress progress
+    ) throws GitFailureException {
+        for (int attempt = 1; ; attempt++) {
+            // Der Klon in Teilschritten wiederholt Pakete selbst; scheitert er trotzdem, würde ein Neubeginn nur Geladenes wegwerfen.
+            final AtomicBoolean stepwiseFailed = new AtomicBoolean();
+            try {
+                doClone(request, progress, stepwiseFailed);
+                return;
+            } catch (final Exception failure) {
+                final GitFailureException mapped = failure instanceof GitFailureException already
+                        ? already : GitErrorMapper.map(failure, progress.isCancelled());
+                if (mapped.kind() != GitFailureKind.NETWORK || attempt >= MAX_CLONE_ATTEMPTS || progress.isCancelled()
+                        || stepwiseFailed.get()) {
+                    throw mapped;
+                }
+                removeQuietly(request.target());
+                pause(RETRY_PAUSE_MS * attempt, progress);
+            }
+        }
+    }
+
+    /** Wartet in kurzen Schritten, damit ein Abbruch während der Pause nicht erst nach ihr wirkt (und keinen neuen Versuch startet). */
+    private static void pause(
+            final long millis,
+            final GitProgress progress
+    ) throws GitFailureException {
+        try {
+            for (long waited = 0L; waited < millis; waited += PAUSE_SLICE_MS) {
+                if (progress.isCancelled()) {
+                    throw new GitFailureException(GitFailureKind.CANCELLED, "Cancelled", null);
+                }
+                Thread.sleep(Math.min(PAUSE_SLICE_MS, millis - waited));
+            }
+        } catch (final InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            throw new GitFailureException(GitFailureKind.CANCELLED, "Interrupted while waiting to retry", interrupted);
+        }
+    }
+
+    /**
+     * Ohne Platz für Paket und Arbeitsbaum scheitert ein Klon erst nach Stunden; das lässt sich vorher erkennen. Die Engine
+     * kennt keinen Android-{@code StorageManager}; eine grobe Untergrenze genügt, die genaue Prüfung bleibt Sache des Dateisystems.
+     */
+    @SuppressLint("UsableSpace")
+    private static void requireFreeSpace(
+            final File target
+    ) throws GitFailureException {
+        File existing = target.getAbsoluteFile();
+        while (existing != null && !existing.exists()) {
+            existing = existing.getParentFile();
+        }
+        if (existing != null && existing.getUsableSpace() < MIN_FREE_BYTES) {
+            throw new GitFailureException(GitFailureKind.DISK_FULL, "Less than " + MIN_FREE_BYTES / (1024 * 1024)
+                    + " MiB free at " + existing.getAbsolutePath(), null);
+        }
+    }
+
+    private void doClone(
+            final CloneRequest request,
+            final GitProgress progress,
+            final AtomicBoolean stepwiseFailed
     ) throws GitAPIException, IOException, GitFailureException {
         final ProgressAdapter monitor = new ProgressAdapter(progress);
         final CredentialsProvider provider = credentials.forUrl(request.url());
         final TransportConfigCallback callback = transports.forUrl(request.url());
+        try (Git git = openClone(request, provider, callback, monitor, stepwiseFailed)) {
+            if (sharedStorage.test(request.target())) {
+                final StoredConfig config = git.getRepository().getConfig();
+                RepoConfigurator.applySharedStorageFlags(config);
+                config.save();
+            }
+            identity.ensure(git.getRepository());
+            checkoutHead(git, monitor);
+            if (request.submodules()) {
+                updateSubmodules(git, provider, callback, monitor, 0);
+            }
+        }
+    }
+
+    /**
+     * Bevorzugt der Klon in Teilschritten ({@link BatchedClone}), der große Repos übersteht; kennt der Server keine
+     * Filter, läuft der normale Klon in einem Zug.
+     */
+    private Git openClone(
+            final CloneRequest request,
+            @Nullable final CredentialsProvider provider,
+            @Nullable final TransportConfigCallback callback,
+            final ProgressAdapter monitor,
+            final AtomicBoolean stepwiseFailed
+    ) throws GitAPIException, IOException, GitFailureException {
+        final String uri = transportUrl.apply(request.url());
+        try {
+            final Optional<Git> batched = new BatchedClone(uri, request.target(), request.branch(), request.shallow(),
+                    provider, callback, TIMEOUT_SECONDS, monitor).run();
+            if (batched.isPresent()) {
+                return batched.get();
+            }
+        } catch (final URISyntaxException invalid) {
+            throw new IOException("Invalid remote address", invalid);
+        } catch (final IOException | GitAPIException | GitFailureException | RuntimeException failure) {
+            stepwiseFailed.set(true);
+            throw failure;
+        }
+        removeQuietly(request.target());
         final CloneCommand command = Git.cloneRepository()
-                .setURI(transportUrl.apply(request.url()))
+                .setURI(uri)
                 .setDirectory(request.target())
                 .setNoCheckout(true)
                 .setCredentialsProvider(provider)
@@ -186,18 +293,7 @@ public final class JgitEngine implements GitEngine {
         if (request.shallow()) {
             command.setDepth(1);
         }
-        try (Git git = command.call()) {
-            if (sharedStorage.test(request.target())) {
-                final StoredConfig config = git.getRepository().getConfig();
-                RepoConfigurator.applySharedStorageFlags(config);
-                config.save();
-            }
-            identity.ensure(git.getRepository());
-            checkoutHead(git, monitor);
-            if (request.submodules()) {
-                updateSubmodules(git, provider, callback, monitor, 0);
-            }
-        }
+        return command.call();
     }
 
     private static void checkoutHead(

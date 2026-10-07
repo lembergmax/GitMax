@@ -195,13 +195,19 @@ final class BranchOperations {
             if (ref == null) {
                 throw new GitFailureException(GitFailureKind.NOT_FOUND, "Branch not found: " + branch, null);
             }
+            // Ein Konflikt wird mit „reset --hard“ zurückgenommen und risse unbeteiligte lokale Änderungen mit. Wie beim Update
+            // beginnt ein echter Merge deshalb nur bei sauberem Arbeitsbaum; vorspulen geht auch mit lokalen Änderungen.
+            final boolean dirty = git.status().call().hasUncommittedChanges();
             final MergeResult result = git.merge()
                     .include(ref)
-                    .setFastForward(MergeCommand.FastForwardMode.FF)
+                    .setFastForward(dirty ? MergeCommand.FastForwardMode.FF_ONLY : MergeCommand.FastForwardMode.FF)
                     .setCommit(true)
                     .setMessage("Merge branch '" + branch + "'")
                     .call();
             switch (result.getMergeStatus()) {
+                case ABORTED:
+                    throw new GitFailureException(dirty ? GitFailureKind.DIRTY_TREE : GitFailureKind.UNKNOWN,
+                            dirty ? "Local changes prevent the merge" : "Merge not possible: " + result.getMergeStatus(), null);
                 case ALREADY_UP_TO_DATE:
                     return GitAdvanced.MergeOutcome.ALREADY_UP_TO_DATE;
                 case FAST_FORWARD:
