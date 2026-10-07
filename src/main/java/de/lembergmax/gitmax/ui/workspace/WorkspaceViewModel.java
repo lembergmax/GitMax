@@ -79,7 +79,7 @@ public final class WorkspaceViewModel extends AndroidViewModel {
         services.io().execute(() -> {
             services.workspace().addRoot(folder);
             if (asDefault) {
-                services.workspace().setDefaultTarget(folder);
+                setDefaultIfStillPresent(folder);
             }
             publish();
         });
@@ -98,9 +98,20 @@ public final class WorkspaceViewModel extends AndroidViewModel {
             @NonNull final File folder
     ) {
         services.io().execute(() -> {
-            services.workspace().setDefaultTarget(folder);
+            setDefaultIfStillPresent(folder);
             publish();
         });
+    }
+
+    /** Wurde der Ordner inzwischen entfernt, bleibt der Standard, wie er ist (sonst bräche die Hintergrundarbeit mit einem Fehler ab). */
+    private void setDefaultIfStillPresent(
+            final File folder
+    ) {
+        try {
+            services.workspace().setDefaultTarget(folder);
+        } catch (final IllegalArgumentException removed) {
+            // Der Ordner ist kein Arbeitsordner mehr; die Liste unten zeigt den aktuellen Stand.
+        }
     }
 
     private void publish() {

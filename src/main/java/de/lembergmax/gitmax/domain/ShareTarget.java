@@ -57,11 +57,19 @@ public final class ShareTarget {
             return Optional.empty();
         }
         final String withoutQuery = candidate.substring(0, firstOf(candidate, authorityEnd, '?', '#'));
-        final Optional<RemoteUrl> parsed = RemoteUrl.parse(shorten(withoutQuery));
+        final Optional<RemoteUrl> parsed = RemoteUrl.parse(shorten(cutAtGitlabPages(withoutQuery)));
         if (parsed.isEmpty() || parsed.get().scheme() != RemoteUrl.Scheme.HTTPS) {
             return Optional.empty();
         }
         return parsed;
+    }
+
+    /** GitLab hängt Seitenpfade hinter {@code /-/} an ({@code /-/tree/main}); der Projektpfad davor ist das Repo. */
+    private static String cutAtGitlabPages(
+            final String url
+    ) {
+        final int marker = url.indexOf("/-/");
+        return marker < 0 ? url : url.substring(0, marker);
     }
 
     /** Bei GitHub-Webseiten bleiben nur Besitzer und Repo übrig. */

@@ -138,7 +138,7 @@ Gemessen mit `src/androidTest/.../spike/JgitSpikeTest.java` auf dem Telefonspeic
   LFS bleibt aus, die Oberfläche benennt es). Geprüft: JVM-Tests für alles Genannte, Emulator-Abläufe für jeden Zusatz.
 - **M11** Politur und Auslieferung: Motion-Audit, Barrierefreiheit (Schrift 1,3/2,0, Dunkel, Tablet-Rail), Lint, Plurals, Einstellungen
   (Design, Systemfarben, Nur im WLAN, Über GitMax mit Lizenzen), Sicherheitsprüfung, Release-Build und -Test, `README.md`,
-  `DESIGN.md`. Stand nach den Prüfdurchläufen (unten) und der Klartext-HTTP-Anpassung: 579 JVM-Tests, 6 Gerätetests (Debug und R8, API 35), signierte APK unter `builds/`.
+  `DESIGN.md`. Stand nach den Prüfdurchläufen (unten) und der Klartext-HTTP-Anpassung: 585 JVM-Tests, 10 Gerätetests (Debug und R8, API 35), signierte APK unter `builds/`.
 
 ## Zusätze (M10): Entscheidungen und Fallen
 
@@ -313,6 +313,27 @@ Zweite vollständige Durchsicht (alle Schichten gelesen, Oberfläche auf dem Emu
 - **„Branches › Zusammenführen“ verweigert einen echten Merge bei lokalen Änderungen** (`BranchOperations.merge`, `DIRTY_TREE`), wie der Update-Pfad: Ein
   abgebrochener Konflikt (`reset --hard`) risse sonst unbeteiligte Änderungen mit. Vorspulen geht weiter (`FF_ONLY` bei schmutzigem Baum). Tests in `JgitAdvancedTest`.
 - **Toter Code entfernt:** `PlaceholderFragment`, `fragment_placeholder.xml` und der Text `placeholder_body` (die Navigation zeigt längst die echten Ziele).
+
+## Prüfdurchlauf 2026-10-07: gefundene Fehler und neue Regeln
+
+Dritte Durchsicht (Domain, Speicher, Anbieter, Git-Engine, Vorgänge, ViewModels, Fragmente der Kernabläufe, Manifest und Ressourcen). 585 JVM-Tests,
+10 Gerätetests (Debug und R8), `lintDebug` unverändert bei 4 Warnungen.
+
+- **Zeitüberschreitungen sind keine Abbrüche.** `SocketTimeoutException` und JGits „Read timed out“ sind `InterruptedIOException`s; `GitErrorMapper` machte aus jeder
+  davon `CANCELLED`. Ein Server, der fünf Minuten schwieg (der Testserver kappt lange Antworten), erschien als „Abgebrochen“, und weder `BatchedClone` noch der Klon
+  wiederholten ihn. Jetzt: `isTimeout` → `NETWORK`; nur ein unterbrochener Thread oder das Abbruch-Flag zählen als Abbruch.
+- **Klon-Adressen folgen dem Schema des Kontos** (`BaseProviderClient.alignScheme`): Ein GitLab hinter einem TLS-Proxy meldet oft `http://`-Adressen, ein reiner
+  HTTP-Server `https://`; beides scheiterte beim Klonen (Verbindung bzw. Schutz vor Klartext). Gilt nur für Adressen auf dem Host des Kontos.
+- **Teilen → Klonen** schneidet GitLab-Seitenadressen bei `/-/` ab (`…/projekt/-/tree/main` ergab sonst ein Repo „projekt/-/tree/main“).
+- **Kein Neubeginn nach einem gescheiterten Klon in Teilschritten:** Er wiederholt Pakete selbst (8×); der äußere Klon-Versuch (3×) verwarf danach alles Geladene
+  und begann von vorn. Der äußere Versuch gilt jetzt nur für den normalen Klon (`stepwiseFailed`).
+- **„Lokal“ prüft Repos mit laufendem Vorgang nicht durch** (kein `git status` über einen Klon von Gigabytes während er schreibt).
+- Kleinere Funde: Markierungen von Repos eines entfernten Kontos blieben in „Entdecken“ gezählt; `WorkspaceViewModel` konnte beim gleichzeitigen Entfernen mit einer
+  `IllegalArgumentException` den Hintergrund-Thread (und damit die App) beenden; „Zu Zeile springen“ griff nach dem Zerstören der View auf `binding` zu.
+- **Bekannt, nicht geändert:** `JsonFileStore` schreibt über eine feste Temp-Datei je Name (zwei gleichzeitige Schreiber desselben Caches könnten sich stören);
+  `SharedPreferencesKeyValueStore.put` ignoriert das Ergebnis von `commit()` (bei vollem Speicher geht ein Eintrag still verloren); `AccountRepository.connect` setzt ein
+  erneut verknüpftes Konto ans Ende der Liste; ein leerer, vorhandener Ordner gilt dem Klon-Planer als „belegt“ (der Klon selbst nähme ihn); die
+  Repo-Detail-Meldung bei Netzfehlern hat keine „Erneut versuchen“-Schaltfläche (die Aktivität hat sie).
 
 ## Große Klone und Android-Besonderheiten (2026-10-05)
 

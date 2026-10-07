@@ -59,6 +59,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -177,13 +178,16 @@ public final class JgitEngine implements GitEngine {
             final GitProgress progress
     ) throws GitFailureException {
         for (int attempt = 1; ; attempt++) {
+            // Der Klon in Teilschritten wiederholt Pakete selbst; scheitert er trotzdem, würde ein Neubeginn nur Geladenes wegwerfen.
+            final AtomicBoolean stepwiseFailed = new AtomicBoolean();
             try {
-                doClone(request, progress);
+                doClone(request, progress, stepwiseFailed);
                 return;
             } catch (final Exception failure) {
                 final GitFailureException mapped = failure instanceof GitFailureException already
                         ? already : GitErrorMapper.map(failure, progress.isCancelled());
-                if (mapped.kind() != GitFailureKind.NETWORK || attempt >= MAX_CLONE_ATTEMPTS || progress.isCancelled()) {
+                if (mapped.kind() != GitFailureKind.NETWORK || attempt >= MAX_CLONE_ATTEMPTS || progress.isCancelled()
+                        || stepwiseFailed.get()) {
                     throw mapped;
                 }
                 removeQuietly(request.target());
@@ -230,12 +234,13 @@ public final class JgitEngine implements GitEngine {
 
     private void doClone(
             final CloneRequest request,
-            final GitProgress progress
+            final GitProgress progress,
+            final AtomicBoolean stepwiseFailed
     ) throws GitAPIException, IOException, GitFailureException {
         final ProgressAdapter monitor = new ProgressAdapter(progress);
         final CredentialsProvider provider = credentials.forUrl(request.url());
         final TransportConfigCallback callback = transports.forUrl(request.url());
-        try (Git git = openClone(request, provider, callback, monitor)) {
+        try (Git git = openClone(request, provider, callback, monitor, stepwiseFailed)) {
             if (sharedStorage.test(request.target())) {
                 final StoredConfig config = git.getRepository().getConfig();
                 RepoConfigurator.applySharedStorageFlags(config);
@@ -257,7 +262,8 @@ public final class JgitEngine implements GitEngine {
             final CloneRequest request,
             @Nullable final CredentialsProvider provider,
             @Nullable final TransportConfigCallback callback,
-            final ProgressAdapter monitor
+            final ProgressAdapter monitor,
+            final AtomicBoolean stepwiseFailed
     ) throws GitAPIException, IOException, GitFailureException {
         final String uri = transportUrl.apply(request.url());
         try {
@@ -268,6 +274,9 @@ public final class JgitEngine implements GitEngine {
             }
         } catch (final URISyntaxException invalid) {
             throw new IOException("Invalid remote address", invalid);
+        } catch (final IOException | GitAPIException | GitFailureException | RuntimeException failure) {
+            stepwiseFailed.set(true);
+            throw failure;
         }
         removeQuietly(request.target());
         final CloneCommand command = Git.cloneRepository()

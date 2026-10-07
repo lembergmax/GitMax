@@ -69,7 +69,10 @@ public final class GitErrorMapper {
         if (failure instanceof GitFailureException already) {
             return already;
         }
-        if (cancelled || causedBy(failure, CanceledException.class) || causedBy(failure, InterruptedIOException.class)) {
+        // SocketTimeoutException und JGits „Read timed out“ sind ebenfalls InterruptedIOExceptions, aber kein Abbruch durch den
+        // Nutzer: Sonst erschiene ein hängender Server als „Abgebrochen“ und der Vorgang würde nicht wiederholt.
+        if (cancelled || causedBy(failure, CanceledException.class)
+                || (causedBy(failure, InterruptedIOException.class) && !isTimeout(failure))) {
             return new GitFailureException(GitFailureKind.CANCELLED, "Cancelled", failure);
         }
         final HostKeyRejectedException hostKey = causeOf(failure, HostKeyRejectedException.class);
@@ -164,9 +167,31 @@ public final class GitErrorMapper {
                 || lower.contains("credentials");
     }
 
+    /** Eine Zeitüberschreitung beim Lesen oder Verbinden. */
+    private static boolean isTimeout(
+            final Throwable failure
+    ) {
+        Throwable current = failure;
+        while (current != null) {
+            if (current instanceof SocketTimeoutException) {
+                return true;
+            }
+            final String message = current.getMessage();
+            if (current instanceof InterruptedIOException && message != null
+                    && message.toLowerCase(Locale.ROOT).contains("timed out")) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
+    }
+
     private static boolean isNetwork(
             final Throwable failure
     ) {
+        if (isTimeout(failure)) {
+            return true;
+        }
         final List<Class<? extends Throwable>> networkTypes = List.of(
                 UnknownHostException.class, ConnectException.class, NoRouteToHostException.class,
                 SocketTimeoutException.class, SocketException.class, SSLException.class,

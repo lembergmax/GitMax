@@ -2,6 +2,8 @@ package de.lembergmax.gitmax.provider;
 
 import androidx.annotation.NonNull;
 
+import de.lembergmax.gitmax.domain.model.AccountEndpoint;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
 
@@ -93,6 +96,32 @@ abstract class BaseProviderClient implements GitProviderClient {
         if (listener.isCancelled()) {
             throw new CancellationException("Listing cancelled");
         }
+    }
+
+    /**
+     * Gleicht das Schema einer Klon-Adresse dem des Kontos an, wenn sie auf denselben Server zeigt. Ein GitLab hinter einem
+     * TLS-Proxy meldet oft {@code http://}-Adressen (falsches {@code external_url}), ein reiner HTTP-Server {@code https://}-
+     * Adressen: Mit der Adresse aus der API scheiterte der Klon dann an der Verbindung oder am Schutz vor Klartext.
+     */
+    @NonNull
+    static String alignScheme(
+            @NonNull final String cloneUrl,
+            @NonNull final AccountEndpoint endpoint
+    ) {
+        final String wanted = endpoint.isInsecure() ? "http://" : "https://";
+        final String other = endpoint.isInsecure() ? "https://" : "http://";
+        if (!cloneUrl.regionMatches(true, 0, other, 0, other.length())) {
+            return cloneUrl;
+        }
+        final String rest = cloneUrl.substring(other.length());
+        final int slash = rest.indexOf('/');
+        final String authority = slash < 0 ? rest : rest.substring(0, slash);
+        final String path = slash < 0 ? "" : rest.substring(slash);
+        final String defaultPort = other.equals("http://") ? ":80" : ":443";
+        final String bareAuthority = authority.toLowerCase(Locale.ROOT).endsWith(defaultPort)
+                ? authority.substring(0, authority.length() - defaultPort.length())
+                : authority;
+        return bareAuthority.equalsIgnoreCase(endpoint.host()) ? wanted + endpoint.host() + path : cloneUrl;
     }
 
     /** ISO-8601-Zeitstempel in Millisekunden seit 1970; 0 bei fehlendem oder unlesbarem Wert. */

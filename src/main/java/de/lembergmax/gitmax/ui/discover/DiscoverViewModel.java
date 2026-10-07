@@ -175,6 +175,8 @@ public final class DiscoverViewModel extends AndroidViewModel {
         if (selectedAccount != null && !idsOf(current).contains(selectedAccount)) {
             selectedAccount = null;
         }
+        // Markierungen von Repos eines entfernten Kontos zählen sonst weiter mit, ohne dass man sie sehen oder lösen kann.
+        selection.removeIf(key -> !idsOf(current).contains(key.substring(0, Math.max(0, key.indexOf(KEY_SEPARATOR)))));
         publish();
         refresh();
     }

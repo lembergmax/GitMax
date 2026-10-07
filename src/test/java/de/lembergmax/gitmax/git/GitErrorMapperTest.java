@@ -66,6 +66,25 @@ public final class GitErrorMapperTest {
     }
 
     @Test
+    public void aReadTimeoutIsANetworkProblemNotACancellation() {
+        final GitFailureException jgitTimeout = GitErrorMapper.map(new TransportException("x",
+                new java.io.InterruptedIOException("Read timed out after 300.000 ms")), false);
+        final GitFailureException socketTimeout = GitErrorMapper.map(new TransportException("x",
+                new java.net.SocketTimeoutException("timeout")), false);
+
+        assertEquals(GitFailureKind.NETWORK, jgitTimeout.kind());
+        assertEquals(GitFailureKind.NETWORK, socketTimeout.kind());
+    }
+
+    @Test
+    public void anInterruptedThreadIsStillACancellation() {
+        final GitFailureException failure = GitErrorMapper.map(new TransportException("x",
+                new java.io.InterruptedIOException("interrupted")), false);
+
+        assertEquals(GitFailureKind.CANCELLED, failure.kind());
+    }
+
+    @Test
     public void aMissingRepoIsNotFound() throws Exception {
         final GitFailureException failure = GitErrorMapper.map(
                 new NoRemoteRepositoryException(new URIish("https://github.com/max/weg.git"), "not found"), false);

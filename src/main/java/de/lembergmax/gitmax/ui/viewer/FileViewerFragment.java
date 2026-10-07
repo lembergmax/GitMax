@@ -616,7 +616,8 @@ public final class FileViewerFragment extends Fragment {
             return;
         }
         final int y = layout.getLineTop(layout.getLineForOffset(offset)) + binding.code.getTotalPaddingTop();
-        binding.textScroll.post(() -> binding.textScroll.smoothScrollTo(0, Math.max(0, y - binding.textScroll.getHeight() / 3)));
+        final NestedScrollView scroll = binding.textScroll;
+        scroll.post(() -> scroll.smoothScrollTo(0, Math.max(0, y - scroll.getHeight() / 3)));
     }
 
     /* ------------------------------------------------------------------------------------------ */
